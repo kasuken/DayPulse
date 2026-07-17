@@ -19,4 +19,7 @@ abstract interface class ActivityRepository {
 
   /// Ensures default activities exist.
   Future<void> seedDefaults();
+
+  /// Removes custom activities and restores built-in defaults.
+  Future<void> resetToDefaults();
 }

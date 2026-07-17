@@ -262,4 +262,199 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get retry => 'Retry';
+
+  @override
+  String get historyEmptyMessage => 'Your check-ins will appear here.';
+
+  @override
+  String get createFirstCheckIn => 'Create first check-in';
+
+  @override
+  String historyMoodSigned(String value) {
+    return 'Mood $value';
+  }
+
+  @override
+  String metricShortValue(String metric, String value) {
+    return '$metric $value';
+  }
+
+  @override
+  String get createdAtLabel => 'Created';
+
+  @override
+  String get updatedAtLabel => 'Last updated';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get deleteCheckInTitle => 'Delete this check-in?';
+
+  @override
+  String get deleteCheckInMessage => 'This action cannot be undone.';
+
+  @override
+  String get noActivities => 'No activities';
+
+  @override
+  String get noNotes => 'No notes';
+
+  @override
+  String get insightsPeriod7Days => '7 days';
+
+  @override
+  String get insightsPeriod30Days => '30 days';
+
+  @override
+  String get insightsPeriod90Days => '90 days';
+
+  @override
+  String averageMetricTitle(String metric) {
+    return 'Average $metric';
+  }
+
+  @override
+  String get entriesThisMonth => 'Entries this month';
+
+  @override
+  String get currentStreak => 'Current streak';
+
+  @override
+  String get longestStreak => 'Longest streak';
+
+  @override
+  String get bestMoodDay => 'Best mood day';
+
+  @override
+  String get lowestMoodDay => 'Lowest mood day';
+
+  @override
+  String daysCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+      zero: '0 days',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String entriesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count entries',
+      one: '1 entry',
+      zero: '0 entries',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String trendChartTitle(String metric) {
+    return '$metric trend';
+  }
+
+  @override
+  String trendChartSemantics(String metric) {
+    return 'Line chart showing $metric over the selected period.';
+  }
+
+  @override
+  String get insufficientTrendData =>
+      'Add at least two check-ins with this metric to see a trend.';
+
+  @override
+  String get settingsMetricsTitle => 'Metrics';
+
+  @override
+  String get settingsMoodAlwaysOn => 'Mood is always on.';
+
+  @override
+  String get settingsAboutTitle => 'About';
+
+  @override
+  String get appearanceSystem => 'System';
+
+  @override
+  String get appearanceLight => 'Light';
+
+  @override
+  String get appearanceDark => 'Dark';
+
+  @override
+  String get notificationPermissionSettingsHint =>
+      'Notifications are disabled. Enable them in system settings to use daily reminders.';
+
+  @override
+  String get activityDefaultLocked => 'Built-in activity';
+
+  @override
+  String get rename => 'Rename';
+
+  @override
+  String get renameActivityTitle => 'Rename activity';
+
+  @override
+  String get disableActivityTitle => 'Disable activity?';
+
+  @override
+  String get disableActivityMessage =>
+      'Past check-ins keep this activity, but it will no longer appear for new entries.';
+
+  @override
+  String get disable => 'Disable';
+
+  @override
+  String get privacyLocalStorageSummary =>
+      'DayPulse stores your check-ins, activities, reminders, and preferences locally on this device. No account is required and wellbeing data is not uploaded.';
+
+  @override
+  String get exportData => 'Export data';
+
+  @override
+  String get planned => 'Planned';
+
+  @override
+  String get exportDataPlannedSubtitle =>
+      'CSV export is planned for a future update.';
+
+  @override
+  String get deleteAllData => 'Delete all data';
+
+  @override
+  String get deleteAllDataTitle => 'Delete all data?';
+
+  @override
+  String get deleteAllDataMessage =>
+      'Delete all DayPulse data from this device? This removes every check-in, activity, and preference. This action cannot be undone.';
+
+  @override
+  String aboutVersion(String version, String buildNumber) {
+    return 'Version $version ($buildNumber)';
+  }
+
+  @override
+  String get privacyBlurb =>
+      'Privacy-first wellbeing tracking for your device.';
+
+  @override
+  String get openSourceLicences => 'Open-source licences';
+
+  @override
+  String get aboutDialogTitle => 'About DayPulse';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get notAvailable => 'Not available';
+
+  @override
+  String sleepHoursShort(String hours) {
+    return '$hours h';
+  }
 }

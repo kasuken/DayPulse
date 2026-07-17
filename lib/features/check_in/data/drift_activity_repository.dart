@@ -103,6 +103,16 @@ final class DriftActivityRepository implements ActivityRepository {
     }
   }
 
+  @override
+  Future<void> resetToDefaults() async {
+    try {
+      await _database.delete(_database.activities).go();
+      await _database.seedDefaultActivities();
+    } on Object catch (error) {
+      throw DatabaseFailure(error.toString());
+    }
+  }
+
   SimpleSelectStatement<$ActivitiesTable, ActivityRow> _activeQuery() =>
       (_database.select(_database.activities)
         ..where((table) => table.isActive.equals(true))

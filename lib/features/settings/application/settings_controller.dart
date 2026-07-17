@@ -56,4 +56,11 @@ class SettingsController extends AsyncNotifier<AppSettings> {
     await ref.read(settingsRepositoryProvider).completeOnboarding();
     state = AsyncData(await ref.read(settingsRepositoryProvider).load());
   }
+
+  /// Resets all persisted settings to defaults.
+  Future<void> reset() async {
+    state = const AsyncLoading();
+    await ref.read(settingsRepositoryProvider).reset();
+    state = AsyncData(await ref.read(settingsRepositoryProvider).load());
+  }
 }

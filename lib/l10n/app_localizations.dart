@@ -561,6 +561,318 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry'**
   String get retry;
+
+  /// Empty state message for the history screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Your check-ins will appear here.'**
+  String get historyEmptyMessage;
+
+  /// Button to create the first check-in from history.
+  ///
+  /// In en, this message translates to:
+  /// **'Create first check-in'**
+  String get createFirstCheckIn;
+
+  /// History row mood value with sign.
+  ///
+  /// In en, this message translates to:
+  /// **'Mood {value}'**
+  String historyMoodSigned(String value);
+
+  /// Compact metric and value label.
+  ///
+  /// In en, this message translates to:
+  /// **'{metric} {value}'**
+  String metricShortValue(String metric, String value);
+
+  /// Label for a created timestamp.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get createdAtLabel;
+
+  /// Label for an updated timestamp.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated'**
+  String get updatedAtLabel;
+
+  /// Generic delete button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Check-in deletion confirmation title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this check-in?'**
+  String get deleteCheckInTitle;
+
+  /// Check-in deletion confirmation body.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get deleteCheckInMessage;
+
+  /// Message when an entry has no visible activities.
+  ///
+  /// In en, this message translates to:
+  /// **'No activities'**
+  String get noActivities;
+
+  /// Message when an entry has no notes.
+  ///
+  /// In en, this message translates to:
+  /// **'No notes'**
+  String get noNotes;
+
+  /// Insights period filter label for seven days.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get insightsPeriod7Days;
+
+  /// Insights period filter label for thirty days.
+  ///
+  /// In en, this message translates to:
+  /// **'30 days'**
+  String get insightsPeriod30Days;
+
+  /// Insights period filter label for ninety days.
+  ///
+  /// In en, this message translates to:
+  /// **'90 days'**
+  String get insightsPeriod90Days;
+
+  /// Title for an average metric summary card.
+  ///
+  /// In en, this message translates to:
+  /// **'Average {metric}'**
+  String averageMetricTitle(String metric);
+
+  /// Summary card title for entries in the current month.
+  ///
+  /// In en, this message translates to:
+  /// **'Entries this month'**
+  String get entriesThisMonth;
+
+  /// Summary card title for current streak.
+  ///
+  /// In en, this message translates to:
+  /// **'Current streak'**
+  String get currentStreak;
+
+  /// Summary card title for longest streak.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest streak'**
+  String get longestStreak;
+
+  /// Summary card title for best mood day.
+  ///
+  /// In en, this message translates to:
+  /// **'Best mood day'**
+  String get bestMoodDay;
+
+  /// Summary card title for lowest mood day.
+  ///
+  /// In en, this message translates to:
+  /// **'Lowest mood day'**
+  String get lowestMoodDay;
+
+  /// Number of days.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{0 days} =1{1 day} other{{count} days}}'**
+  String daysCount(int count);
+
+  /// Number of check-in entries.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{0 entries} =1{1 entry} other{{count} entries}}'**
+  String entriesCount(int count);
+
+  /// Trend chart title for a metric.
+  ///
+  /// In en, this message translates to:
+  /// **'{metric} trend'**
+  String trendChartTitle(String metric);
+
+  /// Accessibility label for trend charts.
+  ///
+  /// In en, this message translates to:
+  /// **'Line chart showing {metric} over the selected period.'**
+  String trendChartSemantics(String metric);
+
+  /// Empty state for trend charts with fewer than two points.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least two check-ins with this metric to see a trend.'**
+  String get insufficientTrendData;
+
+  /// Settings section title for metric switches.
+  ///
+  /// In en, this message translates to:
+  /// **'Metrics'**
+  String get settingsMetricsTitle;
+
+  /// Settings helper text that mood cannot be disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Mood is always on.'**
+  String get settingsMoodAlwaysOn;
+
+  /// Settings section title for app information.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get settingsAboutTitle;
+
+  /// Theme setting option for system theme.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get appearanceSystem;
+
+  /// Theme setting option for light theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get appearanceLight;
+
+  /// Theme setting option for dark theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get appearanceDark;
+
+  /// Reminder settings message when permission is denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are disabled. Enable them in system settings to use daily reminders.'**
+  String get notificationPermissionSettingsHint;
+
+  /// Subtitle for a locked default activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Built-in activity'**
+  String get activityDefaultLocked;
+
+  /// Generic rename action.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get rename;
+
+  /// Dialog title for renaming an activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename activity'**
+  String get renameActivityTitle;
+
+  /// Dialog title for disabling an activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable activity?'**
+  String get disableActivityTitle;
+
+  /// Confirmation message for activity soft deletion.
+  ///
+  /// In en, this message translates to:
+  /// **'Past check-ins keep this activity, but it will no longer appear for new entries.'**
+  String get disableActivityMessage;
+
+  /// Generic disable action.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable'**
+  String get disable;
+
+  /// Privacy summary explaining local-only storage.
+  ///
+  /// In en, this message translates to:
+  /// **'DayPulse stores your check-ins, activities, reminders, and preferences locally on this device. No account is required and wellbeing data is not uploaded.'**
+  String get privacyLocalStorageSummary;
+
+  /// Privacy action label for data export.
+  ///
+  /// In en, this message translates to:
+  /// **'Export data'**
+  String get exportData;
+
+  /// Badge for planned functionality.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned'**
+  String get planned;
+
+  /// Subtitle for disabled export tile.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV export is planned for a future update.'**
+  String get exportDataPlannedSubtitle;
+
+  /// Privacy action label for deleting all data.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all data'**
+  String get deleteAllData;
+
+  /// Title for delete all data confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all data?'**
+  String get deleteAllDataTitle;
+
+  /// Exact confirmation message for deleting all data.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all DayPulse data from this device? This removes every check-in, activity, and preference. This action cannot be undone.'**
+  String get deleteAllDataMessage;
+
+  /// About version and build number.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version} ({buildNumber})'**
+  String aboutVersion(String version, String buildNumber);
+
+  /// Short about privacy blurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy-first wellbeing tracking for your device.'**
+  String get privacyBlurb;
+
+  /// Tile label for showing open-source licences.
+  ///
+  /// In en, this message translates to:
+  /// **'Open-source licences'**
+  String get openSourceLicences;
+
+  /// About dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'About DayPulse'**
+  String get aboutDialogTitle;
+
+  /// Generic close button.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// Generic unavailable value label.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get notAvailable;
+
+  /// Short sleep duration value in hours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h'**
+  String sleepHoursShort(String hours);
 }
 
 class _AppLocalizationsDelegate
