@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "appTitle": "DayPulse",
+  "@appTitle": {
+    "description": "The application name shown in the app switcher."
+  }
+}
