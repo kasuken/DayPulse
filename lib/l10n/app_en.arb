@@ -512,6 +512,10 @@
   "@notificationPermissionSettingsHint": {
     "description": "Reminder settings message when permission is denied."
   },
+  "reminderScheduleFailed": "Couldn't schedule the reminder. Please try again.",
+  "@reminderScheduleFailed": {
+    "description": "Reminder settings message shown when scheduling the daily notification fails."
+  },
   "activityDefaultLocked": "Built-in activity",
   "@activityDefaultLocked": {
     "description": "Subtitle for a locked default activity."

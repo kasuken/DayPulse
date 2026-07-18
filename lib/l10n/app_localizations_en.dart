@@ -390,6 +390,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Notifications are disabled. Enable them in system settings to use daily reminders.';
 
   @override
+  String get reminderScheduleFailed =>
+      'Couldn\'t schedule the reminder. Please try again.';
+
+  @override
   String get activityDefaultLocked => 'Built-in activity';
 
   @override

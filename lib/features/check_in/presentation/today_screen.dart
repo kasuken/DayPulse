@@ -58,7 +58,7 @@ class TodayScreen extends ConsumerWidget {
                     showFocus: settings?.metrics.focusEnabled ?? true,
                     showSleep: settings?.metrics.sleepEnabled ?? true,
                   ),
-            loading: () => const SizedBox.shrink(),
+            loading: () => const Center(child: CircularProgressIndicator()),
             error: (error, stackTrace) => Text(l10n.loadCheckInFailureMessage),
           ),
         ],

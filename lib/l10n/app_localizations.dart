@@ -754,6 +754,12 @@ abstract class AppLocalizations {
   /// **'Notifications are disabled. Enable them in system settings to use daily reminders.'**
   String get notificationPermissionSettingsHint;
 
+  /// Reminder settings message shown when scheduling the daily notification fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t schedule the reminder. Please try again.'**
+  String get reminderScheduleFailed;
+
   /// Subtitle for a locked default activity.
   ///
   /// In en, this message translates to:

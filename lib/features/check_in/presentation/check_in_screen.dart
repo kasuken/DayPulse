@@ -134,7 +134,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
             ],
           );
         },
-        loading: () => const SizedBox.shrink(),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.lg),
