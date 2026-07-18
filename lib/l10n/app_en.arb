@@ -302,6 +302,18 @@
   "@cancel": {
     "description": "Generic cancel button."
   },
+  "discardChangesTitle": "Discard changes?",
+  "@discardChangesTitle": {
+    "description": "Title for the confirmation dialog shown when leaving a check-in with unsaved edits."
+  },
+  "discardChangesMessage": "Your edits to this check-in will be lost.",
+  "@discardChangesMessage": {
+    "description": "Message for the confirmation dialog shown when leaving a check-in with unsaved edits."
+  },
+  "discardChangesConfirm": "Discard",
+  "@discardChangesConfirm": {
+    "description": "Button label that confirms discarding unsaved check-in edits."
+  },
   "add": "Add",
   "@add": {
     "description": "Generic add button."

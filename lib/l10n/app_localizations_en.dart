@@ -227,6 +227,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get discardChangesTitle => 'Discard changes?';
+
+  @override
+  String get discardChangesMessage =>
+      'Your edits to this check-in will be lost.';
+
+  @override
+  String get discardChangesConfirm => 'Discard';
+
+  @override
   String get add => 'Add';
 
   @override

@@ -496,6 +496,24 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get cancel;
 
+  /// Title for the confirmation dialog shown when leaving a check-in with unsaved edits.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes?'**
+  String get discardChangesTitle;
+
+  /// Message for the confirmation dialog shown when leaving a check-in with unsaved edits.
+  ///
+  /// In en, this message translates to:
+  /// **'Your edits to this check-in will be lost.'**
+  String get discardChangesMessage;
+
+  /// Button label that confirms discarding unsaved check-in edits.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get discardChangesConfirm;
+
   /// Generic add button.
   ///
   /// In en, this message translates to:

@@ -71,10 +71,11 @@ class OnboardingController extends Notifier<OnboardingState> {
       return;
     }
     final granted = await ref.read(reminderServiceProvider).requestPermission();
-    state = state.copyWith(
-      reminderEnabled: granted,
-      permissionDenied: !granted,
-    );
+    if (!granted) {
+      state = state.copyWith(reminderEnabled: false, permissionDenied: true);
+      return;
+    }
+    state = state.copyWith(reminderEnabled: true, permissionDenied: false);
   }
 
   /// Updates the reminder time.
@@ -91,13 +92,14 @@ class OnboardingController extends Notifier<OnboardingState> {
     try {
       final settings = ref.read(settingsControllerProvider.notifier);
       await settings.updateMetrics(state.metrics);
+      final reminderEnabled = state.reminderEnabled && !state.permissionDenied;
       final reminder = ReminderSettings(
-        enabled: state.reminderEnabled,
+        enabled: reminderEnabled,
         hour: state.reminderTime.hour,
         minute: state.reminderTime.minute,
       );
       await settings.updateReminder(reminder);
-      if (state.reminderEnabled) {
+      if (reminderEnabled) {
         await ref
             .read(reminderServiceProvider)
             .scheduleDailyReminder(

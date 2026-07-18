@@ -26,8 +26,12 @@ class CheckInScreen extends ConsumerStatefulWidget {
 
 class _CheckInScreenState extends ConsumerState<CheckInScreen> {
   final _notesController = TextEditingController();
+  CheckInFormState? _initialForm;
   CheckInFormState? _form;
   bool _saving = false;
+  bool _saved = false;
+  bool _discardingChanges = false;
+  bool _confirmingDiscard = false;
 
   @override
   void dispose() {
@@ -41,107 +45,118 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
     final formValue = ref.watch(checkInFormProvider(widget.id));
     final activities =
         ref.watch(checkInFormActivitiesProvider).value ?? const <Activity>[];
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.id == null ? l10n.checkInTitleCreate : l10n.checkInTitleEdit,
+    return PopScope<Object?>(
+      canPop: !_isDirty,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop || !_isDirty) {
+          return;
+        }
+        _confirmDiscardChanges(result);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            widget.id == null
+                ? l10n.checkInTitleCreate
+                : l10n.checkInTitleEdit,
+          ),
         ),
-      ),
-      body: formValue.when(
-        data: (loadedForm) {
-          _ensureForm(loadedForm);
-          final form = _form!;
-          return ListView(
-            padding: const EdgeInsets.all(AppSpacing.md),
-            children: [
-              _DateTile(date: form.entryDate, onPick: () => _pickDate(form)),
-              const SizedBox(height: AppSpacing.md),
-              _MoodCard(
-                value: form.mood,
-                onChanged: (value) => _update(form.copyWith(mood: value)),
-              ),
-              if (form.metrics.energyEnabled)
-                MetricSliderTile(
-                  title: l10n.metricEnergy,
-                  value: form.energy.toDouble(),
-                  min: 0,
-                  max: 10,
-                  divisions: 10,
-                  displayValue: form.energy.toString(),
-                  onChanged: (value) =>
-                      _update(form.copyWith(energy: value.round())),
+        body: formValue.when(
+          data: (loadedForm) {
+            _ensureForm(loadedForm);
+            final form = _form!;
+            return ListView(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              children: [
+                _DateTile(date: form.entryDate, onPick: () => _pickDate(form)),
+                const SizedBox(height: AppSpacing.md),
+                _MoodCard(
+                  value: form.mood,
+                  onChanged: (value) => _update(form.copyWith(mood: value)),
                 ),
-              if (form.metrics.anxietyEnabled)
-                MetricSliderTile(
-                  title: l10n.metricAnxiety,
-                  value: form.anxiety.toDouble(),
-                  min: 0,
-                  max: 10,
-                  divisions: 10,
-                  displayValue: form.anxiety.toString(),
-                  helperText: l10n.anxietyLowerPreferable,
-                  onChanged: (value) =>
-                      _update(form.copyWith(anxiety: value.round())),
-                ),
-              if (form.metrics.focusEnabled)
-                MetricSliderTile(
-                  title: l10n.metricFocus,
-                  value: form.focus.toDouble(),
-                  min: 0,
-                  max: 10,
-                  divisions: 10,
-                  displayValue: form.focus.toString(),
-                  onChanged: (value) =>
-                      _update(form.copyWith(focus: value.round())),
-                ),
-              if (form.metrics.sleepEnabled)
-                MetricSliderTile(
-                  title: l10n.metricSleep,
-                  value: form.sleepHours,
-                  min: 0,
-                  max: 15,
-                  divisions: 30,
-                  displayValue: l10n.sleepHoursValue(
-                    _formatHours(form.sleepHours),
+                if (form.metrics.energyEnabled)
+                  MetricSliderTile(
+                    title: l10n.metricEnergy,
+                    value: form.energy.toDouble(),
+                    min: 0,
+                    max: 10,
+                    divisions: 10,
+                    displayValue: form.energy.toString(),
+                    onChanged: (value) =>
+                        _update(form.copyWith(energy: value.round())),
                   ),
-                  showRangeLabels: false,
-                  onChanged: (value) =>
-                      _update(form.copyWith(sleepHours: value)),
+                if (form.metrics.anxietyEnabled)
+                  MetricSliderTile(
+                    title: l10n.metricAnxiety,
+                    value: form.anxiety.toDouble(),
+                    min: 0,
+                    max: 10,
+                    divisions: 10,
+                    displayValue: form.anxiety.toString(),
+                    helperText: l10n.anxietyLowerPreferable,
+                    onChanged: (value) =>
+                        _update(form.copyWith(anxiety: value.round())),
+                  ),
+                if (form.metrics.focusEnabled)
+                  MetricSliderTile(
+                    title: l10n.metricFocus,
+                    value: form.focus.toDouble(),
+                    min: 0,
+                    max: 10,
+                    divisions: 10,
+                    displayValue: form.focus.toString(),
+                    onChanged: (value) =>
+                        _update(form.copyWith(focus: value.round())),
+                  ),
+                if (form.metrics.sleepEnabled)
+                  MetricSliderTile(
+                    title: l10n.metricSleep,
+                    value: form.sleepHours,
+                    min: 0,
+                    max: 15,
+                    divisions: 30,
+                    displayValue: l10n.sleepHoursValue(
+                      _formatHours(form.sleepHours),
+                    ),
+                    showRangeLabels: false,
+                    onChanged: (value) =>
+                        _update(form.copyWith(sleepHours: value)),
+                  ),
+                _ActivitiesSection(
+                  activities: activities,
+                  selectedIds: form.activityIds,
+                  onChanged: (ids) => _update(form.copyWith(activityIds: ids)),
+                  onAdd: _addActivity,
                 ),
-              _ActivitiesSection(
-                activities: activities,
-                selectedIds: form.activityIds,
-                onChanged: (ids) => _update(form.copyWith(activityIds: ids)),
-                onAdd: _addActivity,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              TextField(
-                controller: _notesController,
-                maxLength: CheckInValidator.maxNotesLength,
-                maxLines: 4,
-                autofocus: false,
-                decoration: InputDecoration(
-                  labelText: l10n.notesLabel,
-                  hintText: l10n.notesHint,
+                const SizedBox(height: AppSpacing.md),
+                TextField(
+                  controller: _notesController,
+                  maxLength: CheckInValidator.maxNotesLength,
+                  maxLines: 4,
+                  autofocus: false,
+                  decoration: InputDecoration(
+                    labelText: l10n.notesLabel,
+                    hintText: l10n.notesHint,
+                  ),
+                  onChanged: (value) => _update(form.copyWith(notes: value)),
                 ),
-                onChanged: (value) => _update(form.copyWith(notes: value)),
+                const SizedBox(height: AppSpacing.lg),
+                FilledButton(
+                  onPressed: _saving ? null : () => _save(form),
+                  child: Text(_saving ? l10n.savingCheckIn : l10n.saveCheckIn),
+                ),
+              ],
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) => Center(
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Text(
+                widget.id == null
+                    ? l10n.loadCheckInFailureMessage
+                    : l10n.checkInNotFoundMessage,
               ),
-              const SizedBox(height: AppSpacing.lg),
-              FilledButton(
-                onPressed: _saving ? null : () => _save(form),
-                child: Text(_saving ? l10n.savingCheckIn : l10n.saveCheckIn),
-              ),
-            ],
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Text(
-              widget.id == null
-                  ? l10n.loadCheckInFailureMessage
-                  : l10n.checkInNotFoundMessage,
             ),
           ),
         ),
@@ -149,16 +164,96 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
     );
   }
 
+  bool get _isDirty {
+    if (_saved || _discardingChanges) {
+      return false;
+    }
+    final initialForm = _initialForm;
+    final form = _form;
+    return initialForm != null &&
+        form != null &&
+        !_formsMatch(initialForm, form);
+  }
+
   void _ensureForm(CheckInFormState loadedForm) {
     if (_form != null) {
       return;
     }
-    _form = loadedForm;
+    _initialForm = loadedForm.copyWith(
+      activityIds: List<String>.of(loadedForm.activityIds),
+    );
+    _form = _initialForm;
     _notesController.text = loadedForm.notes;
   }
 
   void _update(CheckInFormState form) {
     setState(() => _form = form);
+  }
+
+  bool _formsMatch(CheckInFormState a, CheckInFormState b) =>
+      a.id == b.id &&
+      a.entryDate == b.entryDate &&
+      a.mood == b.mood &&
+      a.energy == b.energy &&
+      a.anxiety == b.anxiety &&
+      a.focus == b.focus &&
+      a.sleepHours == b.sleepHours &&
+      a.notes == b.notes &&
+      a.createdAt == b.createdAt &&
+      a.metrics == b.metrics &&
+      _activityIdsMatch(a.activityIds, b.activityIds);
+
+  bool _activityIdsMatch(List<String> a, List<String> b) {
+    if (a.length != b.length) {
+      return false;
+    }
+    for (var i = 0; i < a.length; i += 1) {
+      if (a[i] != b[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  Future<void> _confirmDiscardChanges(Object? result) async {
+    if (_confirmingDiscard) {
+      return;
+    }
+    _confirmingDiscard = true;
+    final l10n = AppLocalizations.of(context)!;
+    final discard = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.discardChangesTitle),
+        content: Text(l10n.discardChangesMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.discardChangesConfirm),
+          ),
+        ],
+      ),
+    );
+    if (!mounted) {
+      return;
+    }
+    _confirmingDiscard = false;
+    if (discard ?? false) {
+      setState(() => _discardingChanges = true);
+      await WidgetsBinding.instance.endOfFrame;
+      if (!mounted) {
+        return;
+      }
+      if (context.canPop()) {
+        context.pop(result);
+      } else {
+        context.go('/today');
+      }
+    }
   }
 
   Future<void> _pickDate(CheckInFormState form) async {
@@ -208,7 +303,12 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
     setState(() => _saving = false);
     switch (result) {
       case SaveCheckInResult.saved:
+        setState(() => _saved = true);
         await HapticFeedback.mediumImpact();
+        if (!mounted) {
+          return;
+        }
+        await WidgetsBinding.instance.endOfFrame;
         if (!mounted) {
           return;
         }
