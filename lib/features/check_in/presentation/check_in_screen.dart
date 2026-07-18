@@ -451,6 +451,7 @@ class _ActivitiesSection extends StatelessWidget {
               children: [
                 for (final activity in activities)
                   FilterChip(
+                    tooltip: l10n.activityChipTooltip(activity.name),
                     label: Text(activity.name),
                     selected: selectedIds.contains(activity.id),
                     onSelected: (selected) {

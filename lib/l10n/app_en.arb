@@ -298,6 +298,15 @@
       }
     }
   },
+  "activityChipTooltip": "Select {activity} activity",
+  "@activityChipTooltip": {
+    "description": "Tooltip for an activity selection chip in the check-in form.",
+    "placeholders": {
+      "activity": {
+        "type": "String"
+      }
+    }
+  },
   "addActivity": "Add activity",
   "@addActivity": {
     "description": "Action chip label to add an activity."

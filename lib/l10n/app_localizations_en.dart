@@ -224,6 +224,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String activityChipTooltip(String activity) {
+    return 'Select $activity activity';
+  }
+
+  @override
   String get addActivity => 'Add activity';
 
   @override

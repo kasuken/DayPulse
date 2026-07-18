@@ -490,6 +490,12 @@ abstract class AppLocalizations {
   /// **'{hours} h'**
   String sleepHoursValue(String hours);
 
+  /// Tooltip for an activity selection chip in the check-in form.
+  ///
+  /// In en, this message translates to:
+  /// **'Select {activity} activity'**
+  String activityChipTooltip(String activity);
+
   /// Action chip label to add an activity.
   ///
   /// In en, this message translates to:
