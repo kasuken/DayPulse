@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -204,19 +205,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
       a.notes == b.notes &&
       a.createdAt == b.createdAt &&
       a.metrics == b.metrics &&
-      _activityIdsMatch(a.activityIds, b.activityIds);
-
-  bool _activityIdsMatch(List<String> a, List<String> b) {
-    if (a.length != b.length) {
-      return false;
-    }
-    for (var i = 0; i < a.length; i += 1) {
-      if (a[i] != b[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
+      listEquals(a.activityIds, b.activityIds);
 
   Future<void> _confirmDiscardChanges(Object? result) async {
     if (_confirmingDiscard) {
