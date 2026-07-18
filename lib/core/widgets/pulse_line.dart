@@ -49,6 +49,11 @@ class _PulseLinePainter extends CustomPainter {
   final double intensity;
   final Color color;
 
+  static const double _strokePadding = 2;
+  static const double _minimumBeatFraction = 0.25;
+  static const double _beatStartRatio = 0.35;
+  static const double _beatWidthRatio = 0.3;
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
@@ -60,9 +65,11 @@ class _PulseLinePainter extends CustomPainter {
 
     final midY = size.height / 2;
     // Keep a minimum visible beat so a low day still registers as alive.
-    final amplitude = (size.height / 2 - 2) * (0.25 + 0.75 * intensity);
-    final beatStart = size.width * 0.35;
-    final beatWidth = size.width * 0.3;
+    final amplitude =
+        (size.height / 2 - _strokePadding) *
+        (_minimumBeatFraction + (1 - _minimumBeatFraction) * intensity);
+    final beatStart = size.width * _beatStartRatio;
+    final beatWidth = size.width * _beatWidthRatio;
 
     final path = Path()
       ..moveTo(0, midY)

@@ -18,6 +18,9 @@ import 'mood_labels.dart';
 double _pulseIntensity(int mood) =>
     ((mood + 5) / 10).clamp(0.0, 1.0).toDouble();
 
+/// Sleep hours shown as a full bar; more than this reads as "plenty".
+const double _maxSleepHours = 12;
+
 /// Displays today's wellbeing status and entry actions.
 class TodayScreen extends ConsumerWidget {
   /// Creates the Today screen.
@@ -176,7 +179,9 @@ class _ExistingEntryCard extends StatelessWidget {
               _MetricRow(
                 label: l10n.metricSleep,
                 value: l10n.sleepHoursValue(_formatHours(entry.sleepHours!)),
-                progress: (entry.sleepHours! / 12).clamp(0.0, 1.0).toDouble(),
+                progress: (entry.sleepHours! / _maxSleepHours)
+                    .clamp(0.0, 1.0)
+                    .toDouble(),
               ),
             if (activityNames.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.md),
