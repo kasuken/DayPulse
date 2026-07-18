@@ -94,6 +94,9 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                     divisions: 10,
                     displayValue: form.anxiety.toString(),
                     helperText: l10n.anxietyLowerPreferable,
+                    lowLabel: l10n.anxietyRangeCalm,
+                    moderateLabel: l10n.anxietyRangeModerate,
+                    highLabel: l10n.anxietyRangeVeryAnxious,
                     onChanged: (value) =>
                         _update(form.copyWith(anxiety: value.round())),
                   ),

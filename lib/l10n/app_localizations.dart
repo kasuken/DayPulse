@@ -460,6 +460,24 @@ abstract class AppLocalizations {
   /// **'High'**
   String get metricHigh;
 
+  /// Low anxiety range label under the anxiety slider.
+  ///
+  /// In en, this message translates to:
+  /// **'Calm'**
+  String get anxietyRangeCalm;
+
+  /// Moderate anxiety range label under the anxiety slider.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get anxietyRangeModerate;
+
+  /// High anxiety range label under the anxiety slider.
+  ///
+  /// In en, this message translates to:
+  /// **'Very anxious'**
+  String get anxietyRangeVeryAnxious;
+
   /// Helper text for anxiety slider.
   ///
   /// In en, this message translates to:

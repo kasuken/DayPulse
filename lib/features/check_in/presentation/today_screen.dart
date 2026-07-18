@@ -131,15 +131,20 @@ class _ExistingEntryCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(AppSpacing.sm),
-                  decoration: BoxDecoration(
-                    color: scheme.secondaryContainer,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    moodEmoji(entry.mood),
-                    style: Theme.of(context).textTheme.headlineMedium,
+                Semantics(
+                  label: moodLabel(l10n, entry.mood),
+                  child: Container(
+                    padding: const EdgeInsets.all(AppSpacing.sm),
+                    decoration: BoxDecoration(
+                      color: scheme.secondaryContainer,
+                      shape: BoxShape.circle,
+                    ),
+                    child: ExcludeSemantics(
+                      child: Text(
+                        moodEmoji(entry.mood),
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),

@@ -273,6 +273,18 @@
   "@metricHigh": {
     "description": "High label under metric sliders."
   },
+  "anxietyRangeCalm": "Calm",
+  "@anxietyRangeCalm": {
+    "description": "Low anxiety range label under the anxiety slider."
+  },
+  "anxietyRangeModerate": "Moderate",
+  "@anxietyRangeModerate": {
+    "description": "Moderate anxiety range label under the anxiety slider."
+  },
+  "anxietyRangeVeryAnxious": "Very anxious",
+  "@anxietyRangeVeryAnxious": {
+    "description": "High anxiety range label under the anxiety slider."
+  },
   "anxietyLowerPreferable": "Lower is preferable.",
   "@anxietyLowerPreferable": {
     "description": "Helper text for anxiety slider."

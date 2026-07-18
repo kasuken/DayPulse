@@ -207,6 +207,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get metricHigh => 'High';
 
   @override
+  String get anxietyRangeCalm => 'Calm';
+
+  @override
+  String get anxietyRangeModerate => 'Moderate';
+
+  @override
+  String get anxietyRangeVeryAnxious => 'Very anxious';
+
+  @override
   String get anxietyLowerPreferable => 'Lower is preferable.';
 
   @override
