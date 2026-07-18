@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../app/theme/app_spacing.dart';
+import '../../../core/widgets/pulse_line.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../check_in/domain/activity.dart';
 import '../../check_in/domain/check_in.dart';
@@ -63,6 +64,8 @@ class _EmptyHistory extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const PulseLine(intensity: 0.3),
+            const SizedBox(height: AppSpacing.xl),
             Text(l10n.historyEmptyMessage, textAlign: TextAlign.center),
             const SizedBox(height: AppSpacing.lg),
             FilledButton(
@@ -111,18 +114,33 @@ class _HistoryRow extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: ListTile(
         minVerticalPadding: AppSpacing.md,
-        title: Text(DateFormat.yMMMMd(locale).format(entry.entryDate)),
+        title: Text(
+          DateFormat.yMMMMd(locale).format(entry.entryDate),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: AppSpacing.xxs),
             Text(
               '${moodEmoji(entry.mood)} ${l10n.historyMoodSigned(_signed(entry.mood))}',
             ),
-            if (metrics.isNotEmpty) Text(metrics.join(' · ')),
-            if (activityNames.isNotEmpty) Text(activityNames.join(', ')),
+            if (metrics.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.xxs),
+              Text(metrics.join(' · ')),
+            ],
+            if (activityNames.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.xxs),
+              Text(activityNames.join(', ')),
+            ],
           ],
         ),
-        trailing: const Icon(Icons.chevron_right),
+        trailing: Icon(
+          Icons.chevron_right,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
         onTap: () => context.push('/history/${entry.id}'),
       ),
     );

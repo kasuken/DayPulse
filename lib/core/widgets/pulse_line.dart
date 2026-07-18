@@ -34,7 +34,7 @@ class PulseLine extends StatelessWidget {
         width: double.infinity,
         child: CustomPaint(
           painter: _PulseLinePainter(
-            intensity: intensity.clamp(0.0, 1.0),
+            intensity: intensity.clamp(0.0, 1.0).toDouble(),
             color: strokeColor,
           ),
         ),

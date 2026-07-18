@@ -4,13 +4,19 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../app/theme/app_spacing.dart';
+import '../../../app/theme/app_typography.dart';
 import '../../../core/utilities/date_utils.dart';
+import '../../../core/widgets/pulse_line.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../settings/application/settings_controller.dart';
 import '../application/today_controller.dart';
 import '../domain/activity.dart';
 import '../domain/check_in.dart';
 import 'mood_labels.dart';
+
+/// Normalizes a mood value (-5..5) to a 0..1 pulse intensity.
+double _pulseIntensity(int mood) =>
+    ((mood + 5) / 10).clamp(0.0, 1.0).toDouble();
 
 /// Displays today's wellbeing status and entry actions.
 class TodayScreen extends ConsumerWidget {
@@ -32,8 +38,10 @@ class TodayScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(AppSpacing.md),
         children: [
           Text(
-            l10n.todayFullDate(DateFormat.yMMMMEEEEd(locale).format(today)),
-            style: Theme.of(context).textTheme.titleMedium,
+            l10n
+                .todayFullDate(DateFormat.yMMMMEEEEd(locale).format(today))
+                .toUpperCase(),
+            style: AppTypography.eyebrow(context),
           ),
           const SizedBox(height: AppSpacing.lg),
           entry.when(
@@ -68,6 +76,8 @@ class _EmptyTodayCard extends StatelessWidget {
         padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
           children: [
+            const PulseLine(intensity: 0.3),
+            const SizedBox(height: AppSpacing.xl),
             Text(
               l10n.todayPrompt,
               style: Theme.of(context).textTheme.headlineSmall,
@@ -105,6 +115,7 @@ class _ExistingEntryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
     final activityNames = activities
         .where((activity) => entry.activityIds.contains(activity.id))
         .map((activity) => activity.name)
@@ -117,9 +128,16 @@ class _ExistingEntryCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(
-                  moodEmoji(entry.mood),
-                  style: Theme.of(context).textTheme.displaySmall,
+                Container(
+                  padding: const EdgeInsets.all(AppSpacing.sm),
+                  decoration: BoxDecoration(
+                    color: scheme.secondaryContainer,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    moodEmoji(entry.mood),
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
@@ -133,41 +151,49 @@ class _ExistingEntryCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.lg),
+            const SizedBox(height: AppSpacing.md),
+            PulseLine(intensity: _pulseIntensity(entry.mood)),
+            const SizedBox(height: AppSpacing.md),
             if (showEnergy && entry.energy != null)
               _MetricRow(
                 label: l10n.metricEnergy,
                 value: entry.energy.toString(),
+                progress: entry.energy! / 10,
               ),
             if (showAnxiety && entry.anxiety != null)
               _MetricRow(
                 label: l10n.metricAnxiety,
                 value: entry.anxiety.toString(),
+                progress: entry.anxiety! / 10,
               ),
             if (showFocus && entry.focus != null)
               _MetricRow(
                 label: l10n.metricFocus,
                 value: entry.focus.toString(),
+                progress: entry.focus! / 10,
               ),
             if (showSleep && entry.sleepHours != null)
               _MetricRow(
                 label: l10n.metricSleep,
                 value: l10n.sleepHoursValue(_formatHours(entry.sleepHours!)),
+                progress: (entry.sleepHours! / 12).clamp(0.0, 1.0).toDouble(),
               ),
             if (activityNames.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.md),
               Text(
-                l10n.activitiesLabel,
-                style: Theme.of(context).textTheme.titleMedium,
+                l10n.activitiesLabel.toUpperCase(),
+                style: AppTypography.eyebrow(context),
               ),
+              const SizedBox(height: AppSpacing.xxs),
               Text(activityNames.join(', ')),
             ],
             if ((entry.notes ?? '').isNotEmpty) ...[
               const SizedBox(height: AppSpacing.md),
               Text(
-                l10n.notesPreviewLabel,
-                style: Theme.of(context).textTheme.titleMedium,
+                l10n.notesPreviewLabel.toUpperCase(),
+                style: AppTypography.eyebrow(context),
               ),
+              const SizedBox(height: AppSpacing.xxs),
               Text(entry.notes!, maxLines: 1, overflow: TextOverflow.ellipsis),
             ],
             const SizedBox(height: AppSpacing.lg),
@@ -191,19 +217,38 @@ class _ExistingEntryCard extends StatelessWidget {
 }
 
 class _MetricRow extends StatelessWidget {
-  const _MetricRow({required this.label, required this.value});
+  const _MetricRow({
+    required this.label,
+    required this.value,
+    required this.progress,
+  });
 
   final String label;
   final String value;
+  final double progress;
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.xs),
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: Row(
         children: [
           Expanded(child: Text(label)),
-          Text(value, style: Theme.of(context).textTheme.titleMedium),
+          SizedBox(
+            width: 88,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(2),
+              child: LinearProgressIndicator(
+                value: progress.clamp(0.0, 1.0).toDouble(),
+                minHeight: 4,
+                backgroundColor: scheme.surfaceContainerHighest,
+                color: scheme.primary,
+              ),
+            ),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Text(value, style: AppTypography.metricValue(context)),
         ],
       ),
     );
