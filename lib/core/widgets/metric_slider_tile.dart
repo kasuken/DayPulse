@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../app/theme/app_spacing.dart';
+import '../../app/theme/app_typography.dart';
 import '../../l10n/app_localizations.dart';
 
 /// Reusable labeled slider tile for wellbeing metrics.
@@ -67,9 +68,23 @@ class MetricSliderTile extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                Text(
-                  displayValue,
-                  style: Theme.of(context).textTheme.titleMedium,
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.sm,
+                    vertical: AppSpacing.xxs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    borderRadius: BorderRadius.circular(AppRadius.small),
+                  ),
+                  child: Text(
+                    displayValue,
+                    style: AppTypography.metricValue(context)?.copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSecondaryContainer,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -91,9 +106,12 @@ class MetricSliderTile extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(l10n.metricLow),
-                  Text(l10n.metricModerate),
-                  Text(l10n.metricHigh),
+                  Text(l10n.metricLow, style: AppTypography.eyebrow(context)),
+                  Text(
+                    l10n.metricModerate,
+                    style: AppTypography.eyebrow(context),
+                  ),
+                  Text(l10n.metricHigh, style: AppTypography.eyebrow(context)),
                 ],
               ),
           ],
