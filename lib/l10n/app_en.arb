@@ -1,0 +1,608 @@
+{
+  "@@locale": "en",
+  "appTitle": "DayPulse",
+  "@appTitle": {
+    "description": "The application name shown in the app switcher."
+  },
+  "todayTabLabel": "Today",
+  "@todayTabLabel": {
+    "description": "Bottom navigation label for today's check-in."
+  },
+  "historyTabLabel": "History",
+  "@historyTabLabel": {
+    "description": "Bottom navigation label for history."
+  },
+  "insightsTabLabel": "Insights",
+  "@insightsTabLabel": {
+    "description": "Bottom navigation label for insights."
+  },
+  "settingsTabLabel": "Settings",
+  "@settingsTabLabel": {
+    "description": "Bottom navigation label for settings."
+  },
+  "comingSoon": "Coming soon",
+  "@comingSoon": {
+    "description": "Placeholder text for screens implemented later."
+  },
+  "entryDetailsTitle": "Entry details",
+  "@entryDetailsTitle": {
+    "description": "Title for a check-in detail screen."
+  },
+  "appearanceSettingsTitle": "Appearance",
+  "@appearanceSettingsTitle": {
+    "description": "Title for appearance settings."
+  },
+  "reminderSettingsTitle": "Reminders",
+  "@reminderSettingsTitle": {
+    "description": "Title for reminder settings."
+  },
+  "privacySettingsTitle": "Privacy",
+  "@privacySettingsTitle": {
+    "description": "Title for privacy settings."
+  },
+  "activityManagementTitle": "Activities",
+  "@activityManagementTitle": {
+    "description": "Title for activity management settings."
+  },
+  "onboardingBack": "Back",
+  "@onboardingBack": {
+    "description": "Button label to go back in onboarding."
+  },
+  "onboardingContinue": "Continue",
+  "@onboardingContinue": {
+    "description": "Button label to continue onboarding."
+  },
+  "onboardingProgress": "Step {step} of {total}",
+  "@onboardingProgress": {
+    "description": "Accessible onboarding step progress.",
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingWelcomeTitle": "Welcome to DayPulse",
+  "@onboardingWelcomeTitle": {
+    "description": "Onboarding welcome title."
+  },
+  "onboardingWelcomeTagline": "Track your daily wellbeing in seconds and understand how it changes over time.",
+  "@onboardingWelcomeTagline": {
+    "description": "Onboarding welcome tagline."
+  },
+  "onboardingPrivacyTitle": "Private by design",
+  "@onboardingPrivacyTitle": {
+    "description": "Onboarding privacy step title."
+  },
+  "onboardingPrivacyLocal": "Your data is stored locally on this device.",
+  "@onboardingPrivacyLocal": {
+    "description": "Privacy onboarding bullet about local storage."
+  },
+  "onboardingPrivacyNoAccount": "No account is required.",
+  "@onboardingPrivacyNoAccount": {
+    "description": "Privacy onboarding bullet about accounts."
+  },
+  "onboardingPrivacyNoUpload": "No wellbeing data is uploaded.",
+  "@onboardingPrivacyNoUpload": {
+    "description": "Privacy onboarding bullet about uploads."
+  },
+  "onboardingPrivacyDelete": "You can delete your data anytime.",
+  "@onboardingPrivacyDelete": {
+    "description": "Privacy onboarding bullet about deletion."
+  },
+  "onboardingMetricsTitle": "Choose your daily metrics",
+  "@onboardingMetricsTitle": {
+    "description": "Onboarding metrics step title."
+  },
+  "onboardingMoodAlwaysOn": "Mood is always included so every entry has a simple daily signal.",
+  "@onboardingMoodAlwaysOn": {
+    "description": "Explanation that mood cannot be disabled."
+  },
+  "metricMood": "Mood",
+  "@metricMood": {
+    "description": "Metric label for mood."
+  },
+  "metricEnergy": "Energy",
+  "@metricEnergy": {
+    "description": "Metric label for energy."
+  },
+  "metricAnxiety": "Anxiety",
+  "@metricAnxiety": {
+    "description": "Metric label for anxiety."
+  },
+  "metricFocus": "Focus",
+  "@metricFocus": {
+    "description": "Metric label for focus."
+  },
+  "metricSleep": "Sleep",
+  "@metricSleep": {
+    "description": "Metric label for sleep."
+  },
+  "onboardingReminderTitle": "Set a gentle reminder",
+  "@onboardingReminderTitle": {
+    "description": "Onboarding reminder step title."
+  },
+  "onboardingReminderDescription": "Choose whether DayPulse should remind you once a day.",
+  "@onboardingReminderDescription": {
+    "description": "Onboarding reminder explanation."
+  },
+  "reminderSwitchLabel": "Daily reminder",
+  "@reminderSwitchLabel": {
+    "description": "Switch label for daily reminder."
+  },
+  "reminderTimeLabel": "Reminder time",
+  "@reminderTimeLabel": {
+    "description": "Label for reminder time picker."
+  },
+  "changeReminderTime": "Change reminder time",
+  "@changeReminderTime": {
+    "description": "Button label for changing reminder time."
+  },
+  "notificationPermissionDenied": "Notifications are off for now. You can still use DayPulse and turn reminders on later in settings.",
+  "@notificationPermissionDenied": {
+    "description": "Message shown after notification permission is denied."
+  },
+  "onboardingFinishTitle": "You're ready",
+  "@onboardingFinishTitle": {
+    "description": "Onboarding finish title."
+  },
+  "onboardingFinishDescription": "Your choices are saved on this device. Start with today's check-in whenever you're ready.",
+  "@onboardingFinishDescription": {
+    "description": "Onboarding finish description."
+  },
+  "startTracking": "Start tracking",
+  "@startTracking": {
+    "description": "Primary button at the end of onboarding."
+  },
+  "dailyReminderTitle": "Daily check-in",
+  "@dailyReminderTitle": {
+    "description": "Local notification title for daily reminders."
+  },
+  "dailyReminderBody": "Take a moment to record how your day is going.",
+  "@dailyReminderBody": {
+    "description": "Local notification body for daily reminders."
+  },
+  "todayTitle": "Today",
+  "@todayTitle": {
+    "description": "Today screen title."
+  },
+  "todayFullDate": "{date}",
+  "@todayFullDate": {
+    "description": "Formatted full date on the Today screen.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "todayPrompt": "How are you feeling today?",
+  "@todayPrompt": {
+    "description": "Prompt shown when no check-in exists today."
+  },
+  "startCheckIn": "Start check-in",
+  "@startCheckIn": {
+    "description": "Button to start a check-in."
+  },
+  "editCheckIn": "Edit check-in",
+  "@editCheckIn": {
+    "description": "Button to edit an existing check-in."
+  },
+  "viewDetails": "View details",
+  "@viewDetails": {
+    "description": "Button to view check-in details."
+  },
+  "notesPreviewLabel": "Notes",
+  "@notesPreviewLabel": {
+    "description": "Label for notes preview."
+  },
+  "activitiesLabel": "Activities",
+  "@activitiesLabel": {
+    "description": "Label for selected activities."
+  },
+  "checkInTitleCreate": "Check-in",
+  "@checkInTitleCreate": {
+    "description": "Title for creating a check-in."
+  },
+  "checkInTitleEdit": "Edit check-in",
+  "@checkInTitleEdit": {
+    "description": "Title for editing a check-in."
+  },
+  "entryDateLabel": "Entry date",
+  "@entryDateLabel": {
+    "description": "Label for check-in entry date."
+  },
+  "changeDate": "Change date",
+  "@changeDate": {
+    "description": "Button label to change the entry date."
+  },
+  "moodVeryLow": "Very low",
+  "@moodVeryLow": {
+    "description": "Mood label for very low values."
+  },
+  "moodLow": "Low",
+  "@moodLow": {
+    "description": "Mood label for low values."
+  },
+  "moodNeutral": "Neutral",
+  "@moodNeutral": {
+    "description": "Mood label for neutral values."
+  },
+  "moodGood": "Good",
+  "@moodGood": {
+    "description": "Mood label for good values."
+  },
+  "moodGreat": "Great",
+  "@moodGreat": {
+    "description": "Mood label for great values."
+  },
+  "moodValueLabel": "Mood {value}: {label}",
+  "@moodValueLabel": {
+    "description": "Accessible mood value label.",
+    "placeholders": {
+      "value": {
+        "type": "int"
+      },
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "metricValueLabel": "{metric}: {value}",
+  "@metricValueLabel": {
+    "description": "Accessible metric value label.",
+    "placeholders": {
+      "metric": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "metricLow": "Low",
+  "@metricLow": {
+    "description": "Low label under metric sliders."
+  },
+  "metricModerate": "Moderate",
+  "@metricModerate": {
+    "description": "Moderate label under metric sliders."
+  },
+  "metricHigh": "High",
+  "@metricHigh": {
+    "description": "High label under metric sliders."
+  },
+  "anxietyLowerPreferable": "Lower is preferable.",
+  "@anxietyLowerPreferable": {
+    "description": "Helper text for anxiety slider."
+  },
+  "sleepHoursValue": "{hours} h",
+  "@sleepHoursValue": {
+    "description": "Sleep duration value in hours.",
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "addActivity": "Add activity",
+  "@addActivity": {
+    "description": "Action chip label to add an activity."
+  },
+  "newActivityTitle": "Add activity",
+  "@newActivityTitle": {
+    "description": "Dialog title for adding an activity."
+  },
+  "activityNameLabel": "Activity name",
+  "@activityNameLabel": {
+    "description": "Text field label for a custom activity name."
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Generic cancel button."
+  },
+  "add": "Add",
+  "@add": {
+    "description": "Generic add button."
+  },
+  "notesLabel": "Notes",
+  "@notesLabel": {
+    "description": "Text field label for notes."
+  },
+  "notesHint": "Anything you'd like to remember?",
+  "@notesHint": {
+    "description": "Text field hint for notes."
+  },
+  "saveCheckIn": "Save check-in",
+  "@saveCheckIn": {
+    "description": "Button label to save check-in."
+  },
+  "savingCheckIn": "Saving…",
+  "@savingCheckIn": {
+    "description": "Label shown while saving check-in."
+  },
+  "checkInInvalidMessage": "Please check the highlighted values and try again.",
+  "@checkInInvalidMessage": {
+    "description": "Validation error for invalid check-in values."
+  },
+  "duplicateEntryDateMessage": "A check-in already exists for that date. Choose another date or edit the existing entry.",
+  "@duplicateEntryDateMessage": {
+    "description": "Error shown when saving to a date that already has a different entry."
+  },
+  "saveCheckInFailureMessage": "We could not save your check-in. Your changes are still on this screen. Please try again.",
+  "@saveCheckInFailureMessage": {
+    "description": "Friendly save failure message."
+  },
+  "loadCheckInFailureMessage": "We could not load this check-in. Please try again.",
+  "@loadCheckInFailureMessage": {
+    "description": "Friendly load failure message."
+  },
+  "checkInNotFoundMessage": "This check-in could not be found.",
+  "@checkInNotFoundMessage": {
+    "description": "Message shown when an edit check-in is missing."
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button label."
+  },
+  "historyEmptyMessage": "Your check-ins will appear here.",
+  "@historyEmptyMessage": {
+    "description": "Empty state message for the history screen."
+  },
+  "createFirstCheckIn": "Create first check-in",
+  "@createFirstCheckIn": {
+    "description": "Button to create the first check-in from history."
+  },
+  "historyMoodSigned": "Mood {value}",
+  "@historyMoodSigned": {
+    "description": "History row mood value with sign.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "metricShortValue": "{metric} {value}",
+  "@metricShortValue": {
+    "description": "Compact metric and value label.",
+    "placeholders": {
+      "metric": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "createdAtLabel": "Created",
+  "@createdAtLabel": {
+    "description": "Label for a created timestamp."
+  },
+  "updatedAtLabel": "Last updated",
+  "@updatedAtLabel": {
+    "description": "Label for an updated timestamp."
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Generic delete button."
+  },
+  "deleteCheckInTitle": "Delete this check-in?",
+  "@deleteCheckInTitle": {
+    "description": "Check-in deletion confirmation title."
+  },
+  "deleteCheckInMessage": "This action cannot be undone.",
+  "@deleteCheckInMessage": {
+    "description": "Check-in deletion confirmation body."
+  },
+  "noActivities": "No activities",
+  "@noActivities": {
+    "description": "Message when an entry has no visible activities."
+  },
+  "noNotes": "No notes",
+  "@noNotes": {
+    "description": "Message when an entry has no notes."
+  },
+  "insightsPeriod7Days": "7 days",
+  "@insightsPeriod7Days": {
+    "description": "Insights period filter label for seven days."
+  },
+  "insightsPeriod30Days": "30 days",
+  "@insightsPeriod30Days": {
+    "description": "Insights period filter label for thirty days."
+  },
+  "insightsPeriod90Days": "90 days",
+  "@insightsPeriod90Days": {
+    "description": "Insights period filter label for ninety days."
+  },
+  "averageMetricTitle": "Average {metric}",
+  "@averageMetricTitle": {
+    "description": "Title for an average metric summary card.",
+    "placeholders": {
+      "metric": {
+        "type": "String"
+      }
+    }
+  },
+  "entriesThisMonth": "Entries this month",
+  "@entriesThisMonth": {
+    "description": "Summary card title for entries in the current month."
+  },
+  "currentStreak": "Current streak",
+  "@currentStreak": {
+    "description": "Summary card title for current streak."
+  },
+  "longestStreak": "Longest streak",
+  "@longestStreak": {
+    "description": "Summary card title for longest streak."
+  },
+  "bestMoodDay": "Best mood day",
+  "@bestMoodDay": {
+    "description": "Summary card title for best mood day."
+  },
+  "lowestMoodDay": "Lowest mood day",
+  "@lowestMoodDay": {
+    "description": "Summary card title for lowest mood day."
+  },
+  "daysCount": "{count, plural, =0{0 days} =1{1 day} other{{count} days}}",
+  "@daysCount": {
+    "description": "Number of days.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "entriesCount": "{count, plural, =0{0 entries} =1{1 entry} other{{count} entries}}",
+  "@entriesCount": {
+    "description": "Number of check-in entries.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "trendChartTitle": "{metric} trend",
+  "@trendChartTitle": {
+    "description": "Trend chart title for a metric.",
+    "placeholders": {
+      "metric": {
+        "type": "String"
+      }
+    }
+  },
+  "trendChartSemantics": "Line chart showing {metric} over the selected period.",
+  "@trendChartSemantics": {
+    "description": "Accessibility label for trend charts.",
+    "placeholders": {
+      "metric": {
+        "type": "String"
+      }
+    }
+  },
+  "insufficientTrendData": "Add at least two check-ins with this metric to see a trend.",
+  "@insufficientTrendData": {
+    "description": "Empty state for trend charts with fewer than two points."
+  },
+  "settingsMetricsTitle": "Metrics",
+  "@settingsMetricsTitle": {
+    "description": "Settings section title for metric switches."
+  },
+  "settingsMoodAlwaysOn": "Mood is always on.",
+  "@settingsMoodAlwaysOn": {
+    "description": "Settings helper text that mood cannot be disabled."
+  },
+  "settingsAboutTitle": "About",
+  "@settingsAboutTitle": {
+    "description": "Settings section title for app information."
+  },
+  "appearanceSystem": "System",
+  "@appearanceSystem": {
+    "description": "Theme setting option for system theme."
+  },
+  "appearanceLight": "Light",
+  "@appearanceLight": {
+    "description": "Theme setting option for light theme."
+  },
+  "appearanceDark": "Dark",
+  "@appearanceDark": {
+    "description": "Theme setting option for dark theme."
+  },
+  "notificationPermissionSettingsHint": "Notifications are disabled. Enable them in system settings to use daily reminders.",
+  "@notificationPermissionSettingsHint": {
+    "description": "Reminder settings message when permission is denied."
+  },
+  "activityDefaultLocked": "Built-in activity",
+  "@activityDefaultLocked": {
+    "description": "Subtitle for a locked default activity."
+  },
+  "rename": "Rename",
+  "@rename": {
+    "description": "Generic rename action."
+  },
+  "renameActivityTitle": "Rename activity",
+  "@renameActivityTitle": {
+    "description": "Dialog title for renaming an activity."
+  },
+  "disableActivityTitle": "Disable activity?",
+  "@disableActivityTitle": {
+    "description": "Dialog title for disabling an activity."
+  },
+  "disableActivityMessage": "Past check-ins keep this activity, but it will no longer appear for new entries.",
+  "@disableActivityMessage": {
+    "description": "Confirmation message for activity soft deletion."
+  },
+  "disable": "Disable",
+  "@disable": {
+    "description": "Generic disable action."
+  },
+  "privacyLocalStorageSummary": "DayPulse stores your check-ins, activities, reminders, and preferences locally on this device. No account is required and wellbeing data is not uploaded.",
+  "@privacyLocalStorageSummary": {
+    "description": "Privacy summary explaining local-only storage."
+  },
+  "exportData": "Export data",
+  "@exportData": {
+    "description": "Privacy action label for data export."
+  },
+  "planned": "Planned",
+  "@planned": {
+    "description": "Badge for planned functionality."
+  },
+  "exportDataPlannedSubtitle": "CSV export is planned for a future update.",
+  "@exportDataPlannedSubtitle": {
+    "description": "Subtitle for disabled export tile."
+  },
+  "deleteAllData": "Delete all data",
+  "@deleteAllData": {
+    "description": "Privacy action label for deleting all data."
+  },
+  "deleteAllDataTitle": "Delete all data?",
+  "@deleteAllDataTitle": {
+    "description": "Title for delete all data confirmation."
+  },
+  "deleteAllDataMessage": "Delete all DayPulse data from this device? This removes every check-in, activity, and preference. This action cannot be undone.",
+  "@deleteAllDataMessage": {
+    "description": "Exact confirmation message for deleting all data."
+  },
+  "aboutVersion": "Version {version} ({buildNumber})",
+  "@aboutVersion": {
+    "description": "About version and build number.",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "buildNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "privacyBlurb": "Privacy-first wellbeing tracking for your device.",
+  "@privacyBlurb": {
+    "description": "Short about privacy blurb."
+  },
+  "openSourceLicences": "Open-source licences",
+  "@openSourceLicences": {
+    "description": "Tile label for showing open-source licences."
+  },
+  "aboutDialogTitle": "About DayPulse",
+  "@aboutDialogTitle": {
+    "description": "About dialog title."
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Generic close button."
+  },
+  "notAvailable": "Not available",
+  "@notAvailable": {
+    "description": "Generic unavailable value label."
+  },
+  "sleepHoursShort": "{hours} h",
+  "@sleepHoursShort": {
+    "description": "Short sleep duration value in hours.",
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  }
+}
