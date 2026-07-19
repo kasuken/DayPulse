@@ -273,6 +273,18 @@
   "@metricHigh": {
     "description": "High label under metric sliders."
   },
+  "anxietyRangeCalm": "Calm",
+  "@anxietyRangeCalm": {
+    "description": "Low anxiety range label under the anxiety slider."
+  },
+  "anxietyRangeModerate": "Moderate",
+  "@anxietyRangeModerate": {
+    "description": "Moderate anxiety range label under the anxiety slider."
+  },
+  "anxietyRangeVeryAnxious": "Very anxious",
+  "@anxietyRangeVeryAnxious": {
+    "description": "High anxiety range label under the anxiety slider."
+  },
   "anxietyLowerPreferable": "Lower is preferable.",
   "@anxietyLowerPreferable": {
     "description": "Helper text for anxiety slider."
@@ -282,6 +294,15 @@
     "description": "Sleep duration value in hours.",
     "placeholders": {
       "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "activityChipTooltip": "Select {activity} activity",
+  "@activityChipTooltip": {
+    "description": "Tooltip for an activity selection chip in the check-in form.",
+    "placeholders": {
+      "activity": {
         "type": "String"
       }
     }
@@ -301,6 +322,18 @@
   "cancel": "Cancel",
   "@cancel": {
     "description": "Generic cancel button."
+  },
+  "discardChangesTitle": "Discard changes?",
+  "@discardChangesTitle": {
+    "description": "Title for the confirmation dialog shown when leaving a check-in with unsaved edits."
+  },
+  "discardChangesMessage": "Your edits to this check-in will be lost.",
+  "@discardChangesMessage": {
+    "description": "Message for the confirmation dialog shown when leaving a check-in with unsaved edits."
+  },
+  "discardChangesConfirm": "Discard",
+  "@discardChangesConfirm": {
+    "description": "Button label that confirms discarding unsaved check-in edits."
   },
   "add": "Add",
   "@add": {
@@ -511,6 +544,10 @@
   "notificationPermissionSettingsHint": "Notifications are disabled. Enable them in system settings to use daily reminders.",
   "@notificationPermissionSettingsHint": {
     "description": "Reminder settings message when permission is denied."
+  },
+  "reminderScheduleFailed": "Couldn't schedule the reminder. Please try again.",
+  "@reminderScheduleFailed": {
+    "description": "Reminder settings message shown when scheduling the daily notification fails."
   },
   "activityDefaultLocked": "Built-in activity",
   "@activityDefaultLocked": {

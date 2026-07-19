@@ -460,6 +460,24 @@ abstract class AppLocalizations {
   /// **'High'**
   String get metricHigh;
 
+  /// Low anxiety range label under the anxiety slider.
+  ///
+  /// In en, this message translates to:
+  /// **'Calm'**
+  String get anxietyRangeCalm;
+
+  /// Moderate anxiety range label under the anxiety slider.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get anxietyRangeModerate;
+
+  /// High anxiety range label under the anxiety slider.
+  ///
+  /// In en, this message translates to:
+  /// **'Very anxious'**
+  String get anxietyRangeVeryAnxious;
+
   /// Helper text for anxiety slider.
   ///
   /// In en, this message translates to:
@@ -471,6 +489,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{hours} h'**
   String sleepHoursValue(String hours);
+
+  /// Tooltip for an activity selection chip in the check-in form.
+  ///
+  /// In en, this message translates to:
+  /// **'Select {activity} activity'**
+  String activityChipTooltip(String activity);
 
   /// Action chip label to add an activity.
   ///
@@ -495,6 +519,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// Title for the confirmation dialog shown when leaving a check-in with unsaved edits.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes?'**
+  String get discardChangesTitle;
+
+  /// Message for the confirmation dialog shown when leaving a check-in with unsaved edits.
+  ///
+  /// In en, this message translates to:
+  /// **'Your edits to this check-in will be lost.'**
+  String get discardChangesMessage;
+
+  /// Button label that confirms discarding unsaved check-in edits.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get discardChangesConfirm;
 
   /// Generic add button.
   ///
@@ -753,6 +795,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications are disabled. Enable them in system settings to use daily reminders.'**
   String get notificationPermissionSettingsHint;
+
+  /// Reminder settings message shown when scheduling the daily notification fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t schedule the reminder. Please try again.'**
+  String get reminderScheduleFailed;
 
   /// Subtitle for a locked default activity.
   ///

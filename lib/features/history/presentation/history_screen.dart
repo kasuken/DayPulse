@@ -129,11 +129,19 @@ class _HistoryRow extends StatelessWidget {
             ),
             if (metrics.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.xxs),
-              Text(metrics.join(' · ')),
+              Text(
+                metrics.join(' · '),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ],
             if (activityNames.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.xxs),
-              Text(activityNames.join(', ')),
+              Text(
+                activityNames.join(', '),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ],
           ],
         ),

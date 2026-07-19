@@ -19,17 +19,15 @@ class ActivityManagementScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.activityManagementTitle),
-        actions: [
-          IconButton(
-            tooltip: l10n.addActivity,
-            icon: const Icon(Icons.add),
-            onPressed: () => _addActivity(context, ref, l10n),
-          ),
-        ],
       ),
       body: activities.when(
         data: (items) => ListView.builder(
-          padding: const EdgeInsets.all(AppSpacing.md),
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.md,
+            AppSpacing.md,
+            AppSpacing.md,
+            AppSpacing.huge + AppSpacing.xxxl,
+          ),
           itemCount: items.length,
           itemBuilder: (context, index) =>
               _ActivityTile(activity: items[index]),
@@ -176,6 +174,10 @@ class _ActivityTile extends ConsumerWidget {
             child: Text(l10n.cancel),
           ),
           FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              foregroundColor: Theme.of(context).colorScheme.onError,
+            ),
             onPressed: () => Navigator.of(context).pop(true),
             child: Text(l10n.disable),
           ),

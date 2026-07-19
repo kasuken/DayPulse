@@ -18,6 +18,9 @@ class MetricSliderTile extends StatelessWidget {
     this.semanticValue,
     this.helperText,
     this.showRangeLabels = true,
+    this.lowLabel,
+    this.moderateLabel,
+    this.highLabel,
     super.key,
   });
 
@@ -48,12 +51,24 @@ class MetricSliderTile extends StatelessWidget {
   /// Whether to show low/moderate/high range labels.
   final bool showRangeLabels;
 
+  /// Optional low range label.
+  final String? lowLabel;
+
+  /// Optional moderate range label.
+  final String? moderateLabel;
+
+  /// Optional high range label.
+  final String? highLabel;
+
   /// Called when the slider changes.
   final ValueChanged<double> onChanged;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final effectiveLowLabel = lowLabel ?? l10n.metricLow;
+    final effectiveModerateLabel = moderateLabel ?? l10n.metricModerate;
+    final effectiveHighLabel = highLabel ?? l10n.metricHigh;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -106,12 +121,18 @@ class MetricSliderTile extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(l10n.metricLow, style: AppTypography.eyebrow(context)),
                   Text(
-                    l10n.metricModerate,
+                    effectiveLowLabel,
                     style: AppTypography.eyebrow(context),
                   ),
-                  Text(l10n.metricHigh, style: AppTypography.eyebrow(context)),
+                  Text(
+                    effectiveModerateLabel,
+                    style: AppTypography.eyebrow(context),
+                  ),
+                  Text(
+                    effectiveHighLabel,
+                    style: AppTypography.eyebrow(context),
+                  ),
                 ],
               ),
           ],

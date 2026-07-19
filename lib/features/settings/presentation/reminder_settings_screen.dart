@@ -74,11 +74,23 @@ class ReminderSettingsScreen extends ConsumerWidget {
     }
     final updated = reminder.copyWith(enabled: true);
     await ref.read(settingsControllerProvider.notifier).updateReminder(updated);
-    await service.scheduleDailyReminder(
-      TimeOfDay(hour: updated.hour, minute: updated.minute),
-      title: l10n.dailyReminderTitle,
-      body: l10n.dailyReminderBody,
-    );
+    try {
+      await service.scheduleDailyReminder(
+        TimeOfDay(hour: updated.hour, minute: updated.minute),
+        title: l10n.dailyReminderTitle,
+        body: l10n.dailyReminderBody,
+      );
+    } catch (_) {
+      await ref
+          .read(settingsControllerProvider.notifier)
+          .updateReminder(reminder.copyWith(enabled: false));
+      if (!context.mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.reminderScheduleFailed)),
+      );
+    }
   }
 
   Future<void> _pickTime(
@@ -97,13 +109,25 @@ class ReminderSettingsScreen extends ConsumerWidget {
     final updated = reminder.copyWith(hour: picked.hour, minute: picked.minute);
     await ref.read(settingsControllerProvider.notifier).updateReminder(updated);
     if (updated.enabled) {
-      await ref
-          .read(reminderServiceProvider)
-          .scheduleDailyReminder(
-            picked,
-            title: l10n.dailyReminderTitle,
-            body: l10n.dailyReminderBody,
-          );
+      try {
+        await ref
+            .read(reminderServiceProvider)
+            .scheduleDailyReminder(
+              picked,
+              title: l10n.dailyReminderTitle,
+              body: l10n.dailyReminderBody,
+            );
+      } catch (_) {
+        await ref
+            .read(settingsControllerProvider.notifier)
+            .updateReminder(reminder);
+        if (!context.mounted) {
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.reminderScheduleFailed)),
+        );
+      }
     }
   }
 }

@@ -207,11 +207,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get metricHigh => 'High';
 
   @override
+  String get anxietyRangeCalm => 'Calm';
+
+  @override
+  String get anxietyRangeModerate => 'Moderate';
+
+  @override
+  String get anxietyRangeVeryAnxious => 'Very anxious';
+
+  @override
   String get anxietyLowerPreferable => 'Lower is preferable.';
 
   @override
   String sleepHoursValue(String hours) {
     return '$hours h';
+  }
+
+  @override
+  String activityChipTooltip(String activity) {
+    return 'Select $activity activity';
   }
 
   @override
@@ -225,6 +239,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get discardChangesTitle => 'Discard changes?';
+
+  @override
+  String get discardChangesMessage =>
+      'Your edits to this check-in will be lost.';
+
+  @override
+  String get discardChangesConfirm => 'Discard';
 
   @override
   String get add => 'Add';
@@ -388,6 +412,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notificationPermissionSettingsHint =>
       'Notifications are disabled. Enable them in system settings to use daily reminders.';
+
+  @override
+  String get reminderScheduleFailed =>
+      'Couldn\'t schedule the reminder. Please try again.';
 
   @override
   String get activityDefaultLocked => 'Built-in activity';

@@ -185,7 +185,7 @@ class _TrendCard extends StatelessWidget {
             Text(title, style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: AppSpacing.md),
             if (valuedPoints.length < 2)
-              Text(l10n.insufficientTrendData)
+              _TrendEmptyState(message: l10n.insufficientTrendData)
             else
               Semantics(
                 label: semanticsLabel,
@@ -288,6 +288,43 @@ class _TrendCard extends StatelessWidget {
 
   double _interval(WellbeingMetric metric) =>
       metric == WellbeingMetric.sleep ? 5 : 2.5;
+}
+
+class _TrendEmptyState extends StatelessWidget {
+  const _TrendEmptyState({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return SizedBox(
+      height: 220,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.xl),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.show_chart_outlined,
+                color: colorScheme.onSurfaceVariant,
+                size: AppSpacing.xxl,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                message,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 List<WellbeingMetric> _enabledMetrics(InsightsSnapshot snapshot) => [
