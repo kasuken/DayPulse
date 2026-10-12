@@ -1,4 +1,6 @@
 using Bunit;
+using DayPulse.App.Shared;
+using DayPulse.Infrastructure;
 using Bunit.TestDoubles;
 using DayPulse.App.Layout;
 using Microsoft.AspNetCore.Components;
@@ -12,7 +14,20 @@ public sealed class MainLayoutTests : BunitContext
     public MainLayoutTests()
     {
         Services.AddMudServices();
+        Services.AddInfrastructure();
+        Services.AddScoped<ThemeState>();
         JSInterop.Mode = JSRuntimeMode.Loose;
+
+        var themeModule = JSInterop.SetupModule("./Shared/ThemeProvider.razor.js");
+        themeModule
+            .Setup<bool>("initialize", _ => true)
+            .SetResult(false);
+        themeModule
+            .Setup<bool>("setMode", _ => true)
+            .SetResult(false);
+        themeModule
+            .SetupVoid("dispose", _ => true)
+            .SetVoidResult();
     }
 
     [Fact]

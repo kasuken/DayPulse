@@ -68,7 +68,7 @@ internal static class RepositoryJson
         return JsonSerializer.Serialize(value, SerializerOptions);
     }
 
-    private static T Deserialize<T>(string json, string key)
+    internal static T Deserialize<T>(string json, string key)
     {
         try
         {

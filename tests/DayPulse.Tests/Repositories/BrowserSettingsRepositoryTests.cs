@@ -74,4 +74,38 @@ public sealed class BrowserSettingsRepositoryTests
         Assert.True(loaded.OnboardingCompleted);
         Assert.Equal(ThemeMode.Dark, loaded.ThemeMode);
     }
+
+    [Fact]
+    public async Task Update_Rereads_and_merges_after_a_conflict()
+    {
+        var cancellationToken = TestContext.Current.CancellationToken;
+        var storage = new InMemoryClientStorage();
+        var repository = new BrowserSettingsRepository(storage);
+        var initialSettings = new AppSettings(
+            onboardingCompleted: false,
+            themeMode: ThemeMode.System,
+            reminderEnabled: false,
+            reminderTime: new TimeOnly(20, 0));
+        var competingSettings = new AppSettings(
+            onboardingCompleted: true,
+            themeMode: ThemeMode.Light,
+            reminderEnabled: true,
+            reminderTime: new TimeOnly(7, 30));
+
+        await repository.SaveAsync(initialSettings, cancellationToken);
+        storage.InjectedConditionalWriteKey = "daypulse.settings";
+        storage.InjectedConditionalWriteValue = JsonSerializer.Serialize(
+            competingSettings,
+            new JsonSerializerOptions(JsonSerializerDefaults.Web));
+
+        await repository.UpdateAsync(
+            settings => settings.WithThemeMode(ThemeMode.Dark),
+            cancellationToken);
+
+        var loaded = await repository.LoadAsync(cancellationToken);
+        Assert.True(loaded.OnboardingCompleted);
+        Assert.Equal(ThemeMode.Dark, loaded.ThemeMode);
+        Assert.True(loaded.ReminderEnabled);
+        Assert.Equal(new TimeOnly(7, 30), loaded.ReminderTime);
+    }
 }

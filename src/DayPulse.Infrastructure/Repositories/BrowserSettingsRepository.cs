@@ -78,6 +78,51 @@ public sealed class BrowserSettingsRepository : ISettingsRepository
     }
 
     /// <inheritdoc />
+    public async Task<AppSettings> UpdateAsync(
+        Func<AppSettings, AppSettings> update,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(update);
+
+        await StorageGate.WaitAsync(cancellationToken);
+        try
+        {
+            for (var attempt = 1; attempt <= RepositoryJson.MaxMutationAttempts; attempt++)
+            {
+                var currentRaw = await _storage.GetAsync(
+                    RepositoryStorageKeys.Settings,
+                    cancellationToken);
+                var currentSettings = currentRaw is null
+                    ? new AppSettings()
+                    : RepositoryJson.Deserialize<AppSettingsStorageModel>(
+                        currentRaw,
+                        RepositoryStorageKeys.Settings).ToDomain();
+                var updatedSettings = update(currentSettings)
+                    ?? throw new InvalidOperationException(
+                        "The settings update function returned null.");
+
+                if (await RepositoryJson.TryWriteAsync(
+                        _storage,
+                        RepositoryStorageKeys.Settings,
+                        currentRaw,
+                        AppSettingsStorageModel.FromDomain(updatedSettings),
+                        cancellationToken))
+                {
+                    return updatedSettings;
+                }
+            }
+
+            throw new RepositoryConcurrencyException(
+                RepositoryStorageKeys.Settings,
+                RepositoryJson.MaxMutationAttempts);
+        }
+        finally
+        {
+            StorageGate.Release();
+        }
+    }
+
+    /// <inheritdoc />
     public async Task ResetAsync(CancellationToken cancellationToken = default)
     {
         await StorageGate.WaitAsync(cancellationToken);

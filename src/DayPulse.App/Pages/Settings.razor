@@ -1,4 +1,8 @@
 @page "/settings"
+@implements IAsyncDisposable
+
+@inject ILogger<Settings> Logger
+@inject ThemeState ThemeState
 
 <PageTitle>Settings | DayPulse</PageTitle>
 
@@ -7,4 +11,410 @@
     <MudText Color="Color.Secondary">
         Your DayPulse preferences will appear here.
     </MudText>
+
+    <MudPaper Class="pa-4" Elevation="1">
+        <MudStack Spacing="2">
+            <MudText Typo="Typo.h2">Appearance</MudText>
+            <MudSelect
+                T="ThemeMode"
+                Label="Theme preference"
+                HelperText="System follows your device preference."
+                Variant="Variant.Outlined"
+                Value="@_selectedMode"
+                ValueChanged="OnThemeModeChangedAsync"
+                Disabled="@(!ThemeState.IsInitialized
+                    || !ThemeState.IsProviderInitialized
+                    || ThemeState.IsProviderInitializationFailed
+                    || _isSaving)"
+                Adornment="Adornment.Start"
+                AdornmentIcon="@Icons.Material.Filled.Brightness6"
+                data-testid="daypulse-theme-selector">
+                <MudSelectItem Value="@ThemeMode.System">System</MudSelectItem>
+                <MudSelectItem Value="@ThemeMode.Light">Light</MudSelectItem>
+                <MudSelectItem Value="@ThemeMode.Dark">Dark</MudSelectItem>
+            </MudSelect>
+
+            @if ((!ThemeState.IsInitialized || !ThemeState.IsProviderInitialized)
+                && !ThemeState.IsInitializationFailed)
+            {
+                <span role="status">
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                        Loading theme preference…
+                    </MudText>
+                </span>
+            }
+            else if (_isSaving)
+            {
+                <span role="status">
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                        Saving theme preference…
+                    </MudText>
+                </span>
+            }
+
+            @if (ThemeState.IsInitializationFailed)
+            {
+                <div role="alert">
+                    <MudAlert Severity="Severity.Error" Dense="true">
+                        @(_errorMessage ?? "The theme preference could not be loaded.")
+                        <MudButton
+                            Variant="Variant.Text"
+                            Color="Color.Error"
+                            Disabled="@_isRetrying"
+                            OnClick="RetryThemeInitializationAsync"
+                            data-testid="daypulse-theme-retry">
+                            @(_isRetrying ? "Retrying…" : "Try again")
+                        </MudButton>
+                    </MudAlert>
+                </div>
+            }
+            else if (_errorMessage is not null)
+            {
+                <div role="alert">
+                    <MudAlert Severity="Severity.Error" Dense="true">
+                        @_errorMessage
+                    </MudAlert>
+                </div>
+            }
+
+            @if (_isRetrying)
+            {
+                <span role="status">
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                        Retrying theme preference…
+                    </MudText>
+                </span>
+            }
+        </MudStack>
+    </MudPaper>
 </MudStack>
+
+@code {
+    private readonly CancellationTokenSource _componentCancellation = new();
+    private readonly object _lifecycleGate = new();
+    private readonly HashSet<Task> _pendingTasks = [];
+    private ThemeMode _selectedMode = ThemeMode.System;
+    private bool _isSaving;
+    private bool _isRetrying;
+    private bool _initializationErrorVisible;
+    private string? _errorMessage;
+    private Task? _selectionRefreshTask;
+    private Task? _initializationTask;
+    private Task? _themeChangeTask;
+    private Task? _retryTask;
+    private Task? _disposeTask;
+    private bool _refreshQueued;
+    private bool _disposed;
+
+    protected override void OnInitialized()
+    {
+        _selectedMode = ThemeState.Mode;
+        ThemeState.Changed += OnThemeStateChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _disposed)
+        {
+            return;
+        }
+
+        _initializationTask = TrackPendingTaskAsync(
+            () => InitializeThemeAsync(_componentCancellation.Token));
+        await _initializationTask;
+    }
+
+    private Task OnThemeModeChangedAsync(ThemeMode mode)
+    {
+        if (_disposed || _isSaving)
+        {
+            return Task.CompletedTask;
+        }
+
+        _isSaving = true;
+        _themeChangeTask = TrackPendingTaskAsync(
+            () => SaveThemeModeAsync(mode));
+        return _themeChangeTask;
+    }
+
+    private Task RetryThemeInitializationAsync()
+    {
+        if (_disposed || _isRetrying)
+        {
+            return Task.CompletedTask;
+        }
+
+        _isRetrying = true;
+        _retryTask = TrackPendingTaskAsync(RetryThemeInitializationCoreAsync);
+        return _retryTask;
+    }
+
+    private async Task RetryThemeInitializationCoreAsync()
+    {
+        try
+        {
+            await InvokeAsync(StateHasChanged);
+            await InitializeThemeAsync(
+                _componentCancellation.Token,
+                requestProviderRetry: true);
+        }
+        finally
+        {
+            _isRetrying = false;
+            if (!_disposed)
+            {
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+    }
+
+    private async Task InitializeThemeAsync(
+        CancellationToken cancellationToken,
+        bool requestProviderRetry = false)
+    {
+        try
+        {
+            if (requestProviderRetry)
+            {
+                await ThemeState.RetryInitializationAsync(cancellationToken);
+            }
+            else
+            {
+                await ThemeState.InitializeAsync(cancellationToken);
+            }
+
+            if (_disposed)
+            {
+                return;
+            }
+
+            _selectedMode = ThemeState.Mode;
+            if (ThemeState.IsInitializationFailed
+                || (requestProviderRetry && !ThemeState.IsProviderInitialized))
+            {
+                _initializationErrorVisible = true;
+                _errorMessage = null;
+            }
+            else
+            {
+                _initializationErrorVisible = false;
+                _errorMessage = null;
+            }
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (OperationCanceledException exception)
+            when (cancellationToken.IsCancellationRequested)
+        {
+            Logger.LogDebug(
+                exception,
+                "Theme preference initialization was canceled during component disposal.");
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError(exception, "Theme preference initialization failed.");
+            if (ThemeState.IsInitialized)
+            {
+                _initializationErrorVisible = false;
+                _errorMessage = null;
+            }
+            else
+            {
+                _initializationErrorVisible = true;
+                _errorMessage = "The theme preference could not be loaded.";
+            }
+
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task SaveThemeModeAsync(ThemeMode mode)
+    {
+        try
+        {
+            _errorMessage = null;
+            await ThemeState.InitializeAsync(_componentCancellation.Token);
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (ThemeState.IsInitializationFailed)
+            {
+                _selectedMode = ThemeState.Mode;
+                _errorMessage = null;
+                return;
+            }
+
+            _selectedMode = ThemeState.Mode;
+            if (mode == ThemeState.Mode)
+            {
+                return;
+            }
+
+            _selectedMode = mode;
+            await ThemeState.SetModeAsync(
+                mode,
+                CancellationToken.None);
+            _selectedMode = ThemeState.Mode;
+        }
+        catch (OperationCanceledException exception)
+            when (_componentCancellation.IsCancellationRequested)
+        {
+            Logger.LogDebug(
+                exception,
+                "Theme preference save was canceled during component disposal.");
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError(exception, "Theme preference could not be saved.");
+            _selectedMode = ThemeState.Mode;
+            _errorMessage = "The theme preference could not be saved.";
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private void OnThemeStateChanged(object? sender, EventArgs args)
+    {
+        lock (_lifecycleGate)
+        {
+            if (_disposed || _refreshQueued)
+            {
+                return;
+            }
+
+            _refreshQueued = true;
+        }
+
+        _selectionRefreshTask = TrackPendingTaskAsync(
+            RefreshThemeSelectionAsync);
+    }
+
+    private async Task RefreshThemeSelectionAsync()
+    {
+        try
+        {
+            if (_disposed || _componentCancellation.IsCancellationRequested)
+            {
+                return;
+            }
+
+            await InvokeAsync(() =>
+            {
+                if (_disposed)
+                {
+                    return;
+                }
+
+                _selectedMode = ThemeState.Mode;
+                if (ThemeState.IsInitializationFailed)
+                {
+                    _initializationErrorVisible = true;
+                    _errorMessage = null;
+                }
+                else if (_initializationErrorVisible && ThemeState.IsInitialized)
+                {
+                    _initializationErrorVisible = false;
+                    _errorMessage = null;
+                }
+
+                StateHasChanged();
+            });
+        }
+        catch (OperationCanceledException exception)
+            when (_componentCancellation.IsCancellationRequested)
+        {
+            Logger.LogDebug(
+                exception,
+                "Theme preference display refresh was canceled during component disposal.");
+        }
+        catch (ObjectDisposedException exception) when (_disposed)
+        {
+            Logger.LogDebug(
+                exception,
+                "Theme preference display refresh ended during component disposal.");
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError(exception, "Theme preference display could not be refreshed.");
+        }
+        finally
+        {
+            lock (_lifecycleGate)
+            {
+                _refreshQueued = false;
+            }
+        }
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        lock (_lifecycleGate)
+        {
+            _disposeTask ??= DisposeCoreAsync();
+            return new ValueTask(_disposeTask);
+        }
+    }
+
+    private async Task DisposeCoreAsync()
+    {
+        Task[] pendingTasks;
+        lock (_lifecycleGate)
+        {
+            _disposed = true;
+            ThemeState.Changed -= OnThemeStateChanged;
+            _componentCancellation.Cancel();
+            pendingTasks = [.. _pendingTasks];
+        }
+
+        try
+        {
+            await Task.WhenAll(pendingTasks);
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError(exception, "Settings component work did not stop cleanly.");
+        }
+        finally
+        {
+            _componentCancellation.Dispose();
+        }
+    }
+
+    private async Task TrackPendingTaskAsync(Func<Task> operation)
+    {
+        ArgumentNullException.ThrowIfNull(operation);
+
+        var completion = new TaskCompletionSource<object?>(
+            TaskCreationOptions.RunContinuationsAsynchronously);
+        lock (_lifecycleGate)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            _pendingTasks.Add(completion.Task);
+        }
+
+        try
+        {
+            await operation();
+            completion.TrySetResult(null);
+        }
+        catch (Exception exception)
+        {
+            completion.TrySetException(exception);
+            throw;
+        }
+        finally
+        {
+            lock (_lifecycleGate)
+            {
+                _pendingTasks.Remove(completion.Task);
+            }
+        }
+    }
+}

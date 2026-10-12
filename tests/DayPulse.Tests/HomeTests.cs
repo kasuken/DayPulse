@@ -1,5 +1,7 @@
 using Bunit;
+using DayPulse.App.Shared;
 using DayPulse.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 
 namespace DayPulse.Tests;
@@ -10,7 +12,19 @@ public sealed class HomeTests : BunitContext
     {
         Services.AddMudServices();
         Services.AddInfrastructure();
+        Services.AddScoped<ThemeState>();
         JSInterop.Mode = JSRuntimeMode.Loose;
+
+        var themeModule = JSInterop.SetupModule("./Shared/ThemeProvider.razor.js");
+        themeModule
+            .Setup<bool>("initialize", _ => true)
+            .SetResult(false);
+        themeModule
+            .Setup<bool>("setMode", _ => true)
+            .SetResult(false);
+        themeModule
+            .SetupVoid("dispose", _ => true)
+            .SetVoidResult();
     }
 
     [Fact]

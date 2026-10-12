@@ -83,4 +83,22 @@ public sealed class AppSettings
     /// Gets a value indicating whether the sleep metric is enabled.
     /// </summary>
     public bool SleepEnabled { get; }
+
+    /// <summary>
+    /// Creates a copy of these settings with a different visual theme preference.
+    /// </summary>
+    /// <param name="themeMode">The visual theme preference to use.</param>
+    /// <returns>A copy of these settings with <paramref name="themeMode"/> applied.</returns>
+    public AppSettings WithThemeMode(ThemeMode themeMode)
+    {
+        return new AppSettings(
+            OnboardingCompleted,
+            themeMode,
+            ReminderEnabled,
+            ReminderTime,
+            EnergyEnabled,
+            AnxietyEnabled,
+            FocusEnabled,
+            SleepEnabled);
+    }
 }

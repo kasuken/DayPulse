@@ -1,0 +1,9 @@
+@inject IJSRuntime JSRuntime
+@inject ILogger<ThemeProvider> Logger
+@inject ThemeState ThemeState
+@implements IAsyncDisposable
+
+<MudThemeProvider
+    Theme="@_theme"
+    IsDarkMode="@ThemeState.IsDarkMode"
+    ObserveSystemDarkModeChange="false" />

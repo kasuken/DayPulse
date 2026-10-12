@@ -122,6 +122,7 @@ public sealed class PwaAssetTests
         Assert.Contains("icon-512.png", assetUrls);
         Assert.Contains("css/app.css", assetUrls);
         Assert.Contains("js/daypulse-storage.js", assetUrls);
+        Assert.Contains("Shared/ThemeProvider.razor.js", assetUrls);
         Assert.Contains(assetUrls, url => url.StartsWith("_framework/", StringComparison.Ordinal));
         Assert.Contains(assetUrls, url => url.EndsWith(".wasm", StringComparison.Ordinal));
 
