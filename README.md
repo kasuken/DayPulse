@@ -1,80 +1,58 @@
 # DayPulse
 
-**Track your wellbeing. Understand your patterns.**
+> **Track your wellbeing. Understand your patterns.**
 
-DayPulse is a privacy-first mobile application for tracking daily wellbeing. Record your mood, energy, anxiety, focus, sleep, activities, and optional notes in less than 20 seconds, then explore simple trends and statistics over time.
+DayPulse is a privacy-first mobile Progressive Web Application (PWA) for tracking daily wellbeing, built with **.NET 10**, **Blazor WebAssembly**, and **MudBlazor**, hosted on **Azure Static Web Apps**.
 
-- Works **completely offline** — no account, no cloud, no trackers
-- All data stays **on your device**
-- One quick check-in per day
-- Simple, deterministic insights (no AI, no medical interpretation)
+The application allows users to record their mood, energy, anxiety, focus, sleep, activities, and optional notes in less than 20 seconds, presenting simple trends and statistics to help users understand how their wellbeing changes over time.
 
-## Features
+---
 
-- **Onboarding** — one-time introduction with privacy explanation, metric selection, and reminder setup
-- **Daily check-in** — mood (required), energy, anxiety, focus, sleep, activities, and notes on a single scrolling page
-- **History** — reverse-chronological list of entries with detail view, editing, and deletion
-- **Insights** — 7/30/90-day averages, streaks, best/lowest mood days, and simple trend charts
-- **Settings** — theme (system/light/dark), metric visibility, daily reminders, activity management, delete-all-data
+## Key Principles & Scope
 
-## Tech Stack
+- **100% Offline & Private:** All data is stored in the browser's local storage / IndexedDB. No accounts, no servers, no trackers, no external analytics.
+- **Fast Daily Check-in:** Complete a check-in in under 20 seconds on a single scrolling page.
+- **Deterministic Insights:** Objective, non-clinical trends, moving averages, and streaks. No AI diagnosis, no medical claims.
+- **Cross-Platform PWA:** Installs seamlessly on iOS and Android via Web App Manifest & Service Worker with install guidance.
+- **Cloud Hosting:** Hosted globally on Azure Static Web Apps with CI/CD via GitHub Actions.
 
-| Concern | Choice |
-| --- | --- |
-| Framework | Flutter (Material 3) |
-| State management | Riverpod |
-| Navigation | GoRouter (StatefulShellRoute) |
-| Persistence | Drift + SQLite |
-| Models | Freezed + json_serializable |
-| Reminders | flutter_local_notifications |
-| Charts | fl_chart |
-| Localization | Flutter gen-l10n (ARB) |
+---
+
+## Technology Stack
+
+- **Framework:** .NET 10 Blazor WebAssembly
+- **UI Components:** MudBlazor
+- **Client Storage:** LocalStorage / IndexedDB
+- **Offline / Mobile:** Progressive Web App (PWA) with Service Worker and Cache-First strategy
+- **Hosting & CI/CD:** Azure Static Web Apps (ASWA) & GitHub Actions
+- **Testing:** xUnit, bUnit, FluentAssertions
+
+---
 
 ## Architecture
 
-Feature-first clean architecture. Each feature owns its `data`, `domain`, `application`, and `presentation` layers:
+DayPulse follows a **feature-first clean architecture**:
 
-```
-lib/
-  app/            # bootstrap, app widget, router, theme tokens
-  core/           # database, errors, notifications, utilities, shared widgets
-  features/
-    onboarding/
-    check_in/
-    history/
-    insights/
-    settings/
-  l10n/           # ARB sources + generated localizations
-```
-
-Rules: widgets never touch Drift directly, repositories hide persistence details, business logic lives in controllers/services, domain models are immutable.
-
-## Getting Started
-
-```bash
-flutter pub get
-flutter gen-l10n
-dart run build_runner build --delete-conflicting-outputs
-flutter run
+```text
+DayPulse/
+├── src/
+│   ├── DayPulse.App/          # Blazor WASM host, layout, PWA assets, routes
+│   │   ├── wwwroot/           # index.html, manifest.json, service-worker.js, staticwebapp.config.json
+│   │   ├── Features/          # Feature slices (Onboarding, CheckIn, History, Insights, Settings)
+│   │   │   ├── [Feature]/
+│   │   │   │   ├── Components/
+│   │   │   │   ├── Models/
+│   │   │   │   └── State/
+│   │   └── Shared/            # Layouts, navigation, theme provider, install prompts
+│   ├── DayPulse.Core/         # Domain models, business logic, validation, statistics engine
+│   └── DayPulse.Infrastructure/ # Local storage repositories, seed data, notification interop
+└── tests/
+    ├── DayPulse.Core.Tests/   # Unit tests for domain, statistics, streaks, and validation
+    └── DayPulse.App.Tests/    # Component tests with bUnit
 ```
 
-### Quality checks
+---
 
-```bash
-flutter analyze
-flutter test
-```
+## Roadmap & Milestones
 
-### Release builds
-
-```bash
-flutter build apk
-flutter build appbundle
-flutter build ios --no-codesign
-```
-
-## Privacy
-
-DayPulse stores all data locally in an on-device SQLite database. It sends no analytics, contains no advertising or tracking SDKs, requires no account, and never uploads notes or metrics. A complete delete-all-data flow is available in Settings.
-
-DayPulse provides awareness, not medical conclusions. It is not a medical application, diagnostic tool, or substitute for professional support.
+Project tracking and implementation issues are organized into Epics on [GitHub Issues](https://github.com/kasuken/DayPulse/issues).
