@@ -17,6 +17,8 @@ public sealed class DayPulseThemeTests
         Assert.Equal("#FFFFFF", ColorValue(theme.PaletteLight.Surface));
         Assert.Equal("#E5F0ED", ColorValue(theme.PaletteLight.AppbarBackground));
         Assert.Equal("#EDF4F1", ColorValue(theme.PaletteLight.DrawerBackground));
+        Assert.Equal("#8C5A00", ColorValue(theme.PaletteLight.Warning));
+        Assert.Equal("#FFFFFF", ColorValue(theme.PaletteLight.WarningContrastText));
         Assert.Equal("#1E2B2A", ColorValue(theme.PaletteLight.TextPrimary));
         Assert.Equal("#4D605E", ColorValue(theme.PaletteLight.TextSecondary));
 
@@ -26,6 +28,8 @@ public sealed class DayPulseThemeTests
         Assert.Equal("#182523", ColorValue(theme.PaletteDark.Surface));
         Assert.Equal("#162321", ColorValue(theme.PaletteDark.AppbarBackground));
         Assert.Equal("#14201E", ColorValue(theme.PaletteDark.DrawerBackground));
+        Assert.Equal("#F0C674", ColorValue(theme.PaletteDark.Warning));
+        Assert.Equal("#3A2D18", ColorValue(theme.PaletteDark.WarningContrastText));
         Assert.Equal("#F1F5F3", ColorValue(theme.PaletteDark.TextPrimary));
         Assert.Equal("#B7C7C3", ColorValue(theme.PaletteDark.TextSecondary));
     }
@@ -43,6 +47,7 @@ public sealed class DayPulseThemeTests
         Assert.True(MeetsNormalTextContrast(light.DrawerText, light.DrawerBackground));
         Assert.True(MeetsNormalTextContrast(light.PrimaryContrastText, light.Primary));
         Assert.True(MeetsNormalTextContrast(light.SecondaryContrastText, light.Secondary));
+        Assert.True(MeetsNormalTextContrast(light.WarningContrastText, light.Warning));
 
         Assert.True(MeetsNormalTextContrast(dark.TextPrimary, dark.Background));
         Assert.True(MeetsNormalTextContrast(dark.TextSecondary, dark.Background));
@@ -50,6 +55,7 @@ public sealed class DayPulseThemeTests
         Assert.True(MeetsNormalTextContrast(dark.DrawerText, dark.DrawerBackground));
         Assert.True(MeetsNormalTextContrast(dark.PrimaryContrastText, dark.Primary));
         Assert.True(MeetsNormalTextContrast(dark.SecondaryContrastText, dark.Secondary));
+        Assert.True(MeetsNormalTextContrast(dark.WarningContrastText, dark.Warning));
     }
 
     private static bool MeetsNormalTextContrast(object foreground, object background)

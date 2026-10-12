@@ -20,6 +20,7 @@ public sealed class LocalizationTests
         "BootstrapReload",
         "BootstrapErrorBoundary",
         "PrimaryNavigation",
+        "SkipToMainContent",
         "Today",
         "History",
         "Insights",

@@ -96,8 +96,13 @@ public sealed class MainLayoutTests : BunitContext
     {
         var cut = RenderLayout();
 
+        var skipLink = cut.Find(".daypulse-skip-link");
+        Assert.Equal("#main-content", skipLink.GetAttribute("href"));
+        Assert.Equal("Skip to main content", skipLink.TextContent.Trim());
+
         Assert.NotNull(cut.Find("header"));
-        Assert.NotNull(cut.Find("main"));
+        var main = cut.Find("main#main-content");
+        Assert.Equal("-1", main.GetAttribute("tabindex"));
         Assert.Single(cut.FindAll("nav"));
         Assert.NotNull(cut.Find("nav[aria-label='Primary navigation']"));
         Assert.NotNull(cut.Find("[data-testid='daypulse-shell-content']"));

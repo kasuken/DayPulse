@@ -35,6 +35,12 @@ public sealed class PwaAssetTests
         Assert.Contains(
             "name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"",
             index);
+        Assert.Contains(
+            "<div id=\"blazor-error-ui\" role=\"alert\" aria-live=\"assertive\">",
+            index);
+        Assert.Contains(
+            "<button type=\"button\" class=\"dismiss\" aria-label=\"Dismiss error message\">",
+            index);
     }
 
     [Theory]

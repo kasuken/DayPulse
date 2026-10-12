@@ -131,6 +131,32 @@ public sealed class InstallPromptTests : BunitContext
     }
 
     [Fact]
+    public void Interactive_install_actions_have_accessible_names()
+    {
+        SetupModule(new InstallPromptState(
+            IsStandalone: false,
+            IsIosSafari: true,
+            IsAndroid: false,
+            IsMobile: true,
+            IsDismissed: false,
+            CanPrompt: false));
+
+        var cut = Render<InstallPrompt>();
+
+        Assert.Equal(
+            "Dismiss install guidance",
+            cut.Find(".daypulse-install-prompt__close").GetAttribute("aria-label"));
+        Assert.Equal(
+            "Got it",
+            cut.Find("[data-testid='daypulse-install-prompt-got-it']")
+                .GetAttribute("aria-label"));
+        Assert.Equal(
+            "Don't show again",
+            cut.Find("[data-testid='daypulse-install-prompt-dont-show-again']")
+                .GetAttribute("aria-label"));
+    }
+
+    [Fact]
     public void Native_prompt_failure_falls_back_to_menu_guidance()
     {
         var module = SetupModule(new InstallPromptState(

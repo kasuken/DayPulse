@@ -19,6 +19,7 @@
             <MudSelect
                 T="ThemeMode"
                 Label='@Localizer["ThemePreference"]'
+                aria-label='@Localizer["ThemePreference"]'
                 HelperText='@Localizer["ThemePreferenceHelper"]'
                 Variant="Variant.Outlined"
                 Value="@_selectedMode"
@@ -61,6 +62,7 @@
                         <MudButton
                             Variant="Variant.Text"
                             Color="Color.Error"
+                            aria-label='@(_isRetrying ? Localizer["Retrying"] : Localizer["TryAgain"])'
                             Disabled="@_isRetrying"
                             OnClick="RetryThemeInitializationAsync"
                             data-testid="daypulse-theme-retry">

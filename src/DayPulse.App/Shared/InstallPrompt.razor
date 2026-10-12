@@ -25,7 +25,7 @@
                     class="daypulse-install-prompt__close"
                     aria-label='@Localizer["DismissInstallGuidance"]'
                     @onclick="DismissAsync">
-                    <MudIcon Icon="@Icons.Material.Filled.Close" />
+                    <MudIcon Icon="@Icons.Material.Filled.Close" aria-hidden="true" />
                 </button>
             </div>
 
@@ -75,6 +75,7 @@
                         Color="Color.Primary"
                         Variant="Variant.Filled"
                         StartIcon="@Icons.Material.Filled.Download"
+                        aria-label='@Localizer["Install"]'
                         OnClick="InstallAsync"
                         data-testid="daypulse-install-prompt-install">
                         @Localizer["Install"]
@@ -84,6 +85,7 @@
                 <MudButton
                     Color="Color.Primary"
                     Variant="Variant.Text"
+                    aria-label='@Localizer["GotIt"]'
                     OnClick="DismissAsync"
                     data-testid="daypulse-install-prompt-got-it">
                     @Localizer["GotIt"]
@@ -92,6 +94,7 @@
                 <MudButton
                     Color="Color.Secondary"
                     Variant="Variant.Text"
+                    aria-label='@Localizer["DontShowAgain"]'
                     OnClick="DismissPermanentlyAsync"
                     data-testid="daypulse-install-prompt-dont-show-again">
                     @Localizer["DontShowAgain"]

@@ -2,6 +2,27 @@
     --daypulse-bottom-nav-content-height: 5rem;
 }
 
+.daypulse-skip-link {
+    align-items: center;
+    background: var(--mud-palette-primary, #1b6ec2);
+    color: var(--mud-palette-primary-text, #fff);
+    display: inline-flex;
+    left: 0.75rem;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    position: fixed;
+    top: 0.75rem;
+    transform: translateY(-200%);
+    transition: transform 0.15s ease-in-out;
+    z-index: 1500;
+}
+
+.daypulse-skip-link:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 2px;
+    transform: translateY(0);
+}
+
 html,
 body {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -164,7 +185,7 @@ body {
 
 #blazor-error-ui {
     background: var(--mud-palette-warning, #fff3cd);
-    color: var(--mud-palette-text-primary, #212121);
+    color: var(--mud-palette-warning-text, #212121);
     bottom: calc(
         var(--daypulse-bottom-nav-content-height) + env(safe-area-inset-bottom, 0px)
     );
@@ -179,10 +200,39 @@ body {
 }
 
 #blazor-error-ui .dismiss {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
     cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    padding: 0;
     position: absolute;
     right: 0.75rem;
     top: 0.5rem;
+}
+
+#blazor-error-ui .reload {
+    align-items: center;
+    display: inline-flex;
+    min-height: 2.75rem;
+    padding-inline: 0.25rem;
+}
+
+#blazor-error-ui .dismiss:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+#blazor-error-ui .reload:focus-visible,
+.daypulse-install-prompt__actions .mud-button:focus-visible,
+[data-testid="daypulse-theme-retry"]:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 2px;
 }
 
 .blazor-error-boundary {
@@ -313,6 +363,11 @@ body {
     padding: 0.5rem 1rem 1rem;
 }
 
+.daypulse-install-prompt__actions .mud-button {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+}
+
 @media (min-width: 600px) {
     .daypulse-install-prompt {
         left: auto;
@@ -322,7 +377,12 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .loading-progress circle:last-child {
-        transition: none;
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
     }
 }
