@@ -69,6 +69,92 @@ body {
     content: var(--blazor-load-percentage-text, "Loading");
 }
 
+.daypulse-install-prompt {
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    box-sizing: border-box;
+    left: 1rem;
+    max-width: 32rem;
+    position: fixed;
+    right: 1rem;
+    z-index: 1100;
+}
+
+.daypulse-install-prompt__surface {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.daypulse-install-prompt__header {
+    align-items: flex-start;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    padding: 1rem 1rem 0.5rem;
+}
+
+.daypulse-install-prompt__close {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    color: var(--mud-palette-text-secondary);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    padding: 0;
+}
+
+.daypulse-install-prompt__close:hover {
+    background: var(--mud-palette-action-default-hover);
+}
+
+.daypulse-install-prompt__close:focus-visible {
+    outline: 2px solid var(--mud-palette-primary);
+    outline-offset: 2px;
+}
+
+.daypulse-install-prompt__surface > .mud-typography {
+    padding: 0 1rem;
+}
+
+.daypulse-install-prompt__steps {
+    display: grid;
+    gap: 0.6rem;
+    list-style: none;
+    margin: 0.75rem 1rem;
+    padding: 0;
+}
+
+.daypulse-install-prompt__steps li {
+    align-items: center;
+    display: flex;
+    gap: 0.65rem;
+}
+
+.daypulse-install-prompt__steps .mud-icon-root {
+    color: var(--mud-palette-primary);
+    flex: 0 0 auto;
+}
+
+.daypulse-install-prompt__actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    padding: 0.5rem 1rem 1rem;
+}
+
+@media (min-width: 600px) {
+    .daypulse-install-prompt {
+        left: auto;
+        right: 1.5rem;
+        width: min(32rem, calc(100vw - 3rem));
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .loading-progress circle:last-child {
         transition: none;

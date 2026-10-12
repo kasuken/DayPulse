@@ -1,0 +1,101 @@
+@inject IJSRuntime JSRuntime
+
+@if (_isVisible && _hasState)
+{
+    <div
+        class="daypulse-install-prompt"
+        role="region"
+        aria-live="polite"
+        aria-labelledby="daypulse-install-prompt-title"
+        data-testid="daypulse-install-prompt">
+        <MudPaper Class="daypulse-install-prompt__surface" Elevation="6">
+            <div class="daypulse-install-prompt__header">
+                <div>
+                    <MudText Typo="Typo.h6" id="daypulse-install-prompt-title">
+                        Install DayPulse
+                    </MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                        Keep your daily check-ins close at hand.
+                    </MudText>
+                </div>
+
+                <button
+                    type="button"
+                    class="daypulse-install-prompt__close"
+                    aria-label="Dismiss install guidance"
+                    @onclick="DismissAsync">
+                    <MudIcon Icon="@Icons.Material.Filled.Close" />
+                </button>
+            </div>
+
+            @if (_state.IsIosSafari)
+            {
+                <MudText Typo="Typo.body2">
+                    Add DayPulse to your Home Screen for a faster, app-like experience:
+                </MudText>
+                <ol class="daypulse-install-prompt__steps">
+                    <li>
+                        <MudIcon Icon="@Icons.Material.Filled.Share" aria-hidden="true" />
+                        <span>Tap <strong>Share</strong> in Safari.</span>
+                    </li>
+                    <li>
+                        <MudIcon Icon="@Icons.Material.Filled.Home" aria-hidden="true" />
+                        <span>Choose <strong>Add to Home Screen</strong>, then tap <strong>Add</strong>.</span>
+                    </li>
+                </ol>
+            }
+            else if (_state.IsAndroid && !_state.CanPrompt)
+            {
+                <MudText Typo="Typo.body2">
+                    Add DayPulse to your Home Screen from your browser menu:
+                </MudText>
+                <ol class="daypulse-install-prompt__steps">
+                    <li>
+                        <MudIcon Icon="@Icons.Material.Filled.MoreVert" aria-hidden="true" />
+                        <span>Open the browser menu using <strong>⋮</strong>.</span>
+                    </li>
+                    <li>
+                        <MudIcon Icon="@Icons.Material.Filled.Home" aria-hidden="true" />
+                        <span>Tap <strong>Install app</strong> or <strong>Add to Home screen</strong>.</span>
+                    </li>
+                </ol>
+            }
+            else if (_state.IsAndroid)
+            {
+                <MudText Typo="Typo.body2">
+                    Install DayPulse for quick access and a focused app experience.
+                </MudText>
+            }
+
+            <div class="daypulse-install-prompt__actions">
+                @if (_state.IsAndroid && _state.CanPrompt)
+                {
+                    <MudButton
+                        Color="Color.Primary"
+                        Variant="Variant.Filled"
+                        StartIcon="@Icons.Material.Filled.Download"
+                        OnClick="InstallAsync"
+                        data-testid="daypulse-install-prompt-install">
+                        Install
+                    </MudButton>
+                }
+
+                <MudButton
+                    Color="Color.Primary"
+                    Variant="Variant.Text"
+                    OnClick="DismissAsync"
+                    data-testid="daypulse-install-prompt-got-it">
+                    Got it
+                </MudButton>
+
+                <MudButton
+                    Color="Color.Secondary"
+                    Variant="Variant.Text"
+                    OnClick="DismissPermanentlyAsync"
+                    data-testid="daypulse-install-prompt-dont-show-again">
+                    Don't show again
+                </MudButton>
+            </div>
+        </MudPaper>
+    </div>
+}
