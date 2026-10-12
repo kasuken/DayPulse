@@ -7,40 +7,35 @@
 
 <PageTitle>@Localizer["SettingsPageTitle"]</PageTitle>
 
-<MudStack Spacing="2">
-    <MudText Typo="Typo.h1">@Localizer["Settings"]</MudText>
-    <MudText Color="Color.Secondary">
-        @Localizer["SettingsDescription"]
-    </MudText>
+<MudStack Spacing="6">
+    <PageHeader Title="@Localizer["Settings"]" Description="@Localizer["SettingsDescription"]" />
 
-    <MudPaper Class="pa-4" Elevation="1">
-        <MudStack Spacing="2">
+    <MudPaper Class="daypulse-panel daypulse-appearance" Elevation="0">
+        <MudStack Spacing="4">
+            <MudIcon Icon="@Icons.Material.Outlined.Palette" Color="Color.Primary" aria-hidden="true" />
             <MudText Typo="Typo.h2">@Localizer["Appearance"]</MudText>
-            <MudSelect
-                T="ThemeMode"
-                Label='@Localizer["ThemePreference"]'
+            <MudText Typo="Typo.body1" Class="daypulse-muted">@Localizer["ThemePreferenceHelper"]</MudText>
+            <MudGrid Spacing="3" role="group"
                 aria-label='@Localizer["ThemePreference"]'
-                HelperText='@Localizer["ThemePreferenceHelper"]'
-                Variant="Variant.Outlined"
-                Value="@_selectedMode"
-                ValueChanged="OnThemeModeChangedAsync"
-                Disabled="@(!ThemeState.IsInitialized
-                    || !ThemeState.IsProviderInitialized
-                    || ThemeState.IsProviderInitializationFailed
-                    || _isSaving)"
-                Adornment="Adornment.Start"
-                AdornmentIcon="@Icons.Material.Filled.Brightness6"
                 data-testid="daypulse-theme-selector">
-                <MudSelectItem Value="@ThemeMode.System">@Localizer["ThemeModeSystem"]</MudSelectItem>
-                <MudSelectItem Value="@ThemeMode.Light">@Localizer["ThemeModeLight"]</MudSelectItem>
-                <MudSelectItem Value="@ThemeMode.Dark">@Localizer["ThemeModeDark"]</MudSelectItem>
-            </MudSelect>
+                @foreach (var mode in new[] { ThemeMode.System, ThemeMode.Light, ThemeMode.Dark })
+                {
+                    <MudItem @key="mode" xs="12" sm="4">
+                        <ThemeChoice Mode="@mode" Selected="@(_selectedMode == mode)"
+                                     Disabled="@(!ThemeState.IsInitialized
+                                         || !ThemeState.IsProviderInitialized
+                                         || ThemeState.IsProviderInitializationFailed
+                                         || _isSaving)"
+                                     OnSelected="OnThemeModeChangedAsync" />
+                    </MudItem>
+                }
+            </MudGrid>
 
             @if ((!ThemeState.IsInitialized || !ThemeState.IsProviderInitialized)
                 && !ThemeState.IsInitializationFailed)
             {
                 <span role="status">
-                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    <MudText Typo="Typo.body2" Class="daypulse-muted">
                         @Localizer["LoadingThemePreference"]
                     </MudText>
                 </span>
@@ -48,7 +43,7 @@
             else if (_isSaving)
             {
                 <span role="status">
-                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    <MudText Typo="Typo.body2" Class="daypulse-muted">
                         @Localizer["SavingThemePreference"]
                     </MudText>
                 </span>
@@ -83,13 +78,14 @@
             @if (_isRetrying)
             {
                 <span role="status">
-                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    <MudText Typo="Typo.body2" Class="daypulse-muted">
                         @Localizer["RetryingThemePreference"]
                     </MudText>
                 </span>
             }
         </MudStack>
     </MudPaper>
+    <PrivacyNote />
 </MudStack>
 
 @code {

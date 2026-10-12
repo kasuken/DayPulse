@@ -4,8 +4,6 @@ using DayPulse.App.Shared;
 using DayPulse.Core.Domain;
 using DayPulse.Core.Repositories;
 using Microsoft.Extensions.DependencyInjection;
-using MudBlazor;
-using MudBlazor.Extensions;
 using MudBlazor.Services;
 
 namespace DayPulse.Tests;
@@ -30,12 +28,10 @@ public sealed class SettingsTests : BunitContext
         await Services.GetRequiredService<ThemeState>()
             .InitializeAsync(Xunit.TestContext.Current.CancellationToken);
         var cut = Render<Settings>();
-        var selector = cut.FindComponent<MudSelect<ThemeMode>>();
-
-        Assert.Contains("Theme preference", cut.Markup);
-        Assert.Equal(
-            ThemeMode.Dark,
-            selector.Instance.GetState(themeSelector => themeSelector.Value));
+        var selector = cut.Find("[role='group'][aria-label='Theme preference']");
+        Assert.Equal(3, selector.QuerySelectorAll("button").Length);
+        Assert.Equal("true", cut.Find("[data-testid='daypulse-theme-dark']").GetAttribute("aria-pressed"));
+        Assert.Single(cut.FindAll("button[aria-pressed='true']"));
         Assert.Contains("System follows your device preference.", cut.Markup);
     }
 
@@ -48,10 +44,8 @@ public sealed class SettingsTests : BunitContext
         Services.AddScoped<ThemeState>();
 
         var cut = Render<Settings>();
-        var selector = cut.FindComponent<MudSelect<ThemeMode>>();
-
         await cut.InvokeAsync(
-            () => selector.Instance.ValueChanged.InvokeAsync(ThemeMode.Dark));
+            () => cut.Find("[data-testid='daypulse-theme-dark']").Click());
 
         cut.WaitForAssertion(() =>
         {
@@ -72,8 +66,6 @@ public sealed class SettingsTests : BunitContext
         Services.AddScoped<ThemeState>();
 
         var cut = Render<Settings>();
-        var selector = cut.FindComponent<MudSelect<ThemeMode>>();
-
         Assert.True(IsThemeSelectorDisabled(cut));
         Assert.Contains("Loading theme preference", cut.Markup);
 
@@ -82,9 +74,7 @@ public sealed class SettingsTests : BunitContext
         cut.WaitForAssertion(() =>
         {
             Assert.True(Services.GetRequiredService<ThemeState>().IsInitialized);
-            Assert.Equal(
-                ThemeMode.Dark,
-                selector.Instance.GetState(themeSelector => themeSelector.Value));
+            Assert.Equal("true", cut.Find("[data-testid='daypulse-theme-dark']").GetAttribute("aria-pressed"));
             Assert.False(IsThemeSelectorDisabled(cut));
         });
     }
@@ -100,10 +90,8 @@ public sealed class SettingsTests : BunitContext
         var cut = Render<Settings>();
         cut.WaitForAssertion(() =>
             Assert.True(Services.GetRequiredService<ThemeState>().IsInitialized));
-        var selector = cut.FindComponent<MudSelect<ThemeMode>>();
-
         await cut.InvokeAsync(
-            () => selector.Instance.ValueChanged.InvokeAsync(ThemeMode.Dark));
+            () => cut.Find("[data-testid='daypulse-theme-dark']").Click());
 
         cut.WaitForAssertion(() =>
         {
@@ -111,6 +99,8 @@ public sealed class SettingsTests : BunitContext
             Assert.Equal(
                 ThemeMode.System,
                 Services.GetRequiredService<ThemeState>().Mode);
+            Assert.Equal("true", cut.Find("[data-testid='daypulse-theme-system']").GetAttribute("aria-pressed"));
+            Assert.Equal("false", cut.Find("[data-testid='daypulse-theme-dark']").GetAttribute("aria-pressed"));
         });
     }
 
@@ -272,8 +262,9 @@ public sealed class SettingsTests : BunitContext
     private static bool IsThemeSelectorDisabled(IRenderedComponent<Settings> cut)
     {
         var selector = cut.Find("[data-testid='daypulse-theme-selector']");
-        return selector.HasAttribute("disabled")
-            || selector.QuerySelector("[disabled]") is not null;
+        var buttons = selector.QuerySelectorAll("button");
+        Assert.Equal(3, buttons.Length);
+        return buttons.All(button => button.HasAttribute("disabled"));
     }
 
     private sealed class DelayedSettingsRepository(AppSettings initialSettings)

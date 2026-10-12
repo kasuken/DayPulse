@@ -11,27 +11,27 @@ public sealed class DayPulseThemeTests
     {
         var theme = DayPulseTheme.Create();
 
-        Assert.Equal("#2F6F6D", ColorValue(theme.PaletteLight.Primary));
-        Assert.Equal("#8C5A00", ColorValue(theme.PaletteLight.Secondary));
-        Assert.Equal("#F7F8F6", ColorValue(theme.PaletteLight.Background));
+        Assert.Equal("#256F64", ColorValue(theme.PaletteLight.Primary));
+        Assert.Equal("#8A5B19", ColorValue(theme.PaletteLight.Secondary));
+        Assert.Equal("#F5F7F9", ColorValue(theme.PaletteLight.Background));
         Assert.Equal("#FFFFFF", ColorValue(theme.PaletteLight.Surface));
-        Assert.Equal("#E5F0ED", ColorValue(theme.PaletteLight.AppbarBackground));
-        Assert.Equal("#EDF4F1", ColorValue(theme.PaletteLight.DrawerBackground));
-        Assert.Equal("#8C5A00", ColorValue(theme.PaletteLight.Warning));
+        Assert.Equal("#FFFFFF", ColorValue(theme.PaletteLight.AppbarBackground));
+        Assert.Equal("#F5F7F9", ColorValue(theme.PaletteLight.DrawerBackground));
+        Assert.Equal("#8A5B19", ColorValue(theme.PaletteLight.Warning));
         Assert.Equal("#FFFFFF", ColorValue(theme.PaletteLight.WarningContrastText));
-        Assert.Equal("#1E2B2A", ColorValue(theme.PaletteLight.TextPrimary));
-        Assert.Equal("#4D605E", ColorValue(theme.PaletteLight.TextSecondary));
+        Assert.Equal("#182A31", ColorValue(theme.PaletteLight.TextPrimary));
+        Assert.Equal("#52636B", ColorValue(theme.PaletteLight.TextSecondary));
 
-        Assert.Equal("#8ED0C1", ColorValue(theme.PaletteDark.Primary));
-        Assert.Equal("#F0C674", ColorValue(theme.PaletteDark.Secondary));
-        Assert.Equal("#101A19", ColorValue(theme.PaletteDark.Background));
-        Assert.Equal("#182523", ColorValue(theme.PaletteDark.Surface));
-        Assert.Equal("#162321", ColorValue(theme.PaletteDark.AppbarBackground));
-        Assert.Equal("#14201E", ColorValue(theme.PaletteDark.DrawerBackground));
-        Assert.Equal("#F0C674", ColorValue(theme.PaletteDark.Warning));
-        Assert.Equal("#3A2D18", ColorValue(theme.PaletteDark.WarningContrastText));
-        Assert.Equal("#F1F5F3", ColorValue(theme.PaletteDark.TextPrimary));
-        Assert.Equal("#B7C7C3", ColorValue(theme.PaletteDark.TextSecondary));
+        Assert.Equal("#85D6BD", ColorValue(theme.PaletteDark.Primary));
+        Assert.Equal("#E3C181", ColorValue(theme.PaletteDark.Secondary));
+        Assert.Equal("#121D23", ColorValue(theme.PaletteDark.Background));
+        Assert.Equal("#1A2931", ColorValue(theme.PaletteDark.Surface));
+        Assert.Equal("#1A2931", ColorValue(theme.PaletteDark.AppbarBackground));
+        Assert.Equal("#121D23", ColorValue(theme.PaletteDark.DrawerBackground));
+        Assert.Equal("#E3C181", ColorValue(theme.PaletteDark.Warning));
+        Assert.Equal("#332811", ColorValue(theme.PaletteDark.WarningContrastText));
+        Assert.Equal("#EDF4F6", ColorValue(theme.PaletteDark.TextPrimary));
+        Assert.Equal("#B3C5CE", ColorValue(theme.PaletteDark.TextSecondary));
     }
 
     [Fact]
@@ -56,6 +56,36 @@ public sealed class DayPulseThemeTests
         Assert.True(MeetsNormalTextContrast(dark.PrimaryContrastText, dark.Primary));
         Assert.True(MeetsNormalTextContrast(dark.SecondaryContrastText, dark.Secondary));
         Assert.True(MeetsNormalTextContrast(dark.WarningContrastText, dark.Warning));
+
+        foreach (var palette in new Palette[] { light, dark })
+        {
+            foreach (var background in new[] { palette.Background, palette.BackgroundGray, palette.Surface })
+            {
+                Assert.True(MeetsNormalTextContrast(palette.TextPrimary, background));
+                Assert.True(MeetsNormalTextContrast(palette.TextSecondary, background));
+                Assert.True(ContrastRatio(palette.Primary, background) >= 3);
+                Assert.True(ContrastRatio(palette.ActionDefault, background) >= 3);
+                Assert.True(ContrastRatio(palette.LinesInputs, background) >= 3);
+            }
+
+            Assert.True(MeetsNormalTextContrast(palette.SuccessContrastText, palette.Success));
+            Assert.True(MeetsNormalTextContrast(palette.InfoContrastText, palette.Info));
+            Assert.True(MeetsNormalTextContrast(palette.ErrorContrastText, palette.Error));
+        }
+    }
+
+    [Fact]
+    public void Typography_and_layout_use_the_DayPulse_design_system()
+    {
+        var theme = DayPulseTheme.Create();
+
+        var fonts = Assert.IsType<string[]>(theme.Typography.Default.FontFamily);
+        Assert.Equal("Manrope", fonts[0]);
+        Assert.Equal(fonts, theme.Typography.H1.FontFamily);
+        Assert.Equal("none", theme.Typography.Button.TextTransform);
+        Assert.Equal("800", theme.Typography.H1.FontWeight);
+        Assert.Equal("12px", theme.LayoutProperties.DefaultBorderRadius);
+        Assert.Equal("240px", theme.LayoutProperties.DrawerWidthLeft);
     }
 
     private static bool MeetsNormalTextContrast(object foreground, object background)

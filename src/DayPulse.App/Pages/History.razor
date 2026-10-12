@@ -3,9 +3,10 @@
 
 <PageTitle>@Localizer["HistoryPageTitle"]</PageTitle>
 
-<MudStack Spacing="2">
-    <MudText Typo="Typo.h1">@Localizer["History"]</MudText>
-    <MudText Color="Color.Secondary">
-        @Localizer["HistoryDescription"]
-    </MudText>
+<MudStack Spacing="6">
+    <PageHeader Title="@Localizer["History"]" Description="@Localizer["HistoryDescription"]" />
+    <EmptyFeatureState Icon="@Icons.Material.Outlined.History"
+                       Title="@Localizer["HistoryEmptyHeading"]"
+                       Description="@Localizer["HistoryEmptyDescription"]" />
+    <PrivacyNote />
 </MudStack>

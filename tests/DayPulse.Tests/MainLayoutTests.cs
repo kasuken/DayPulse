@@ -108,6 +108,19 @@ public sealed class MainLayoutTests : BunitContext
         Assert.NotNull(cut.Find("[data-testid='daypulse-shell-content']"));
     }
 
+    [Fact]
+    public async Task Skip_link_requests_focus_on_the_main_landmark()
+    {
+        var cut = RenderLayout();
+        var invocationCount = JSInterop.Invocations.Count;
+
+        await cut.InvokeAsync(() => cut.Find(".daypulse-skip-link").Click());
+
+        var focus = Assert.Single(JSInterop.Invocations.Skip(invocationCount));
+        var target = Assert.IsType<ElementReference>(focus.Arguments[0]);
+        Assert.False(string.IsNullOrEmpty(target.Id));
+    }
+
     private IRenderedComponent<MainLayout> RenderLayout()
     {
         return Render<MainLayout>(parameters => parameters

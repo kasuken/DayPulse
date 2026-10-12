@@ -3,9 +3,10 @@
 
 <PageTitle>@Localizer["InsightsPageTitle"]</PageTitle>
 
-<MudStack Spacing="2">
-    <MudText Typo="Typo.h1">@Localizer["Insights"]</MudText>
-    <MudText Color="Color.Secondary">
-        @Localizer["InsightsDescription"]
-    </MudText>
+<MudStack Spacing="6">
+    <PageHeader Title="@Localizer["Insights"]" Description="@Localizer["InsightsDescription"]" />
+    <EmptyFeatureState Icon="@Icons.Material.Outlined.Insights"
+                       Title="@Localizer["InsightsEmptyHeading"]"
+                       Description="@Localizer["InsightsEmptyDescription"]" />
+    <PrivacyNote />
 </MudStack>

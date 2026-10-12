@@ -64,6 +64,34 @@ public sealed class LocalizationTests
         "Install",
         "GotIt",
         "DontShowAgain",
+        "OnDevicePrivate",
+        "PrivacyHeading",
+        "PrivacyDescription",
+        "ComingNext",
+        "CheckInsComingSoon",
+        "PersonalizeAppearance",
+        "YourDayYourPace",
+        "WellbeingHeading",
+        "WellbeingDescription",
+        "MetricMood",
+        "MetricEnergy",
+        "MetricAnxiety",
+        "MetricFocus",
+        "MetricSleep",
+        "HistoryPreviewHeading",
+        "HistoryPreviewDescription",
+        "InsightsPreviewHeading",
+        "InsightsPreviewDescription",
+        "ViewHistory",
+        "ExploreInsights",
+        "BackToToday",
+        "HistoryEmptyHeading",
+        "HistoryEmptyDescription",
+        "InsightsEmptyHeading",
+        "InsightsEmptyDescription",
+        "ThemeModeSystemDescription",
+        "ThemeModeLightDescription",
+        "ThemeModeDarkDescription",
     ];
 
     [Fact]
@@ -327,6 +355,16 @@ public sealed class LocalizationTests
     }
 
     [Fact]
+    public void WebAssembly_loads_globalization_data_to_allow_the_startup_culture_fallback()
+    {
+        var project = XDocument.Load(GetRepositoryPath("src/DayPulse.App/DayPulse.App.csproj"));
+
+        Assert.Equal("true", project.Root?.Elements("PropertyGroup")
+            .Elements("BlazorWebAssemblyLoadAllGlobalizationData")
+            .Single().Value);
+    }
+
+    [Fact]
     public void Razor_components_reference_resources_instead_of_current_user_facing_literals()
     {
         var appDirectory = GetRepositoryPath("src/DayPulse.App");
@@ -390,6 +428,27 @@ public sealed class LocalizationTests
         foreach (var resourceKey in ResourceKeys)
         {
             Assert.Contains($"\"{resourceKey}\"", razorSource, StringComparison.Ordinal);
+        }
+    }
+
+    [Fact]
+    public void Design_copy_is_not_embedded_in_Razor_markup()
+    {
+        var appDirectory = GetRepositoryPath("src/DayPulse.App");
+        var markup = string.Join(Environment.NewLine,
+            Directory.EnumerateFiles(appDirectory, "*.razor", SearchOption.AllDirectories)
+                .Select(path => File.ReadAllText(path).Split("@code", 2)[0]));
+        var resources = XDocument.Load(Path.Combine(appDirectory, "Resources/SharedResource.resx"));
+
+        foreach (var resource in resources.Root!.Elements("data"))
+        {
+            var key = resource.Attribute("name")!.Value;
+            var text = resource.Element("value")!.Value;
+            Assert.False(string.IsNullOrWhiteSpace(text), $"Missing copy for {key}.");
+            if (text.Length > 12)
+            {
+                Assert.DoesNotContain(text, markup, StringComparison.Ordinal);
+            }
         }
     }
 

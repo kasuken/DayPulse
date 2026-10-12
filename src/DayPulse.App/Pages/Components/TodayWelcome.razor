@@ -1,0 +1,30 @@
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="daypulse-welcome-region">
+    <MudPaper Elevation="0" Class="daypulse-panel daypulse-welcome">
+        <MudStack Spacing="3" Class="daypulse-welcome__content">
+            <MudText Typo="Typo.body2" Class="daypulse-feature-status">@Localizer["CheckInsComingSoon"]</MudText>
+            <MudText Typo="Typo.h2" Class="daypulse-welcome__heading">@Localizer["HomeReadyHeading"]</MudText>
+            <MudText Typo="Typo.body1" Class="daypulse-muted">@Localizer["HomeReadyMessage"]</MudText>
+            <MudButton Href="/settings" Variant="Variant.Filled" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Outlined.Tune" Class="align-self-start">
+                @Localizer["PersonalizeAppearance"]
+            </MudButton>
+        </MudStack>
+        <div class="daypulse-welcome__daylight">
+            <svg viewBox="0 0 340 220" fill="none" aria-hidden="true" focusable="false">
+                <path class="daypulse-daylight__guide" d="M30 180a140 140 0 0 1 280 0" />
+                <path class="daypulse-daylight__arc" d="M30 180a140 140 0 0 1 140-140" />
+                <path class="daypulse-daylight__horizon" d="M14 180h312" />
+                <circle class="daypulse-daylight__halo" cx="170" cy="40" r="30" />
+                <circle class="daypulse-daylight__sun" cx="170" cy="40" r="13" />
+                <path class="daypulse-daylight__rays" d="M170 15v-5m0 60v-5m25-25h5m-60 0h5m43-18 4-4m-44 44 4-4m36 0 4 4m-44-44 4 4" />
+                <circle class="daypulse-daylight__point" cx="30" cy="180" r="4" />
+                <circle class="daypulse-daylight__point" cx="310" cy="180" r="4" />
+            </svg>
+            <MudText Typo="Typo.body2" Align="Align.Center" Class="daypulse-muted">
+                @Localizer["YourDayYourPace"]
+            </MudText>
+        </div>
+    </MudPaper>
+</div>
