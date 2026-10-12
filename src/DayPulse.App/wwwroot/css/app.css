@@ -1,0 +1,76 @@
+html,
+body {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    margin: 0;
+}
+
+#blazor-error-ui {
+    background: var(--mud-palette-warning, #fff3cd);
+    color: var(--mud-palette-text-primary, #212121);
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgb(0 0 0 / 20%);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+.blazor-error-boundary {
+    background: var(--mud-palette-error, #b32121);
+    color: var(--mud-palette-error-text, #fff);
+    padding: 1rem 1rem 1rem 3.7rem;
+}
+
+.blazor-error-boundary::after {
+    content: "An error has occurred.";
+}
+
+.loading-progress {
+    position: absolute;
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    inset: 20vh 0 auto;
+    margin: 0 auto;
+}
+
+.loading-progress circle {
+    fill: none;
+    stroke: var(--mud-palette-lines-default, #e0e0e0);
+    stroke-width: 0.6rem;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+}
+
+.loading-progress circle:last-child {
+    stroke: var(--mud-palette-primary, #1b6ec2);
+    stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+    transition: stroke-dasharray 0.05s ease-in-out;
+}
+
+.loading-progress-text {
+    position: absolute;
+    text-align: center;
+    font-weight: bold;
+    inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
+}
+
+.loading-progress-text::after {
+    content: var(--blazor-load-percentage-text, "Loading");
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loading-progress circle:last-child {
+        transition: none;
+    }
+}
