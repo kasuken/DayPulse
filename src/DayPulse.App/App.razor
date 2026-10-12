@@ -1,18 +1,31 @@
 ﻿@using DayPulse.Core.Repositories
 @inject IActivityRepository ActivityRepository
+@inject CultureState CultureState
 @inject ILogger<App> Logger
+@inject IStringLocalizer<SharedResource> Localizer
+@implements IDisposable
 @implements IAsyncDisposable
+
+<BrowserLocaleInitializer />
+<ThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<InstallPrompt />
 
 @if (_initializationError is not null)
 {
     <main class="pa-4" role="alert">
-        <h1>Local storage is unavailable</h1>
-        <p>DayPulse could not initialize its local data. Refresh the page and try again.</p>
+        <h1>@Localizer["LocalStorageUnavailableTitle"]</h1>
+        <p>@Localizer["LocalStorageUnavailableMessage"]</p>
     </main>
 }
 else
 {
-    <Router AppAssembly="@typeof(App).Assembly" NotFoundPage="typeof(Pages.NotFound)">
+    <Router
+        @key="CultureState.CurrentCulture.Name"
+        AppAssembly="@typeof(App).Assembly"
+        NotFoundPage="typeof(Pages.NotFound)">
         <Found Context="routeData">
             <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -24,6 +37,11 @@ else
     private CancellationTokenSource? _initializationCancellation;
     private Task? _initializationTask;
     private Exception? _initializationError;
+
+    protected override void OnInitialized()
+    {
+        CultureState.Changed += OnCultureChanged;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -37,8 +55,15 @@ else
         await _initializationTask;
     }
 
+    public void Dispose()
+    {
+        CultureState.Changed -= OnCultureChanged;
+    }
+
     public async ValueTask DisposeAsync()
     {
+        CultureState.Changed -= OnCultureChanged;
+
         var initializationCancellation = _initializationCancellation;
         _initializationCancellation = null;
         if (initializationCancellation is null)
@@ -53,6 +78,11 @@ else
         }
 
         initializationCancellation.Dispose();
+    }
+
+    private void OnCultureChanged(object? sender, EventArgs args)
+    {
+        _ = InvokeAsync(StateHasChanged);
     }
 
     private async Task InitializeAsync(CancellationToken cancellationToken)

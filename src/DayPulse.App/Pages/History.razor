@@ -1,10 +1,11 @@
 @page "/history"
+@inject IStringLocalizer<SharedResource> Localizer
 
-<PageTitle>History | DayPulse</PageTitle>
+<PageTitle>@Localizer["HistoryPageTitle"]</PageTitle>
 
 <MudStack Spacing="2">
-    <MudText Typo="Typo.h1">History</MudText>
+    <MudText Typo="Typo.h1">@Localizer["History"]</MudText>
     <MudText Color="Color.Secondary">
-        Your past check-ins will appear here.
+        @Localizer["HistoryDescription"]
     </MudText>
 </MudStack>

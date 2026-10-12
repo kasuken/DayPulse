@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>DayPulse</value>
+  </data>
+  <data name="LocalStorageUnavailableTitle" xml:space="preserve">
+    <value>Local storage is unavailable</value>
+  </data>
+  <data name="LocalStorageUnavailableMessage" xml:space="preserve">
+    <value>DayPulse could not initialize its local data. Refresh the page and try again.</value>
+  </data>
+  <data name="BootstrapUnhandledError" xml:space="preserve">
+    <value>An unhandled error has occurred.</value>
+  </data>
+  <data name="BootstrapReload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="BootstrapErrorBoundary" xml:space="preserve">
+    <value>An error has occurred.</value>
+  </data>
+  <data name="PrimaryNavigation" xml:space="preserve">
+    <value>Primary navigation</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Insights" xml:space="preserve">
+    <value>Insights</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="HomePageTitle" xml:space="preserve">
+    <value>DayPulse</value>
+  </data>
+  <data name="HomeDescription" xml:space="preserve">
+    <value>Your private wellbeing companion.</value>
+  </data>
+  <data name="HomeReadyHeading" xml:space="preserve">
+    <value>Ready when you are</value>
+  </data>
+  <data name="HomeReadyMessage" xml:space="preserve">
+    <value>Your daily check-in will live here.</value>
+  </data>
+  <data name="HistoryPageTitle" xml:space="preserve">
+    <value>History | DayPulse</value>
+  </data>
+  <data name="HistoryDescription" xml:space="preserve">
+    <value>Your past check-ins will appear here.</value>
+  </data>
+  <data name="InsightsPageTitle" xml:space="preserve">
+    <value>Insights | DayPulse</value>
+  </data>
+  <data name="InsightsDescription" xml:space="preserve">
+    <value>Your wellbeing patterns will appear here.</value>
+  </data>
+  <data name="PageNotFoundPageTitle" xml:space="preserve">
+    <value>Page not found | DayPulse</value>
+  </data>
+  <data name="PageNotFoundHeading" xml:space="preserve">
+    <value>Page not found</value>
+  </data>
+  <data name="PageNotFoundDescription" xml:space="preserve">
+    <value>Sorry, the content you are looking for does not exist.</value>
+  </data>
+  <data name="SettingsPageTitle" xml:space="preserve">
+    <value>Settings | DayPulse</value>
+  </data>
+  <data name="SettingsDescription" xml:space="preserve">
+    <value>Your DayPulse preferences will appear here.</value>
+  </data>
+  <data name="Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="ThemePreference" xml:space="preserve">
+    <value>Theme preference</value>
+  </data>
+  <data name="ThemePreferenceHelper" xml:space="preserve">
+    <value>System follows your device preference.</value>
+  </data>
+  <data name="ThemeModeSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="ThemeModeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="ThemeModeDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="LoadingThemePreference" xml:space="preserve">
+    <value>Loading theme preference…</value>
+  </data>
+  <data name="SavingThemePreference" xml:space="preserve">
+    <value>Saving theme preference…</value>
+  </data>
+  <data name="ThemePreferenceLoadError" xml:space="preserve">
+    <value>The theme preference could not be loaded.</value>
+  </data>
+  <data name="TryAgain" xml:space="preserve">
+    <value>Try again</value>
+  </data>
+  <data name="Retrying" xml:space="preserve">
+    <value>Retrying…</value>
+  </data>
+  <data name="RetryingThemePreference" xml:space="preserve">
+    <value>Retrying theme preference…</value>
+  </data>
+  <data name="ThemePreferenceSaveError" xml:space="preserve">
+    <value>The theme preference could not be saved.</value>
+  </data>
+  <data name="InstallDayPulse" xml:space="preserve">
+    <value>Install DayPulse</value>
+  </data>
+  <data name="InstallDescription" xml:space="preserve">
+    <value>Keep your daily check-ins close at hand.</value>
+  </data>
+  <data name="DismissInstallGuidance" xml:space="preserve">
+    <value>Dismiss install guidance</value>
+  </data>
+  <data name="InstallIosDescription" xml:space="preserve">
+    <value>Add DayPulse to your Home Screen for a faster, app-like experience:</value>
+  </data>
+  <data name="InstallIosShareStep" xml:space="preserve">
+    <value>Tap &lt;strong&gt;Share&lt;/strong&gt; in Safari.</value>
+  </data>
+  <data name="InstallIosAddHomeStep" xml:space="preserve">
+    <value>Choose &lt;strong&gt;Add to Home Screen&lt;/strong&gt;, then tap &lt;strong&gt;Add&lt;/strong&gt;.</value>
+  </data>
+  <data name="InstallAndroidMenuDescription" xml:space="preserve">
+    <value>Add DayPulse to your Home Screen from your browser menu:</value>
+  </data>
+  <data name="InstallAndroidMenuStep" xml:space="preserve">
+    <value>Open the browser menu using &lt;strong&gt;⋮&lt;/strong&gt;.</value>
+  </data>
+  <data name="InstallAndroidAddStep" xml:space="preserve">
+    <value>Tap &lt;strong&gt;Install app&lt;/strong&gt; or &lt;strong&gt;Add to Home screen&lt;/strong&gt;.</value>
+  </data>
+  <data name="InstallAndroidPromptDescription" xml:space="preserve">
+    <value>Install DayPulse for quick access and a focused app experience.</value>
+  </data>
+  <data name="Install" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="GotIt" xml:space="preserve">
+    <value>Got it</value>
+  </data>
+  <data name="DontShowAgain" xml:space="preserve">
+    <value>Don't show again</value>
+  </data>
+</root>

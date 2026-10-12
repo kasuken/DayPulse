@@ -9,6 +9,7 @@ public sealed class InstallPromptTests : BunitContext
     public InstallPromptTests()
     {
         Services.AddMudServices();
+        Services.AddDayPulseLocalization();
         JSInterop.Mode = JSRuntimeMode.Loose;
     }
 

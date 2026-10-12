@@ -15,6 +15,7 @@ public sealed class SettingsTests : BunitContext
     public SettingsTests()
     {
         Services.AddMudServices();
+        Services.AddDayPulseLocalization();
         JSInterop.Mode = JSRuntimeMode.Loose;
     }
 

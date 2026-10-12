@@ -1,17 +1,18 @@
 ﻿@page "/"
+@inject IStringLocalizer<SharedResource> Localizer
 
-<PageTitle>DayPulse</PageTitle>
+<PageTitle>@Localizer["HomePageTitle"]</PageTitle>
 
 <MudStack Spacing="4" data-testid="daypulse-home">
-    <MudText Typo="Typo.h1">DayPulse</MudText>
+    <MudText Typo="Typo.h1">@Localizer["ApplicationName"]</MudText>
     <MudText Typo="Typo.body1">
-        Your private wellbeing companion.
+        @Localizer["HomeDescription"]
     </MudText>
 
     <MudPaper Elevation="1" Class="pa-6">
-        <MudText Typo="Typo.h5">Ready when you are</MudText>
+        <MudText Typo="Typo.h5">@Localizer["HomeReadyHeading"]</MudText>
         <MudText Color="Color.Secondary">
-            Your daily check-in will live here.
+            @Localizer["HomeReadyMessage"]
         </MudText>
     </MudPaper>
 </MudStack>

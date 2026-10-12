@@ -31,6 +31,7 @@ public sealed class PwaAssetTests
     {
         var index = ReadRepositoryFile("src/DayPulse.App/wwwroot/index.html");
 
+        Assert.Contains("<html lang=\"en-US\">", index);
         Assert.Contains(
             "name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"",
             index);
@@ -122,6 +123,7 @@ public sealed class PwaAssetTests
         Assert.Contains("icon-512.png", assetUrls);
         Assert.Contains("css/app.css", assetUrls);
         Assert.Contains("js/daypulse-storage.js", assetUrls);
+        Assert.Contains("Shared/BrowserLocaleInitializer.razor.js", assetUrls);
         Assert.Contains("Shared/ThemeProvider.razor.js", assetUrls);
         Assert.Contains(assetUrls, url => url.StartsWith("_framework/", StringComparison.Ordinal));
         Assert.Contains(assetUrls, url => url.EndsWith(".wasm", StringComparison.Ordinal));

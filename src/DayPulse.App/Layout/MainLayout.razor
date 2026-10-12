@@ -1,13 +1,9 @@
 ﻿@inherits LayoutComponentBase
-
-<ThemeProvider />
-<MudPopoverProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
+@inject IStringLocalizer<SharedResource> Localizer
 
 <MudLayout Class="daypulse-shell">
     <MudAppBar Elevation="1" Class="daypulse-app-bar">
-        <MudText Typo="Typo.h6" Class="ml-3">DayPulse</MudText>
+        <MudText Typo="Typo.h6" Class="ml-3">@Localizer["ApplicationName"]</MudText>
     </MudAppBar>
 
     <MudMainContent Class="daypulse-main-content">
@@ -22,7 +18,7 @@
         <MudPaper Class="daypulse-bottom-nav__surface" Elevation="8">
             <MudNavMenu
                 Class="daypulse-bottom-nav__links"
-                aria-label="Primary navigation">
+                aria-label='@Localizer["PrimaryNavigation"]'>
                 <MudNavLink
                     Href="/"
                     Match="NavLinkMatch.All"
@@ -32,9 +28,9 @@
                     Icon="@Icons.Material.Filled.Today"
                     IconColor="Color.Inherit"
                     Ripple="false"
-                    aria-label="Today"
+                    aria-label='@Localizer["Today"]'
                     data-testid="daypulse-nav-today">
-                    Today
+                    @Localizer["Today"]
                 </MudNavLink>
                 <MudNavLink
                     Href="/history"
@@ -45,9 +41,9 @@
                     Icon="@Icons.Material.Filled.History"
                     IconColor="Color.Inherit"
                     Ripple="false"
-                    aria-label="History"
+                    aria-label='@Localizer["History"]'
                     data-testid="daypulse-nav-history">
-                    History
+                    @Localizer["History"]
                 </MudNavLink>
                 <MudNavLink
                     Href="/insights"
@@ -58,9 +54,9 @@
                     Icon="@Icons.Material.Filled.Insights"
                     IconColor="Color.Inherit"
                     Ripple="false"
-                    aria-label="Insights"
+                    aria-label='@Localizer["Insights"]'
                     data-testid="daypulse-nav-insights">
-                    Insights
+                    @Localizer["Insights"]
                 </MudNavLink>
                 <MudNavLink
                     Href="/settings"
@@ -71,13 +67,11 @@
                     Icon="@Icons.Material.Filled.Settings"
                     IconColor="Color.Inherit"
                     Ripple="false"
-                    aria-label="Settings"
+                    aria-label='@Localizer["Settings"]'
                     data-testid="daypulse-nav-settings">
-                    Settings
+                    @Localizer["Settings"]
                 </MudNavLink>
             </MudNavMenu>
         </MudPaper>
     </div>
-
-    <InstallPrompt />
 </MudLayout>

@@ -1,9 +1,12 @@
 ﻿@page "/not-found"
 @layout MainLayout
+@inject IStringLocalizer<SharedResource> Localizer
+
+<PageTitle>@Localizer["PageNotFoundPageTitle"]</PageTitle>
 
 <MudStack Spacing="2">
-    <MudText Typo="Typo.h1">Page not found</MudText>
+    <MudText Typo="Typo.h1">@Localizer["PageNotFoundHeading"]</MudText>
     <MudText Color="Color.Secondary">
-        Sorry, the content you are looking for does not exist.
+        @Localizer["PageNotFoundDescription"]
     </MudText>
 </MudStack>

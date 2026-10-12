@@ -15,6 +15,7 @@ public sealed class MainLayoutTests : BunitContext
     {
         Services.AddMudServices();
         Services.AddInfrastructure();
+        Services.AddDayPulseLocalization();
         Services.AddScoped<ThemeState>();
         JSInterop.Mode = JSRuntimeMode.Loose;
 

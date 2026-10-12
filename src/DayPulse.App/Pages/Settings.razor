@@ -2,23 +2,24 @@
 @implements IAsyncDisposable
 
 @inject ILogger<Settings> Logger
+@inject IStringLocalizer<SharedResource> Localizer
 @inject ThemeState ThemeState
 
-<PageTitle>Settings | DayPulse</PageTitle>
+<PageTitle>@Localizer["SettingsPageTitle"]</PageTitle>
 
 <MudStack Spacing="2">
-    <MudText Typo="Typo.h1">Settings</MudText>
+    <MudText Typo="Typo.h1">@Localizer["Settings"]</MudText>
     <MudText Color="Color.Secondary">
-        Your DayPulse preferences will appear here.
+        @Localizer["SettingsDescription"]
     </MudText>
 
     <MudPaper Class="pa-4" Elevation="1">
         <MudStack Spacing="2">
-            <MudText Typo="Typo.h2">Appearance</MudText>
+            <MudText Typo="Typo.h2">@Localizer["Appearance"]</MudText>
             <MudSelect
                 T="ThemeMode"
-                Label="Theme preference"
-                HelperText="System follows your device preference."
+                Label='@Localizer["ThemePreference"]'
+                HelperText='@Localizer["ThemePreferenceHelper"]'
                 Variant="Variant.Outlined"
                 Value="@_selectedMode"
                 ValueChanged="OnThemeModeChangedAsync"
@@ -29,9 +30,9 @@
                 Adornment="Adornment.Start"
                 AdornmentIcon="@Icons.Material.Filled.Brightness6"
                 data-testid="daypulse-theme-selector">
-                <MudSelectItem Value="@ThemeMode.System">System</MudSelectItem>
-                <MudSelectItem Value="@ThemeMode.Light">Light</MudSelectItem>
-                <MudSelectItem Value="@ThemeMode.Dark">Dark</MudSelectItem>
+                <MudSelectItem Value="@ThemeMode.System">@Localizer["ThemeModeSystem"]</MudSelectItem>
+                <MudSelectItem Value="@ThemeMode.Light">@Localizer["ThemeModeLight"]</MudSelectItem>
+                <MudSelectItem Value="@ThemeMode.Dark">@Localizer["ThemeModeDark"]</MudSelectItem>
             </MudSelect>
 
             @if ((!ThemeState.IsInitialized || !ThemeState.IsProviderInitialized)
@@ -39,7 +40,7 @@
             {
                 <span role="status">
                     <MudText Typo="Typo.body2" Color="Color.Secondary">
-                        Loading theme preference…
+                        @Localizer["LoadingThemePreference"]
                     </MudText>
                 </span>
             }
@@ -47,7 +48,7 @@
             {
                 <span role="status">
                     <MudText Typo="Typo.body2" Color="Color.Secondary">
-                        Saving theme preference…
+                        @Localizer["SavingThemePreference"]
                     </MudText>
                 </span>
             }
@@ -56,23 +57,23 @@
             {
                 <div role="alert">
                     <MudAlert Severity="Severity.Error" Dense="true">
-                        @(_errorMessage ?? "The theme preference could not be loaded.")
+                        @ErrorMessage
                         <MudButton
                             Variant="Variant.Text"
                             Color="Color.Error"
                             Disabled="@_isRetrying"
                             OnClick="RetryThemeInitializationAsync"
                             data-testid="daypulse-theme-retry">
-                            @(_isRetrying ? "Retrying…" : "Try again")
+                            @(_isRetrying ? Localizer["Retrying"] : Localizer["TryAgain"])
                         </MudButton>
                     </MudAlert>
                 </div>
             }
-            else if (_errorMessage is not null)
+            else if (_errorMessageKey is not null)
             {
                 <div role="alert">
                     <MudAlert Severity="Severity.Error" Dense="true">
-                        @_errorMessage
+                        @ErrorMessage
                     </MudAlert>
                 </div>
             }
@@ -81,7 +82,7 @@
             {
                 <span role="status">
                     <MudText Typo="Typo.body2" Color="Color.Secondary">
-                        Retrying theme preference…
+                        @Localizer["RetryingThemePreference"]
                     </MudText>
                 </span>
             }
@@ -97,7 +98,7 @@
     private bool _isSaving;
     private bool _isRetrying;
     private bool _initializationErrorVisible;
-    private string? _errorMessage;
+    private string? _errorMessageKey;
     private Task? _selectionRefreshTask;
     private Task? _initializationTask;
     private Task? _themeChangeTask;
@@ -193,12 +194,12 @@
                 || (requestProviderRetry && !ThemeState.IsProviderInitialized))
             {
                 _initializationErrorVisible = true;
-                _errorMessage = null;
+                _errorMessageKey = null;
             }
             else
             {
                 _initializationErrorVisible = false;
-                _errorMessage = null;
+                _errorMessageKey = null;
             }
             await InvokeAsync(StateHasChanged);
         }
@@ -215,12 +216,12 @@
             if (ThemeState.IsInitialized)
             {
                 _initializationErrorVisible = false;
-                _errorMessage = null;
+                _errorMessageKey = null;
             }
             else
             {
                 _initializationErrorVisible = true;
-                _errorMessage = "The theme preference could not be loaded.";
+                _errorMessageKey = "ThemePreferenceLoadError";
             }
 
             await InvokeAsync(StateHasChanged);
@@ -231,7 +232,7 @@
     {
         try
         {
-            _errorMessage = null;
+            _errorMessageKey = null;
             await ThemeState.InitializeAsync(_componentCancellation.Token);
             if (_disposed)
             {
@@ -241,7 +242,7 @@
             if (ThemeState.IsInitializationFailed)
             {
                 _selectedMode = ThemeState.Mode;
-                _errorMessage = null;
+                _errorMessageKey = null;
                 return;
             }
 
@@ -268,7 +269,7 @@
         {
             Logger.LogError(exception, "Theme preference could not be saved.");
             _selectedMode = ThemeState.Mode;
-            _errorMessage = "The theme preference could not be saved.";
+            _errorMessageKey = "ThemePreferenceSaveError";
         }
         finally
         {
@@ -312,12 +313,12 @@
                 if (ThemeState.IsInitializationFailed)
                 {
                     _initializationErrorVisible = true;
-                    _errorMessage = null;
+                    _errorMessageKey = null;
                 }
                 else if (_initializationErrorVisible && ThemeState.IsInitialized)
                 {
                     _initializationErrorVisible = false;
-                    _errorMessage = null;
+                    _errorMessageKey = null;
                 }
 
                 StateHasChanged();
@@ -417,4 +418,7 @@
             }
         }
     }
+
+    private string ErrorMessage =>
+        Localizer[_errorMessageKey ?? "ThemePreferenceLoadError"].Value;
 }

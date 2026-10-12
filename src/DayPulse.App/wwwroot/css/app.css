@@ -192,7 +192,11 @@ body {
 }
 
 .blazor-error-boundary::after {
-    content: "An error has occurred.";
+    content: "An unhandled error has occurred.";
+}
+
+.blazor-error-boundary[data-error-message]::after {
+    content: attr(data-error-message);
 }
 
 .loading-progress {

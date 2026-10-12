@@ -1,10 +1,11 @@
 @page "/insights"
+@inject IStringLocalizer<SharedResource> Localizer
 
-<PageTitle>Insights | DayPulse</PageTitle>
+<PageTitle>@Localizer["InsightsPageTitle"]</PageTitle>
 
 <MudStack Spacing="2">
-    <MudText Typo="Typo.h1">Insights</MudText>
+    <MudText Typo="Typo.h1">@Localizer["Insights"]</MudText>
     <MudText Color="Color.Secondary">
-        Your wellbeing patterns will appear here.
+        @Localizer["InsightsDescription"]
     </MudText>
 </MudStack>

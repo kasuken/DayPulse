@@ -1,0 +1,96 @@
+@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
+@inject CultureState CultureState
+@inject IStringLocalizer<SharedResource> Localizer
+@inject ILogger<BrowserLocaleInitializer> Logger
+
+@code {
+    private readonly CancellationTokenSource _componentCancellation = new();
+    private BrowserLocaleInterop? _interop;
+    private Task? _initializationTask;
+    private bool _disposed;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _disposed)
+        {
+            return;
+        }
+
+        _initializationTask = InitializeAsync(_componentCancellation.Token);
+        await _initializationTask;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _disposed = true;
+        _componentCancellation.Cancel();
+
+        if (_initializationTask is not null)
+        {
+            await _initializationTask;
+        }
+
+        var interop = _interop;
+        _interop = null;
+        if (interop is not null)
+        {
+            await interop.DisposeAsync();
+        }
+
+        _componentCancellation.Dispose();
+    }
+
+    private async Task InitializeAsync(CancellationToken cancellationToken)
+    {
+        BrowserLocaleInterop? interop = null;
+        try
+        {
+            interop = new BrowserLocaleInterop(JSRuntime);
+            var browserLocales = await interop.GetBrowserLocalesAsync(cancellationToken);
+            CultureState.ApplyBrowserLocales(browserLocales);
+            await interop.SetDocumentLanguageAsync(
+                CultureState.CurrentCulture.Name,
+                cancellationToken);
+            await interop.SetBootstrapErrorTextAsync(
+                Localizer["BootstrapUnhandledError"].Value,
+                Localizer["BootstrapReload"].Value,
+                Localizer["BootstrapErrorBoundary"].Value,
+                cancellationToken);
+
+            if (_disposed)
+            {
+                await interop.DisposeAsync();
+                interop = null;
+                return;
+            }
+
+            _interop = interop;
+            interop = null;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+        }
+        catch (JSDisconnectedException) when (_disposed)
+        {
+        }
+        catch (Exception exception)
+        {
+            Logger.LogDebug(
+                exception,
+                "DayPulse browser locale initialization failed; keeping the default culture.");
+        }
+        finally
+        {
+            if (interop is not null)
+            {
+                await interop.DisposeAsync();
+            }
+        }
+    }
+}

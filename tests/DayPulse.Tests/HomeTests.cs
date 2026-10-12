@@ -12,8 +12,21 @@ public sealed class HomeTests : BunitContext
     {
         Services.AddMudServices();
         Services.AddInfrastructure();
+        Services.AddDayPulseLocalization();
         Services.AddScoped<ThemeState>();
         JSInterop.Mode = JSRuntimeMode.Loose;
+
+        var localeModule = JSInterop.SetupModule(
+            "./Shared/BrowserLocaleInitializer.razor.js");
+        localeModule
+            .Setup<string[]?>("getBrowserLocales", _ => true)
+            .SetResult(["en-US"]);
+        localeModule
+            .SetupVoid("setDocumentLanguage", _ => true)
+            .SetVoidResult();
+        localeModule
+            .SetupVoid("dispose", _ => true)
+            .SetVoidResult();
 
         var themeModule = JSInterop.SetupModule("./Shared/ThemeProvider.razor.js");
         themeModule
