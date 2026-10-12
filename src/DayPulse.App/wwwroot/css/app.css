@@ -1,13 +1,173 @@
+:root {
+    --daypulse-bottom-nav-content-height: 5rem;
+}
+
 html,
 body {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     margin: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+#app,
+.daypulse-shell {
+    min-width: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+.daypulse-app-bar {
+    box-sizing: border-box;
+    padding-block-start: env(safe-area-inset-top, 0px);
+    padding-inline-end: env(safe-area-inset-right, 0px);
+    padding-inline-start: env(safe-area-inset-left, 0px);
+}
+
+.daypulse-app-bar .mud-toolbar {
+    min-height: 3.5rem;
+}
+
+.daypulse-main-content {
+    box-sizing: border-box;
+    min-width: 0;
+    padding-bottom: calc(
+        var(--daypulse-bottom-nav-content-height) + env(safe-area-inset-bottom, 0px)
+    );
+    padding-top: calc(
+        var(--mud-appbar-height) - var(--mud-appbar-height) / 8
+        + env(safe-area-inset-top, 0px)
+    );
+}
+
+@media (min-width: 0px) and (orientation: landscape) {
+    .daypulse-main-content {
+        padding-top: calc(
+            var(--mud-appbar-height) - var(--mud-appbar-height) / 4
+            + env(safe-area-inset-top, 0px)
+        );
+    }
+}
+
+@media (min-width: 600px) {
+    .daypulse-main-content {
+        padding-top: calc(
+            var(--mud-appbar-height) + env(safe-area-inset-top, 0px)
+        );
+    }
+}
+
+.daypulse-page-main {
+    min-width: 0;
+}
+
+.daypulse-page-content {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+}
+
+.daypulse-bottom-nav {
+    bottom: 0;
+    box-sizing: border-box;
+    left: 0;
+    padding-block-end: calc(0.25rem + env(safe-area-inset-bottom, 0px));
+    padding-block-start: 0.25rem;
+    padding-inline-end: max(0.5rem, env(safe-area-inset-right, 0px));
+    padding-inline-start: max(0.5rem, env(safe-area-inset-left, 0px));
+    position: fixed;
+    right: 0;
+    z-index: 1200;
+}
+
+.daypulse-bottom-nav__surface {
+    border-radius: 0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.daypulse-bottom-nav__links {
+    display: grid;
+    gap: 0.25rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-inline: auto;
+    max-width: 48rem;
+    min-width: 0;
+    min-height: var(--daypulse-bottom-nav-content-height);
+    width: 100%;
+}
+
+.daypulse-bottom-nav__link {
+    min-width: 0;
+    width: 100%;
+}
+
+.daypulse-bottom-nav__link > .mud-nav-link {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    justify-content: center;
+    min-height: var(--daypulse-bottom-nav-content-height);
+    min-width: 0;
+    overflow-wrap: anywhere;
+    padding: 0.35rem 0.2rem;
+    text-align: center;
+    white-space: normal;
+    width: 100%;
+}
+
+.daypulse-bottom-nav__link > .mud-nav-link .mud-nav-link-text {
+    margin: 0;
+    min-width: 0;
+    overflow: visible;
+    text-align: center;
+    text-overflow: clip;
+    white-space: normal;
+    width: auto;
+}
+
+.daypulse-bottom-nav__link > .mud-nav-link .mud-icon-root {
+    flex: 0 0 auto;
+    font-size: 1.25rem;
+}
+
+.daypulse-bottom-nav__link > .mud-nav-link.daypulse-bottom-nav__link--active {
+    font-weight: 700;
+}
+
+.daypulse-bottom-nav__link > .mud-nav-link.daypulse-bottom-nav__link--active::after {
+    background-color: var(--mud-palette-primary);
+    border-radius: 9999px;
+    content: "";
+    display: block;
+    height: 0.2rem;
+    margin-block-start: 0.1rem;
+    width: 1.75rem;
+}
+
+.daypulse-bottom-nav__link > .mud-nav-link:focus-visible {
+    outline: 2px solid var(--mud-palette-primary);
+    outline-offset: -2px;
+}
+
+@media (max-width: 20rem) {
+    .daypulse-bottom-nav__link > .mud-nav-link {
+        font-size: 0.6875rem;
+    }
+
+    .daypulse-bottom-nav__link > .mud-nav-link .mud-icon-root {
+        display: none;
+    }
 }
 
 #blazor-error-ui {
     background: var(--mud-palette-warning, #fff3cd);
     color: var(--mud-palette-text-primary, #212121);
-    bottom: 0;
+    bottom: calc(
+        var(--daypulse-bottom-nav-content-height) + env(safe-area-inset-bottom, 0px)
+    );
     box-shadow: 0 -1px 2px rgb(0 0 0 / 20%);
     box-sizing: border-box;
     display: none;
@@ -70,13 +230,15 @@ body {
 }
 
 .daypulse-install-prompt {
-    bottom: calc(1rem + env(safe-area-inset-bottom));
+    bottom: calc(
+        var(--daypulse-bottom-nav-content-height) + 1rem + env(safe-area-inset-bottom, 0px)
+    );
     box-sizing: border-box;
     left: 1rem;
     max-width: 32rem;
     position: fixed;
     right: 1rem;
-    z-index: 1100;
+    z-index: 1300;
 }
 
 .daypulse-install-prompt__surface {

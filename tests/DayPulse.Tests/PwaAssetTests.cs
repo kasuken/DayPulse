@@ -26,6 +26,16 @@ public sealed class PwaAssetTests
         Assert.Contains(icons, icon => HasIconConfiguration(icon, "icon-512.png", "512x512"));
     }
 
+    [Fact]
+    public void Index_document_allows_content_to_extend_into_safe_areas()
+    {
+        var index = ReadRepositoryFile("src/DayPulse.App/wwwroot/index.html");
+
+        Assert.Contains(
+            "name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\"",
+            index);
+    }
+
     [Theory]
     [InlineData("icon-192.png", 192)]
     [InlineData("icon-512.png", 512)]

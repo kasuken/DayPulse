@@ -5,16 +5,79 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudLayout>
-    <MudAppBar Elevation="1">
+<MudLayout Class="daypulse-shell">
+    <MudAppBar Elevation="1" Class="daypulse-app-bar">
         <MudText Typo="Typo.h6" Class="ml-3">DayPulse</MudText>
     </MudAppBar>
 
-    <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Medium" Class="pa-4">
-            @Body
-        </MudContainer>
+    <MudMainContent Class="daypulse-main-content">
+        <main class="daypulse-page-main">
+            <MudContainer MaxWidth="MaxWidth.Medium" Class="daypulse-page-content pa-4">
+                @Body
+            </MudContainer>
+        </main>
     </MudMainContent>
+
+    <div class="daypulse-bottom-nav" data-testid="daypulse-bottom-nav">
+        <MudPaper Class="daypulse-bottom-nav__surface" Elevation="8">
+            <MudNavMenu
+                Class="daypulse-bottom-nav__links"
+                aria-label="Primary navigation">
+                <MudNavLink
+                    Href="/"
+                    Match="NavLinkMatch.All"
+                    ActiveClass="daypulse-bottom-nav__link--active"
+                    Class="daypulse-bottom-nav__link"
+                    ForceLoad="false"
+                    Icon="@Icons.Material.Filled.Today"
+                    IconColor="Color.Inherit"
+                    Ripple="false"
+                    aria-label="Today"
+                    data-testid="daypulse-nav-today">
+                    Today
+                </MudNavLink>
+                <MudNavLink
+                    Href="/history"
+                    Match="NavLinkMatch.Prefix"
+                    ActiveClass="daypulse-bottom-nav__link--active"
+                    Class="daypulse-bottom-nav__link"
+                    ForceLoad="false"
+                    Icon="@Icons.Material.Filled.History"
+                    IconColor="Color.Inherit"
+                    Ripple="false"
+                    aria-label="History"
+                    data-testid="daypulse-nav-history">
+                    History
+                </MudNavLink>
+                <MudNavLink
+                    Href="/insights"
+                    Match="NavLinkMatch.Prefix"
+                    ActiveClass="daypulse-bottom-nav__link--active"
+                    Class="daypulse-bottom-nav__link"
+                    ForceLoad="false"
+                    Icon="@Icons.Material.Filled.Insights"
+                    IconColor="Color.Inherit"
+                    Ripple="false"
+                    aria-label="Insights"
+                    data-testid="daypulse-nav-insights">
+                    Insights
+                </MudNavLink>
+                <MudNavLink
+                    Href="/settings"
+                    Match="NavLinkMatch.Prefix"
+                    ActiveClass="daypulse-bottom-nav__link--active"
+                    Class="daypulse-bottom-nav__link"
+                    ForceLoad="false"
+                    Icon="@Icons.Material.Filled.Settings"
+                    IconColor="Color.Inherit"
+                    Ripple="false"
+                    aria-label="Settings"
+                    data-testid="daypulse-nav-settings">
+                    Settings
+                </MudNavLink>
+            </MudNavMenu>
+        </MudPaper>
+    </div>
 
     <InstallPrompt />
 </MudLayout>
