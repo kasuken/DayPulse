@@ -1,25 +1,36 @@
 ﻿@inherits LayoutComponentBase
 @inject IStringLocalizer<SharedResource> Localizer
 
-<a class="daypulse-skip-link" href="#main-content">
+<a class="daypulse-skip-link" href="#main-content"
+   @onclick="SkipToMainContentAsync" @onclick:preventDefault="true">
     @Localizer["SkipToMainContent"]
 </a>
 
 <MudLayout Class="daypulse-shell">
-    <MudAppBar Elevation="1" Class="daypulse-app-bar">
-        <MudText Typo="Typo.h6" Class="ml-3">@Localizer["ApplicationName"]</MudText>
+    <MudAppBar Elevation="0" Class="daypulse-app-bar">
+        <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center" Class="daypulse-brand">
+            <BrandMark />
+            <MudText Typo="Typo.h6">@Localizer["ApplicationName"]</MudText>
+        </MudStack>
+        <MudSpacer />
+        <div class="daypulse-device-status">
+            <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+                <MudIcon Icon="@Icons.Material.Outlined.Lock" Size="Size.Small" aria-hidden="true" />
+                <MudText Typo="Typo.body2">@Localizer["OnDevicePrivate"]</MudText>
+            </MudStack>
+        </div>
     </MudAppBar>
 
     <MudMainContent Class="daypulse-main-content">
-        <main id="main-content" class="daypulse-page-main" tabindex="-1">
-            <MudContainer MaxWidth="MaxWidth.Medium" Class="daypulse-page-content pa-4">
+        <main @ref="_mainContent" id="main-content" class="daypulse-page-main" tabindex="-1">
+            <MudContainer MaxWidth="MaxWidth.Large" Class="daypulse-page-content">
                 @Body
             </MudContainer>
         </main>
     </MudMainContent>
 
     <div class="daypulse-bottom-nav" data-testid="daypulse-bottom-nav">
-        <MudPaper Class="daypulse-bottom-nav__surface" Elevation="8">
+        <MudPaper Class="daypulse-bottom-nav__surface" Elevation="0">
             <MudNavMenu
                 Class="daypulse-bottom-nav__links"
                 aria-label='@Localizer["PrimaryNavigation"]'>
@@ -29,7 +40,7 @@
                     ActiveClass="daypulse-bottom-nav__link--active"
                     Class="daypulse-bottom-nav__link"
                     ForceLoad="false"
-                    Icon="@Icons.Material.Filled.Today"
+                    Icon="@Icons.Material.Outlined.Today"
                     IconColor="Color.Inherit"
                     Ripple="false"
                     aria-label='@Localizer["Today"]'
@@ -42,7 +53,7 @@
                     ActiveClass="daypulse-bottom-nav__link--active"
                     Class="daypulse-bottom-nav__link"
                     ForceLoad="false"
-                    Icon="@Icons.Material.Filled.History"
+                    Icon="@Icons.Material.Outlined.History"
                     IconColor="Color.Inherit"
                     Ripple="false"
                     aria-label='@Localizer["History"]'
@@ -55,7 +66,7 @@
                     ActiveClass="daypulse-bottom-nav__link--active"
                     Class="daypulse-bottom-nav__link"
                     ForceLoad="false"
-                    Icon="@Icons.Material.Filled.Insights"
+                    Icon="@Icons.Material.Outlined.Insights"
                     IconColor="Color.Inherit"
                     Ripple="false"
                     aria-label='@Localizer["Insights"]'
@@ -68,7 +79,7 @@
                     ActiveClass="daypulse-bottom-nav__link--active"
                     Class="daypulse-bottom-nav__link"
                     ForceLoad="false"
-                    Icon="@Icons.Material.Filled.Settings"
+                    Icon="@Icons.Material.Outlined.Settings"
                     IconColor="Color.Inherit"
                     Ripple="false"
                     aria-label='@Localizer["Settings"]'
@@ -76,6 +87,18 @@
                     @Localizer["Settings"]
                 </MudNavLink>
             </MudNavMenu>
+            <div class="daypulse-nav-footer">
+                <PrivacyNote />
+            </div>
         </MudPaper>
     </div>
 </MudLayout>
+
+@code {
+    private ElementReference _mainContent;
+
+    private async Task SkipToMainContentAsync()
+    {
+        await _mainContent.FocusAsync();
+    }
+}

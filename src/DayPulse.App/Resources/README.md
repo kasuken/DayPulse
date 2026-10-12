@@ -17,6 +17,12 @@ templates. `CultureSelector.SupportedCultures` intentionally enables only `en-US
 until those translations are ready; enabling `de` or `it` requires changing only
 that supported-culture list and the corresponding resource values.
 
+`DayPulse.App.csproj` enables `BlazorWebAssemblyLoadAllGlobalizationData` because
+the browser can start WebAssembly in a different culture before `CultureState`
+applies the supported English fallback. Without this setting, a German or
+Italian browser can fail during startup even though the resource templates are
+present. Keep it enabled when adding supported languages.
+
 Use `LocalizedFormatService` for user-facing date, time, and numeric values. It
 always formats with `CultureInfo.CurrentCulture`; domain `DateOnly` values remain
 calendar dates and are not converted or localized in `DayPulse.Core`.

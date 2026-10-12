@@ -4,9 +4,9 @@
 
 <PageTitle>@Localizer["PageNotFoundPageTitle"]</PageTitle>
 
-<MudStack Spacing="2">
-    <MudText Typo="Typo.h1">@Localizer["PageNotFoundHeading"]</MudText>
-    <MudText Color="Color.Secondary">
-        @Localizer["PageNotFoundDescription"]
-    </MudText>
+<MudStack Spacing="4">
+    <PageHeader Title="@Localizer["PageNotFoundHeading"]" Description="@Localizer["PageNotFoundDescription"]" />
+    <MudButton Href="/" Variant="Variant.Filled" Color="Color.Primary" Class="align-self-start">
+        @Localizer["BackToToday"]
+    </MudButton>
 </MudStack>

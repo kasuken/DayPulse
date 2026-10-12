@@ -1,0 +1,29 @@
+@inject IStringLocalizer<SharedResource> Localizer
+
+<section aria-labelledby="wellbeing-heading">
+    <MudStack Spacing="1" Class="mb-5">
+        <MudText Typo="Typo.h2" id="wellbeing-heading">@Localizer["WellbeingHeading"]</MudText>
+        <MudText Typo="Typo.body2" Class="daypulse-muted">@Localizer["WellbeingDescription"]</MudText>
+    </MudStack>
+    <MudStack Row="true" Class="daypulse-metric-overview" Spacing="0">
+        @foreach (var metric in Metrics)
+        {
+            <MudStack @key="metric.Key" Row="true" Spacing="2" AlignItems="AlignItems.Center"
+                      Class="daypulse-metric-overview__item">
+                <MudIcon Icon="@metric.Icon" Color="Color.Primary" aria-hidden="true" />
+                <MudText Typo="Typo.subtitle2">@Localizer[metric.Key]</MudText>
+            </MudStack>
+        }
+    </MudStack>
+</section>
+
+@code {
+    private static readonly (string Key, string Icon)[] Metrics =
+    [
+        ("MetricMood", Icons.Material.Outlined.SentimentSatisfied),
+        ("MetricEnergy", Icons.Material.Outlined.Bolt),
+        ("MetricAnxiety", Icons.Material.Outlined.Spa),
+        ("MetricFocus", Icons.Material.Outlined.CenterFocusStrong),
+        ("MetricSleep", Icons.Material.Outlined.Bedtime),
+    ];
+}

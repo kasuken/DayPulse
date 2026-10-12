@@ -50,8 +50,22 @@ public sealed class HomeTests : BunitContext
 
         var cut = Render<global::DayPulse.App.App>();
 
-        Assert.Contains("DayPulse", cut.Find("[data-testid='daypulse-home']").TextContent);
-        Assert.Equal("DayPulse", cut.Find("h1").TextContent);
+        Assert.Contains("Make room for how you feel.", cut.Find("[data-testid='daypulse-home']").TextContent);
+        Assert.Equal("Today", cut.Find("h1").TextContent);
         Assert.NotNull(cut.Find("header"));
+    }
+
+    [Fact]
+    public void Home_links_to_available_routes_and_labels_future_check_ins_honestly()
+    {
+        var cut = Render<global::DayPulse.App.Pages.Home>();
+
+        Assert.Equal("/settings", cut.Find("a:contains('Personalize appearance')").GetAttribute("href"));
+        Assert.Equal("/history", cut.Find("a:contains('View history')").GetAttribute("href"));
+        Assert.Equal("/insights", cut.Find("a:contains('Explore insights')").GetAttribute("href"));
+        Assert.Contains("Daily check-ins are coming", cut.Markup);
+        Assert.Empty(cut.FindAll("input"));
+        Assert.Empty(cut.FindAll("[role='slider']"));
+        Assert.Equal(5, cut.FindAll(".daypulse-metric-overview__item").Count);
     }
 }

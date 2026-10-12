@@ -9,6 +9,10 @@ public sealed class AccessibilityTests
             "src/DayPulse.App/wwwroot/css/app.css"));
 
         Assert.Contains(".daypulse-skip-link", styles);
+        Assert.Contains(".mud-button-root:focus-visible", styles);
+        Assert.Contains("scroll-padding-top:", styles);
+        Assert.Contains("scroll-padding-bottom:", styles);
+        Assert.Contains("overflow-y: auto", styles);
         Assert.Contains("min-height: 2.75rem", styles);
         Assert.Contains("min-width: 2.75rem", styles);
         Assert.Contains(".daypulse-install-prompt__actions .mud-button", styles);

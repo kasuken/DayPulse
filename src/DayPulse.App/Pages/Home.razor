@@ -1,18 +1,39 @@
 ﻿@page "/"
 @inject IStringLocalizer<SharedResource> Localizer
+@using DayPulse.App.Pages.Components
 
 <PageTitle>@Localizer["HomePageTitle"]</PageTitle>
 
-<MudStack Spacing="4" data-testid="daypulse-home">
-    <MudText Typo="Typo.h1">@Localizer["ApplicationName"]</MudText>
-    <MudText Typo="Typo.body1">
-        @Localizer["HomeDescription"]
-    </MudText>
+<MudStack Spacing="6" data-testid="daypulse-home">
+    <PageHeader Title="@Localizer["Today"]" Description="@Localizer["HomeDescription"]" />
+    <TodayWelcome />
+    <WellbeingOverview />
 
-    <MudPaper Elevation="1" Class="pa-6">
-        <MudText Typo="Typo.h5">@Localizer["HomeReadyHeading"]</MudText>
-        <MudText Color="Color.Secondary">
-            @Localizer["HomeReadyMessage"]
-        </MudText>
-    </MudPaper>
+    <MudGrid Spacing="3">
+        <MudItem xs="12" sm="6">
+            <MudPaper Elevation="0" Class="daypulse-panel daypulse-preview-panel pa-6">
+                <MudStack Spacing="2">
+                    <MudIcon Icon="@Icons.Material.Outlined.History" Color="Color.Primary" aria-hidden="true" />
+                    <MudText Typo="Typo.h2">@Localizer["HistoryPreviewHeading"]</MudText>
+                    <MudText Typo="Typo.body2" Class="daypulse-muted">@Localizer["HistoryPreviewDescription"]</MudText>
+                    <MudButton Href="/history" Variant="Variant.Text" Color="Color.Primary" Class="align-self-start">
+                        @Localizer["ViewHistory"]
+                    </MudButton>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <MudPaper Elevation="0" Class="daypulse-panel daypulse-preview-panel pa-6">
+                <MudStack Spacing="2">
+                    <MudIcon Icon="@Icons.Material.Outlined.Insights" Color="Color.Primary" aria-hidden="true" />
+                    <MudText Typo="Typo.h2">@Localizer["InsightsPreviewHeading"]</MudText>
+                    <MudText Typo="Typo.body2" Class="daypulse-muted">@Localizer["InsightsPreviewDescription"]</MudText>
+                    <MudButton Href="/insights" Variant="Variant.Text" Color="Color.Primary" Class="align-self-start">
+                        @Localizer["ExploreInsights"]
+                    </MudButton>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <PrivacyNote />
 </MudStack>

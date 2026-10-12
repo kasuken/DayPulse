@@ -18,8 +18,11 @@ public sealed class PwaAssetTests
         Assert.Equal("/", root.GetProperty("start_url").GetString());
         Assert.Equal("/", root.GetProperty("scope").GetString());
         Assert.Equal("standalone", root.GetProperty("display").GetString());
-        Assert.Equal("#ffffff", root.GetProperty("background_color").GetString());
-        Assert.Equal("#5c2d91", root.GetProperty("theme_color").GetString());
+        var theme = global::DayPulse.App.Shared.DayPulseTheme.Create();
+        Assert.Equal(theme.PaletteLight.Background.Value[..7].ToLowerInvariant(),
+            root.GetProperty("background_color").GetString());
+        Assert.Equal(theme.PaletteLight.Primary.Value[..7].ToLowerInvariant(),
+            root.GetProperty("theme_color").GetString());
 
         var icons = root.GetProperty("icons").EnumerateArray().ToArray();
         Assert.Contains(icons, icon => HasIconConfiguration(icon, "icon-192.png", "192x192"));
@@ -127,7 +130,11 @@ public sealed class PwaAssetTests
         Assert.Contains("manifest.webmanifest", assetUrls);
         Assert.Contains("icon-192.png", assetUrls);
         Assert.Contains("icon-512.png", assetUrls);
+        Assert.Contains("icon.svg", assetUrls);
         Assert.Contains("css/app.css", assetUrls);
+        Assert.Contains("DayPulse.App.styles.css", assetUrls);
+        Assert.Contains("fonts/manrope-variable.ttf", assetUrls);
+        Assert.Contains("fonts/OFL-Manrope.txt", assetUrls);
         Assert.Contains("js/daypulse-storage.js", assetUrls);
         Assert.Contains("Shared/BrowserLocaleInitializer.razor.js", assetUrls);
         Assert.Contains("Shared/ThemeProvider.razor.js", assetUrls);

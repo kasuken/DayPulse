@@ -53,6 +53,53 @@ DayPulse/
 
 ---
 
+## Design System
+
+DayPulse uses a clean, calm visual language: teal for actions, cool slate for
+structure, restrained amber for warnings, and flat surfaces instead of stacked
+Material shadows. A daylight arc is the Today screen's signature illustration;
+it is decorative, not a chart or an inferred wellbeing score.
+
+`Shared/DayPulseTheme.cs` is the source of truth for both palettes and typography.
+Components use MudBlazor tokens, while `wwwroot/css/app.css` owns shared shape,
+focus, and responsive shell rules. The daylight illustration uses scoped CSS.
+
+| Role | Light | Dark |
+| --- | --- | --- |
+| Primary | `#256F64` | `#85D6BD` |
+| Secondary / warning | `#8A5B19` | `#E3C181` |
+| Background | `#F5F7F9` | `#121D23` |
+| Surface | `#FFFFFF` | `#1A2931` |
+| Primary text | `#182A31` | `#EDF4F6` |
+| Secondary text | `#52636B` | `#B3C5CE` |
+
+Manrope is self-hosted under `wwwroot/fonts/` with its SIL Open Font License.
+Typography and icons therefore remain available offline without requests to a
+font service. The install icons and manifest use the same light-theme identity.
+
+The shell uses one primary navigation landmark: a side rail at 960px and wider,
+and bottom navigation below that breakpoint. It retains safe-area padding,
+44px interactive targets, keyboard focus indicators, a skip link, and
+reduced-motion support. Theme choices in Settings save immediately through the
+existing shared `ThemeState`, including load/save failure and retry handling.
+
+All UI copy lives in the shared resource files, with matching German and Italian
+translation templates. WebAssembly loads globalization data so unsupported
+browser locales can safely fall back to English during startup.
+Daily recording, history browsing, and statistics are
+still roadmap features; their redesigned screens explicitly identify them as
+upcoming rather than displaying demo entries or invented statistics.
+
+Regression checks for Epic #8 and its children (#25–#27) are included in
+`tests/DayPulse.Tests`:
+
+```bash
+dotnet build DayPulse.sln --configuration Release --no-restore
+dotnet test DayPulse.sln --configuration Release --no-build
+```
+
+---
+
 ## Roadmap & Milestones
 
 Project tracking and implementation issues are organized into Epics on [GitHub Issues](https://github.com/kasuken/DayPulse/issues).
