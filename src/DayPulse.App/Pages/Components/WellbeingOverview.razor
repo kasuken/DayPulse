@@ -1,29 +1,32 @@
 @inject IStringLocalizer<SharedResource> Localizer
+@inject LocalizedFormatService Format
 
 <section aria-labelledby="wellbeing-heading">
     <MudStack Spacing="1" Class="mb-5">
         <MudText Typo="Typo.h2" id="wellbeing-heading">@Localizer["WellbeingHeading"]</MudText>
-        <MudText Typo="Typo.body2" Class="daypulse-muted">@Localizer["WellbeingDescription"]</MudText>
+        <MudText Typo="Typo.body2" Class="daypulse-muted">@Localizer[Entry is null ? "JournalNoValues" : "JournalTodayValues"]</MudText>
     </MudStack>
-    <MudStack Row="true" Class="daypulse-metric-overview" Spacing="0">
-        @foreach (var metric in Metrics)
+    <MudStack Row="true" Wrap="Wrap.Wrap" Class="daypulse-metric-overview" Spacing="0">
+        @foreach (var metric in Metrics())
         {
-            <MudStack @key="metric.Key" Row="true" Spacing="2" AlignItems="AlignItems.Center"
-                      Class="daypulse-metric-overview__item">
-                <MudIcon Icon="@metric.Icon" Color="Color.Primary" aria-hidden="true" />
+            <MudStack @key="metric.Key" Spacing="1" Class="daypulse-metric-overview__item">
                 <MudText Typo="Typo.subtitle2">@Localizer[metric.Key]</MudText>
+                <MudText>@(metric.Value is { } value ? Format.FormatNumber(value, "0.#") : Localizer["JournalNotRecorded"].Value)</MudText>
             </MudStack>
         }
     </MudStack>
 </section>
 
 @code {
-    private static readonly (string Key, string Icon)[] Metrics =
-    [
-        ("MetricMood", Icons.Material.Outlined.SentimentSatisfied),
-        ("MetricEnergy", Icons.Material.Outlined.Bolt),
-        ("MetricAnxiety", Icons.Material.Outlined.Spa),
-        ("MetricFocus", Icons.Material.Outlined.CenterFocusStrong),
-        ("MetricSleep", Icons.Material.Outlined.Bedtime),
-    ];
+    [Parameter] public CheckIn? Entry { get; set; }
+    [Parameter] public AppSettings Settings { get; set; } = new();
+
+    private IEnumerable<(string Key, double? Value)> Metrics()
+    {
+        yield return ("MetricMood", Entry?.Mood);
+        if (Settings.EnergyEnabled) yield return ("MetricEnergy", Entry?.Energy);
+        if (Settings.AnxietyEnabled) yield return ("MetricAnxiety", Entry?.Anxiety);
+        if (Settings.FocusEnabled) yield return ("MetricFocus", Entry?.Focus);
+        if (Settings.SleepEnabled) yield return ("EntrySleepHours", Entry?.SleepHours);
+    }
 }

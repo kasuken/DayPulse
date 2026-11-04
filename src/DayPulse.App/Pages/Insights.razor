@@ -1,12 +1,262 @@
 @page "/insights"
+@using Microsoft.Extensions.Logging
+@inject ICheckInRepository CheckIns
 @inject IStringLocalizer<SharedResource> Localizer
+@inject LocalizedFormatService FormatService
+@inject TimeProvider TimeProvider
+@inject ILogger<Insights> Logger
 
 <PageTitle>@Localizer["InsightsPageTitle"]</PageTitle>
 
+<div class="insights-page">
 <MudStack Spacing="6">
     <PageHeader Title="@Localizer["Insights"]" Description="@Localizer["InsightsDescription"]" />
-    <EmptyFeatureState Icon="@Icons.Material.Outlined.Insights"
-                       Title="@Localizer["InsightsEmptyHeading"]"
-                       Description="@Localizer["InsightsEmptyDescription"]" />
+
+    @if (_isLoading)
+    {
+        <MudPaper Class="daypulse-panel insights-state" Elevation="0">
+            <MudProgressCircular Indeterminate="true" Color="Color.Primary" aria-hidden="true" />
+            <MudText Typo="Typo.body1" Class="daypulse-muted" role="status">
+                @Localizer["InsightsStatsLoading"]
+            </MudText>
+        </MudPaper>
+    }
+    else if (_hasLoadError)
+    {
+        <MudPaper Class="daypulse-panel insights-state" Elevation="0" role="alert">
+            <MudText Typo="Typo.h2">@Localizer["InsightsStatsLoadError"]</MudText>
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Primary"
+                       Disabled="@_isLoading"
+                       OnClick="LoadAsync"
+                       data-testid="insights-retry">
+                @Localizer["InsightsStatsRetry"]
+            </MudButton>
+        </MudPaper>
+    }
+    else if (_statistics is null || _checkIns.Count == 0)
+    {
+        <MudPaper Class="daypulse-panel insights-state" Elevation="0" data-testid="insights-empty">
+            <MudIcon Icon="@Icons.Material.Outlined.Insights" Size="Size.Large"
+                     Color="Color.Primary" aria-hidden="true" />
+            <MudText Typo="Typo.h2">@Localizer["InsightsStatsEmptyTitle"]</MudText>
+            <MudText Typo="Typo.body1" Class="daypulse-muted">
+                @Localizer["InsightsStatsEmptyDescription"]
+            </MudText>
+            <MudButton Href="/" Variant="Variant.Outlined" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Outlined.Today">
+                @Localizer["BackToToday"]
+            </MudButton>
+        </MudPaper>
+    }
+    else
+    {
+        <MudPaper Class="daypulse-panel insights-summary" Elevation="0">
+            <MudStack Spacing="4">
+                <MudText Typo="Typo.h2">@Localizer["InsightsStatsSummaryHeading"]</MudText>
+                <div class="insights-period-picker"
+                     role="group"
+                     aria-label='@Localizer["InsightsStatsPeriodLabel"]'
+                     data-testid="insights-period-picker">
+                    @foreach (var period in SupportedPeriods)
+                    {
+                        <MudButton @key="period"
+                                   Variant="@(_selectedPeriod == period ? Variant.Filled : Variant.Outlined)"
+                                   Color="Color.Primary"
+                                   aria-pressed="@(_selectedPeriod == period ? "true" : "false")"
+                                   data-testid="@($"insights-period-{(int)period}")"
+                                   OnClick="@(() => SelectPeriod(period))">
+                            @PeriodLabel(period)
+                        </MudButton>
+                    }
+                </div>
+
+                <div class="insights-metrics">
+                    <MudItem xs="12" sm="6" md="4">
+                        <div class="insights-metric">
+                            <MudText Typo="Typo.body2" Class="daypulse-muted">
+                                @Localizer["InsightsStatsCheckInTotal"]
+                            </MudText>
+                            <MudText Typo="Typo.h3">@FormatService.FormatNumber(CurrentPeriod.CheckInCount, "N0")</MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <div class="insights-metric">
+                            <MudText Typo="Typo.body2" Class="daypulse-muted">
+                                @Localizer["InsightsStatsAverageMood"]
+                            </MudText>
+                            <MudText Typo="Typo.h3">@FormatAverage(CurrentPeriod.AverageMood)</MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <div class="insights-metric">
+                            <MudText Typo="Typo.body2" Class="daypulse-muted">
+                                @Localizer["InsightsStatsAverageEnergy"]
+                            </MudText>
+                            <MudText Typo="Typo.h3">@FormatAverage(CurrentPeriod.AverageEnergy)</MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <div class="insights-metric">
+                            <MudText Typo="Typo.body2" Class="daypulse-muted">
+                                @Localizer["InsightsStatsAverageAnxiety"]
+                            </MudText>
+                            <MudText Typo="Typo.h3">@FormatAverage(CurrentPeriod.AverageAnxiety)</MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <div class="insights-metric">
+                            <MudText Typo="Typo.body2" Class="daypulse-muted">
+                                @Localizer["InsightsStatsAverageFocus"]
+                            </MudText>
+                            <MudText Typo="Typo.h3">@FormatAverage(CurrentPeriod.AverageFocus)</MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <div class="insights-metric">
+                            <MudText Typo="Typo.body2" Class="daypulse-muted">
+                                @Localizer["InsightsStatsAverageSleep"]
+                            </MudText>
+                            <MudText Typo="Typo.h3">@FormatAverage(CurrentPeriod.AverageSleepHours)</MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <div class="insights-metric">
+                            <MudText Typo="Typo.body2" Class="daypulse-muted">
+                                @Localizer["InsightsStatsTotalSleep"]
+                            </MudText>
+                            <MudText Typo="Typo.h3">@FormatAverage(CurrentPeriod.TotalSleepHours)</MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <div class="insights-metric">
+                            <MudText Typo="Typo.body2" Class="daypulse-muted">
+                                @Localizer["InsightsStatsActivitySelections"]
+                            </MudText>
+                            <MudText Typo="Typo.h3">@FormatService.FormatNumber(CurrentPeriod.ActivitySelections, "N0")</MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <div class="insights-metric">
+                            <MudText Typo="Typo.body2" Class="daypulse-muted">
+                                @Localizer["InsightsStatsCurrentStreak"]
+                            </MudText>
+                            <MudText Typo="Typo.h3">@FormatDayCount(_statistics.CurrentStreak)</MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <div class="insights-metric">
+                            <MudText Typo="Typo.body2" Class="daypulse-muted">
+                                @Localizer["InsightsStatsLongestStreak"]
+                            </MudText>
+                            <MudText Typo="Typo.h3">@FormatDayCount(_statistics.LongestStreak)</MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <div class="insights-metric">
+                            <MudText Typo="Typo.body2" Class="daypulse-muted">
+                                @Localizer["InsightsStatsBestMood"]
+                            </MudText>
+                            <MudText Typo="Typo.body1">@FormatExtremum(CurrentPeriod.BestMood)</MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4">
+                        <div class="insights-metric">
+                            <MudText Typo="Typo.body2" Class="daypulse-muted">
+                                @Localizer["InsightsStatsLowestMood"]
+                            </MudText>
+                            <MudText Typo="Typo.body1">@FormatExtremum(CurrentPeriod.LowestMood)</MudText>
+                        </div>
+                    </MudItem>
+                </div>
+            </MudStack>
+        </MudPaper>
+
+        <MudPaper Class="daypulse-panel insights-trend" Elevation="0">
+            <MudStack Spacing="3">
+                <MudText Typo="Typo.h2">@Localizer["InsightsStatsChartTitle"]</MudText>
+                <MudText Typo="Typo.body2" Class="daypulse-muted">
+                    @Localizer["InsightsStatsChartDescription",
+                        FormatService.FormatDate(CurrentPeriod.StartDate),
+                        FormatService.FormatDate(CurrentPeriod.EndDate)]
+                </MudText>
+                @if (CurrentPeriod.CheckInCount == 0)
+                {
+                    <MudText Typo="Typo.body1" Class="daypulse-muted" role="status">
+                        @Localizer["InsightsStatsNoPeriodData"]
+                    </MudText>
+                }
+                else
+                {
+                    <div class="insights-chart">
+                        <svg viewBox="0 0 640 220"
+                             role="img"
+                             aria-label='@Localizer["InsightsStatsChartTitle"]'
+                             focusable="false">
+                            <line x1="24" y1="18" x2="616" y2="18" class="insights-chart__grid" />
+                            <line x1="24" y1="98" x2="616" y2="98" class="insights-chart__grid" />
+                            <line x1="24" y1="178" x2="616" y2="178" class="insights-chart__grid" />
+                            <text x="0" y="22" class="insights-chart__axis-label">
+                                @FormatService.FormatNumber(5, "N0")
+                            </text>
+                            <text x="0" y="102" class="insights-chart__axis-label">
+                                @FormatService.FormatNumber(0, "N0")
+                            </text>
+                            <text x="0" y="182" class="insights-chart__axis-label">
+                                @FormatService.FormatNumber(-5, "N0")
+                            </text>
+                            @foreach (var segment in ChartSegments)
+                            {
+                                <line @key="segment.Key"
+                                      x1="@segment.Start.X"
+                                      y1="@segment.Start.Y"
+                                      x2="@segment.End.X"
+                                      y2="@segment.End.Y"
+                                      class="insights-chart__segment" />
+                            }
+                            @foreach (var point in ChartPoints)
+                            {
+                                <circle @key="point.Key"
+                                        cx="@point.X"
+                                        cy="@point.Y"
+                                        r="4"
+                                        class="insights-chart__point" />
+                            }
+                        </svg>
+                    </div>
+                    <div class="insights-chart__range" aria-hidden="true">
+                        <span>@FormatService.FormatDate(CurrentPeriod.StartDate)</span>
+                        <span>@FormatService.FormatDate(CurrentPeriod.EndDate)</span>
+                    </div>
+                    <div class="insights-table-wrap">
+                        <table class="insights-table" data-testid="insights-mood-table">
+                            <caption>@Localizer["InsightsStatsTableCaption"]</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">@Localizer["InsightsStatsDateColumn"]</th>
+                                    <th scope="col">@Localizer["InsightsStatsMoodColumn"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var point in CurrentPeriod.MoodTrend)
+                                {
+                                    <tr @key="point.Date">
+                                        <td>
+                                            <time datetime='@point.Date.ToString("yyyy-MM-dd")'>
+                                                @FormatService.FormatDate(point.Date)
+                                            </time>
+                                        </td>
+                                        <td>@FormatService.FormatNumber(point.Mood, "N0")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </MudStack>
+        </MudPaper>
+    }
+
     <PrivacyNote />
 </MudStack>
+</div>

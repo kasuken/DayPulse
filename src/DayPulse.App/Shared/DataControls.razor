@@ -1,0 +1,43 @@
+@inject IStringLocalizer<SharedResource> Localizer
+@implements IAsyncDisposable
+
+<MudPaper Class="daypulse-panel" Elevation="0">
+    <MudStack Spacing="3">
+        <MudText Typo="Typo.h2">@Localizer["DataControlsTitle"]</MudText>
+        <MudText>@Localizer["DataControlsExportDescription"]</MudText>
+        <MudText Typo="Typo.body2">@Localizer["DataControlsCsvDescription"]</MudText>
+        <MudAlert Severity="Severity.Warning">@Localizer["DataControlsDownloadPrivacy"]</MudAlert>
+        <MudStack Row="true" Wrap="Wrap.Wrap">
+            <MudButton Variant="Variant.Outlined" OnClick="@(() => ExportAsync(false))" Disabled="@_busy" data-testid="data-export-json">@Localizer["DataControlsExportJson"]</MudButton>
+            <MudButton Variant="Variant.Outlined" OnClick="@(() => ExportAsync(true))" Disabled="@_busy" data-testid="data-export-csv">@Localizer["DataControlsExportCsv"]</MudButton>
+        </MudStack>
+        @if (_errorKey is not null)
+        {
+            <MudAlert Severity="Severity.Error" role="alert" data-testid="data-error">@Localizer[_errorKey]</MudAlert>
+        }
+        @if (_downloadStarted)
+        {
+            <MudText role="status">@Localizer["DataControlsDownloadStarted"]</MudText>
+        }
+        @if (_busy)
+        {
+            <MudText role="status">@Localizer["DataControlsWorking"]</MudText>
+        }
+        <MudDivider />
+        <MudText Typo="Typo.h3">@Localizer["DataControlsDeleteTitle"]</MudText>
+        <MudText>@Localizer["DataControlsDeleteDescription"]</MudText>
+        @if (!_confirming)
+        {
+            <MudButton Color="Color.Error" Variant="Variant.Outlined" OnClick="RequestDelete" Disabled="@_busy" data-testid="data-request-delete">@Localizer["DataControlsDeleteAll"]</MudButton>
+        }
+        else
+        {
+            <MudAlert Severity="Severity.Warning">@Localizer["DataControlsConfirmDescription"]</MudAlert>
+            <MudCheckBox T="bool" @bind-Value="_confirmed" Label="@Localizer["DataControlsConfirmLabel"]" Disabled="@_busy" data-testid="data-confirm-checkbox" />
+            <MudStack Row="true" Wrap="Wrap.Wrap">
+                <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="DeleteAsync" Disabled="@(_busy || !_confirmed)" data-testid="data-confirm-delete">@Localizer["DataControlsConfirmDelete"]</MudButton>
+                <MudButton OnClick="CancelDelete" Disabled="@_busy" data-testid="data-cancel-delete">@Localizer["DataControlsCancel"]</MudButton>
+            </MudStack>
+        }
+    </MudStack>
+</MudPaper>

@@ -1,0 +1,55 @@
+@inject IStringLocalizer<SharedResource> Localizer
+@inject LocalizedFormatService Format
+
+<fieldset class="mood-picker" data-testid="entry-mood" disabled="@Disabled">
+    <legend>
+        @* Deliberately not label/for: clicking the heading must not choose the resting value. *@
+        <MudText Typo="Typo.h2" id="entry-mood-label">@Localizer["EntryMoodRequired"]</MudText>
+    </legend>
+    <div class="mood-picker__preview" data-selected="@(Value is null ? "false" : "true")">
+        <svg class="mood-picker__face" data-testid="entry-mood-face" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle class="mood-picker__head" cx="12" cy="12" r="10" />
+            @if (Value is { } score)
+            {
+                <path class="mood-picker__features" d="@EyePath(score)" />
+                <path class="mood-picker__features" d="@MouthPath(score)" />
+            }
+            else
+            {
+                <path class="mood-picker__features" d="M8 10h1 M15 10h1" />
+            }
+        </svg>
+        <p class="mood-picker__status" data-testid="entry-mood-status" data-selected="@(Value is null ? "false" : "true")"
+           aria-live="polite" aria-atomic="true">
+            @if (Value is { } selected)
+            {
+                <strong>@MoodLabel(selected)</strong>
+                <span>@SignedScore(selected)</span>
+            }
+            else
+            {
+                @Localizer["EntryMoodNotChosen"]
+            }
+        </p>
+    </div>
+    <p class="mood-picker__help" id="entry-mood-help">@Localizer["EntryMoodScale"]</p>
+    <input class="mood-picker__range" type="range" min="-5" max="5" step="1" value="@DisplayValue"
+           disabled="@Disabled" aria-labelledby="entry-mood-label" aria-describedby="entry-mood-help"
+           aria-valuetext="@ValueText" data-testid="entry-mood-input"
+           @oninput="OnInputAsync" @onchange="OnInputAsync" @onclick="RecordShownValueAsync" @onkeydown="OnKeyDownAsync" />
+    <div class="mood-picker__anchors">
+        @foreach (var anchor in Anchors)
+        {
+            <button @key="anchor" type="button" class="mood-picker__anchor" disabled="@Disabled"
+                    aria-label="@ScoreText(anchor)" aria-pressed="@(Value == anchor ? "true" : "false")"
+                    data-testid="@($"entry-mood-anchor-{anchor}")" @onclick="() => SetAsync(anchor)">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <circle class="mood-picker__head" cx="12" cy="12" r="10" />
+                    <path class="mood-picker__features" d="@EyePath(anchor)" />
+                    <path class="mood-picker__features" d="@MouthPath(anchor)" />
+                </svg>
+                <span>@SignedScore(anchor)</span>
+            </button>
+        }
+    </div>
+</fieldset>

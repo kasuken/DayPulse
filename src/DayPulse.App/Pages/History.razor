@@ -1,12 +1,71 @@
 @page "/history"
+@using DayPulse.Core.Repositories
+@implements IAsyncDisposable
 @inject IStringLocalizer<SharedResource> Localizer
+@inject LocalizedFormatService Format
+@inject ICheckInRepository Entries
+@inject ILogger<History> Logger
 
 <PageTitle>@Localizer["HistoryPageTitle"]</PageTitle>
-
 <MudStack Spacing="6">
-    <PageHeader Title="@Localizer["History"]" Description="@Localizer["HistoryDescription"]" />
-    <EmptyFeatureState Icon="@Icons.Material.Outlined.History"
-                       Title="@Localizer["HistoryEmptyHeading"]"
-                       Description="@Localizer["HistoryEmptyDescription"]" />
+    <PageHeader Title="@Localizer["History"]" Description="@Localizer["JournalHistoryDescription"]" />
+    <MudButton Href="/check-in" Variant="Variant.Filled" Color="Color.Primary" Class="align-self-start">@Localizer["EntryStart"]</MudButton>
+    @if (_loading)
+    {
+        <MudText role="status">@Localizer["JournalLoading"]</MudText>
+    }
+    else if (_failed)
+    {
+        <MudAlert Severity="Severity.Error">@Localizer["JournalLoadError"]</MudAlert>
+        <MudButton OnClick="LoadAsync">@Localizer["JournalRetry"]</MudButton>
+    }
+    else if (_entries.Count == 0)
+    {
+        <EmptyFeatureState Icon="@Icons.Material.Outlined.History" Title="@Localizer["JournalHistoryEmpty"]"
+                           Description="@Localizer["JournalHistoryEmptyHelp"]" />
+    }
+    else
+    {
+        @foreach (var entry in _entries)
+        {
+            <MudPaper @key="entry.Id" Elevation="0" Class="daypulse-panel pa-5" data-testid="journal-history-entry">
+                <MudStack Spacing="2">
+                    <MudText Typo="Typo.h2">@Format.FormatDate(entry.EntryDate, "D")</MudText>
+                    <MudText>@Localizer["MetricMood"]: @Format.FormatNumber(entry.Mood, "0")</MudText>
+                    <MudButton Href="@($"/history/{Uri.EscapeDataString(entry.Id)}")" Class="align-self-start" Color="Color.Primary">
+                        @Localizer["JournalViewEntry"]
+                    </MudButton>
+                </MudStack>
+            </MudPaper>
+        }
+    }
     <PrivacyNote />
 </MudStack>
+
+@code {
+    private readonly CancellationTokenSource _lifetime = new();
+    private IReadOnlyList<CheckIn> _entries = [];
+    private bool _loading = true;
+    private bool _failed;
+    protected override Task OnInitializedAsync() => LoadAsync();
+
+    private async Task LoadAsync()
+    {
+        _loading = true;
+        _failed = false;
+        try { _entries = (await Entries.GetAllAsync(_lifetime.Token)).OrderByDescending(entry => entry.EntryDate).ToArray(); }
+        catch (OperationCanceledException) when (_lifetime.IsCancellationRequested) { }
+        catch (Exception ex)
+        {
+            Logger.LogWarning(ex, "Unable to load journal history.");
+            _failed = true;
+        }
+        finally { _loading = false; }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await _lifetime.CancelAsync();
+        _lifetime.Dispose();
+    }
+}

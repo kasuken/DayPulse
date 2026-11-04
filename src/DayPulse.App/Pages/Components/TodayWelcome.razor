@@ -3,13 +3,14 @@
 <div class="daypulse-welcome-region">
     <MudPaper Elevation="0" Class="daypulse-panel daypulse-welcome">
         <MudStack Spacing="3" Class="daypulse-welcome__content">
-            <MudText Typo="Typo.body2" Class="daypulse-feature-status">@Localizer["CheckInsComingSoon"]</MudText>
+            <MudText Typo="Typo.body2" Class="daypulse-feature-status">@Localizer[Entry is null ? "JournalTodayEmpty" : "JournalTodayComplete"]</MudText>
             <MudText Typo="Typo.h2" Class="daypulse-welcome__heading">@Localizer["HomeReadyHeading"]</MudText>
-            <MudText Typo="Typo.body1" Class="daypulse-muted">@Localizer["HomeReadyMessage"]</MudText>
-            <MudButton Href="/settings" Variant="Variant.Filled" Color="Color.Primary"
-                       StartIcon="@Icons.Material.Outlined.Tune" Class="align-self-start">
-                @Localizer["PersonalizeAppearance"]
+            <MudText Typo="Typo.body1" Class="daypulse-muted">@Localizer[Entry is null ? "JournalTodayPrompt" : "JournalTodaySaved"]</MudText>
+            <MudButton Href="@(Entry is null ? "/check-in" : $"/history/{Uri.EscapeDataString(Entry.Id)}")" Variant="Variant.Filled" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Outlined.EditNote" Class="align-self-start">
+                @Localizer[Entry is null ? "EntryStart" : "JournalViewEntry"]
             </MudButton>
+            <MudButton Href="/settings" Class="align-self-start">@Localizer["PersonalizeAppearance"]</MudButton>
         </MudStack>
         <div class="daypulse-welcome__daylight">
             <svg viewBox="0 0 340 220" fill="none" aria-hidden="true" focusable="false">
@@ -26,5 +27,9 @@
                 @Localizer["YourDayYourPace"]
             </MudText>
         </div>
+
+        @code {
+            [Parameter] public CheckIn? Entry { get; set; }
+        }
     </MudPaper>
 </div>

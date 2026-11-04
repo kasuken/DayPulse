@@ -14,6 +14,7 @@ builder.Services.AddMudServices();
 builder.Services.AddInfrastructure();
 builder.Services.AddDayPulseLocalization();
 builder.Services.AddScoped<ThemeState>();
+builder.Services.AddSingleton(TimeProvider.System);
 
 var host = builder.Build();
 _ = host.Services.GetRequiredService<CultureState>();

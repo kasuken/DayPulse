@@ -1,0 +1,45 @@
+@inject IStringLocalizer<SharedResource> Localizer
+@implements IAsyncDisposable
+
+<MudPaper Class="daypulse-panel" Elevation="0">
+    <MudStack Spacing="3">
+        <MudText Typo="Typo.h2">@Localizer["ActivitiesTitle"]</MudText>
+        <MudText>@Localizer["ActivitiesDescription"]</MudText>
+        @if (_error)
+        {
+            <MudAlert Severity="Severity.Error" role="alert">@Localizer["ActivitiesError"]</MudAlert>
+        }
+        <MudTextField T="string" @bind-Value="_newName" Immediate="true" MaxLength="120" Label="@Localizer["ActivitiesNewName"]" Disabled="@_busy" />
+        <MudButton OnClick="AddAsync" Disabled="@(_busy || !ValidName(_newName))" Variant="Variant.Outlined" data-testid="activities-add">@Localizer["ActivitiesAdd"]</MudButton>
+        @if (_activities is null)
+        {
+            <MudButton OnClick="LoadAsync" Disabled="@_busy">@Localizer["ActivitiesLoad"]</MudButton>
+        }
+        else
+        {
+            @foreach (var activity in _activities)
+            {
+                <MudPaper @key="activity.Id" Outlined="true" Class="pa-3" Elevation="0" data-activity-id="@activity.Id"
+                          role="group" aria-label="@activity.Name">
+                    <MudStack Spacing="2">
+                        <MudTextField T="string" Value="@_names[activity.Id]" ValueChanged="@(value => _names[activity.Id] = value)" Immediate="true" MaxLength="120" Label="@Localizer["ActivitiesName"]"
+                                      aria-label="@($"{Localizer["ActivitiesName"]}: {activity.Name}")" Disabled="@(_busy || activity.IsDefault)" />
+                        <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="2">
+                            @if (!activity.IsDefault)
+                            {
+                                <MudButton OnClick="@(() => RenameAsync(activity.Id))" Disabled="@(_busy || !ValidName(_names[activity.Id]) || _names[activity.Id].Trim() == activity.Name)" data-action="rename">@Localizer["ActivitiesRename"]</MudButton>
+                            }
+                            <MudSwitch @key="(activity.Id, _revision)" T="bool" Value="@activity.IsActive" ValueChanged="@(value => SetActiveAsync(activity.Id, value))" Label="@Localizer["ActivitiesActive"]"
+                                       aria-label="@($"{Localizer["ActivitiesActive"]}: {activity.Name}")" Disabled="@_busy" Color="Color.Primary" />
+                            @if (!activity.IsDefault)
+                            {
+                                <MudButton OnClick="@(() => MoveAsync(activity.Id, -1))" Disabled="@(_busy || activity.Id == _activities.First(item => !item.IsDefault).Id)" aria-label="@Localizer["ActivitiesMoveUp", activity.Name]" data-action="up">@Localizer["ActivitiesUp"]</MudButton>
+                                <MudButton OnClick="@(() => MoveAsync(activity.Id, 1))" Disabled="@(_busy || activity.Id == _activities.Last(item => !item.IsDefault).Id)" aria-label="@Localizer["ActivitiesMoveDown", activity.Name]" data-action="down">@Localizer["ActivitiesDown"]</MudButton>
+                            }
+                        </MudStack>
+                    </MudStack>
+                </MudPaper>
+            }
+        }
+    </MudStack>
+</MudPaper>

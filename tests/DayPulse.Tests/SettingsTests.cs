@@ -14,6 +14,11 @@ public sealed class SettingsTests : BunitContext
     {
         Services.AddMudServices();
         Services.AddDayPulseLocalization();
+        var storage = new DayPulse.Tests.Repositories.InMemoryClientStorage();
+        Services.AddSingleton<IActivityRepository>(
+            new DayPulse.Infrastructure.Repositories.BrowserActivityRepository(storage));
+        Services.AddSingleton<ICheckInRepository>(
+            new DayPulse.Infrastructure.Repositories.BrowserCheckInRepository(storage));
         JSInterop.Mode = JSRuntimeMode.Loose;
     }
 

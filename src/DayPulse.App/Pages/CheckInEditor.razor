@@ -1,0 +1,143 @@
+@page "/check-in"
+@page "/check-in/{Id}"
+@using DayPulse.Core.Repositories
+@implements IAsyncDisposable
+@inject IStringLocalizer<SharedResource> Localizer
+@inject LocalizedFormatService Format
+@inject ICheckInRepository Entries
+@inject IActivityRepository Activities
+@inject ISettingsRepository Settings
+@inject TimeProvider Clock
+@inject NavigationManager Navigation
+@inject ILogger<CheckInEditor> Logger
+
+<PageTitle>@Localizer[Id is null ? "EntryStart" : "EntryEdit"]</PageTitle>
+<MudStack Spacing="5">
+    <PageHeader Title="@Localizer[Id is null ? "EntryStart" : "EntryEdit"]" Description="@Localizer["EntryHelp"]" />
+    @if (_loading)
+    {
+        <MudText role="status">@Localizer["JournalLoading"]</MudText>
+    }
+    else if (_loadFailed)
+    {
+        <MudAlert Severity="Severity.Error">@Localizer["JournalLoadError"]</MudAlert>
+        <MudButton OnClick="LoadAsync">@Localizer["JournalRetry"]</MudButton>
+    }
+    else if (_missing)
+    {
+        <MudAlert Severity="Severity.Info">@Localizer["JournalMissing"]</MudAlert>
+        <MudButton Href="/history">@Localizer["ViewHistory"]</MudButton>
+    }
+    else
+    {
+        @if (_errors.Count > 0)
+        {
+            <MudAlert Severity="Severity.Error" role="alert" data-testid="entry-errors">
+                @foreach (var error in _errors)
+                {
+                    <MudText @key="error">@Localizer[error]</MudText>
+                }
+            </MudAlert>
+        }
+        <MudPaper Class="daypulse-panel pa-5" Elevation="0">
+            <MudForm @ref="_form" Disabled="_saving">
+                <MudStack Spacing="5">
+                    <MudDatePicker Label="@Localizer["EntryDate"]" @bind-Date="_date" Editable="false"
+                                   MaxDate="@Clock.GetLocalNow().Date" Required="true"
+                                   RequiredError="@Localizer["EntryDateInvalid"]" />
+                    <MoodPicker Value="_mood" ValueChanged="@((int? value) => _mood = value)" Disabled="_saving" />
+                    @if (_settings.EnergyEnabled || _settings.AnxietyEnabled || _settings.FocusEnabled || _settings.SleepEnabled)
+                    {
+                        <div class="entry-metrics">
+                            <MudText Typo="Typo.body2" Class="entry-metrics__help">@Localizer["EntryOptionalScore"]</MudText>
+                            @if (_settings.EnergyEnabled)
+                            {
+                                <MetricScale Id="entry-energy" Label="@Localizer["MetricEnergy"]" LowLabel="@Localizer["EntryEnergyLow"]"
+                                             HighLabel="@Localizer["EntryEnergyHigh"]" Value="_energy"
+                                             ValueChanged="@((int? value) => _energy = value)" Disabled="_saving" />
+                            }
+                            @if (_settings.AnxietyEnabled)
+                            {
+                                <MetricScale Id="entry-anxiety" Label="@Localizer["MetricAnxiety"]" LowLabel="@Localizer["EntryAnxietyLow"]"
+                                             HighLabel="@Localizer["EntryAnxietyHigh"]" Value="_anxiety"
+                                             ValueChanged="@((int? value) => _anxiety = value)" Disabled="_saving" />
+                            }
+                            @if (_settings.FocusEnabled)
+                            {
+                                <MetricScale Id="entry-focus" Label="@Localizer["MetricFocus"]" LowLabel="@Localizer["EntryFocusLow"]"
+                                             HighLabel="@Localizer["EntryFocusHigh"]" Value="_focus"
+                                             ValueChanged="@((int? value) => _focus = value)" Disabled="_saving" />
+                            }
+                            @if (_settings.SleepEnabled)
+                            {
+                                <div class="sleep-control" data-testid="entry-sleep" data-recorded="@(_sleep is null ? "false" : "true")">
+                                    <div class="sleep-control__header">
+                                        @* Not a <label for>: its forwarded click would record a value the person never chose. *@
+                                        <span class="sleep-control__label" id="entry-sleep-label">@Localizer["EntrySleepHours"]</span>
+                                        <div class="sleep-control__status">
+                                            @if (_sleep is { } sleep)
+                                            {
+                                                <MudButton Size="Size.Small" Variant="Variant.Text" Disabled="_saving" OnClick="ClearSleepAsync"
+                                                           data-testid="entry-sleep-clear"
+                                                           aria-label="@Localizer["EntryClearMetric", Localizer["EntrySleepHours"]]">@Localizer["EntryClearValue"]</MudButton>
+                                                <span class="sleep-control__value" data-testid="entry-sleep-value" aria-hidden="true">@SleepText(sleep)</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="sleep-control__value" data-testid="entry-sleep-value" aria-hidden="true">@Localizer["JournalNotRecorded"]</span>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="sleep-control__track">
+                                        <MudIconButton Icon="@Icons.Material.Rounded.Remove" Variant="Variant.Outlined" Size="Size.Medium"
+                                                       Disabled="_saving" OnClick="() => StepSleep(-SleepStep)"
+                                                       aria-label="@Localizer["EntrySleepDecrease"]" data-testid="entry-sleep-decrease" />
+                                        <input @ref="_sleepInput" id="entry-sleep-input" class="sleep-control__range" type="range" min="0" max="15" step="0.5"
+                                               value="@SleepRangeValue" disabled="@_saving" aria-valuetext="@SleepValueText"
+                                               aria-labelledby="entry-sleep-label" aria-describedby="entry-sleep-help" data-testid="entry-sleep-input"
+                                               @oninput="SetSleep" @onchange="SetSleep" @onclick="RecordShownSleep" @onkeydown="OnSleepKeyDown" />
+                                        <MudIconButton Icon="@Icons.Material.Rounded.Add" Variant="Variant.Outlined" Size="Size.Medium"
+                                                       Disabled="_saving" OnClick="() => StepSleep(SleepStep)"
+                                                       aria-label="@Localizer["EntrySleepIncrease"]" data-testid="entry-sleep-increase" />
+                                    </div>
+                                    <div class="sleep-control__presets" role="group" aria-label="@Localizer["EntrySleepPresets"]">
+                                        @foreach (var preset in SleepPresets)
+                                        {
+                                            var hours = preset;
+                                            <MudButton @key="hours" Size="Size.Small" Disabled="_saving" OnClick="() => SetSleepHours(hours)"
+                                                       Variant="@(_sleep == hours ? Variant.Filled : Variant.Outlined)" Color="Color.Primary"
+                                                       Class="sleep-control__preset" aria-pressed="@(_sleep == hours ? "true" : "false")"
+                                                       data-testid="@($"entry-sleep-preset-{hours}")">@SleepText(hours)</MudButton>
+                                        }
+                                    </div>
+                                    <MudText Typo="Typo.body2" id="entry-sleep-help" Class="sleep-control__help">@Localizer["EntrySleepHelp"]</MudText>
+                                </div>
+                            }
+                        </div>
+                    }
+                    <MudStack Spacing="1">
+                        <MudText Typo="Typo.h2">@Localizer["EntryActivities"]</MudText>
+                        <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="1">
+                            @foreach (var activity in _activities.Where(activity => activity.IsActive))
+                            {
+                                <MudCheckBox T="bool" @key="activity.Id" Value="@_selectedActivities.Contains(activity.Id)"
+                                             ValueChanged="@((bool selected) => SelectActivity(activity.Id, selected))"
+                                             Label="@(activity.IsDefault ? Localizer[$"EntryActivity{activity.Id}"].Value : activity.Name)" />
+                            }
+                        </MudStack>
+                        <MudTextField T="string" @bind-Value="_customActivity" Label="@Localizer["EntryCustomActivity"]" MaxLength="80" />
+                        <MudButton OnClick="AddActivityAsync" Disabled="@(_saving || string.IsNullOrWhiteSpace(_customActivity))" Class="align-self-start">@Localizer["EntryAddActivity"]</MudButton>
+                    </MudStack>
+                    <MudTextField T="string" @bind-Value="_notes" Label="@Localizer["EntryNotes"]" Lines="4" MaxLength="500"
+                                  HelperText="@Localizer["EntryNotesHelp"]" />
+                    <MudStack Row="true" Wrap="Wrap.Wrap">
+                        <MudButton OnClick="SaveAsync" Variant="Variant.Filled" Color="Color.Primary" Disabled="_saving" data-testid="entry-save">
+                            @Localizer[_saving ? "EntrySaving" : "EntrySave"]
+                        </MudButton>
+                        <MudButton Href="@(Id is null ? "/" : $"/history/{Uri.EscapeDataString(Id)}")" Disabled="_saving">@Localizer["EntryCancel"]</MudButton>
+                    </MudStack>
+                </MudStack>
+            </MudForm>
+        </MudPaper>
+    }
+</MudStack>

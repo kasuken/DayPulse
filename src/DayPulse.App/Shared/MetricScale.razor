@@ -1,0 +1,31 @@
+@inject IStringLocalizer<SharedResource> Localizer
+@inject LocalizedFormatService Format
+
+<div class="metric-scale" data-testid="@Id" data-recorded="@(Value is null ? "false" : "true")">
+    <div class="metric-scale__header">
+        @* Not a <label for>: its forwarded click would record a value the person never chose. *@
+        <span class="metric-scale__label" id="@LabelId">@Label</span>
+        <div class="metric-scale__status">
+            @if (Value is { } value)
+            {
+                <MudButton Class="metric-scale__clear" Size="Size.Small" Variant="Variant.Text" Disabled="Disabled" OnClick="ClearAsync"
+                           data-testid="@($"{Id}-clear")" aria-label="@Localizer["EntryClearMetric", Label]">@Localizer["EntryClearValue"]</MudButton>
+                <span class="metric-scale__value" data-testid="@($"{Id}-value")" aria-hidden="true">
+                    <strong>@Format.FormatNumber(value, "0")</strong><span class="metric-scale__max">/@Format.FormatNumber(Max, "0")</span>
+                </span>
+            }
+            else
+            {
+                <span class="metric-scale__value" data-testid="@($"{Id}-value")" aria-hidden="true">@Localizer["JournalNotRecorded"]</span>
+            }
+        </div>
+    </div>
+    <input @ref="_input" id="@InputId" class="metric-scale__range" type="range" min="0" max="@Max" step="1"
+           value="@DisplayValue" disabled="@Disabled" aria-valuetext="@ValueText" aria-labelledby="@LabelId" aria-describedby="@($"{Id}-ends")"
+           data-testid="@($"{Id}-input")"
+           @oninput="OnInputAsync" @onchange="OnInputAsync" @onclick="RecordShownValueAsync" @onkeydown="OnKeyDownAsync" />
+    <div class="metric-scale__ends" id="@($"{Id}-ends")">
+        <span>@Format.FormatNumber(0, "0") · @LowLabel</span>
+        <span>@Format.FormatNumber(Max, "0") · @HighLabel</span>
+    </div>
+</div>

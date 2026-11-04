@@ -1,0 +1,138 @@
+.mood-picker {
+    border: 0;
+    display: grid;
+    gap: .5rem;
+    margin: 0;
+    min-width: 0;
+    padding: 0;
+}
+
+.mood-picker legend {
+    padding: 0;
+}
+
+.mood-picker__preview {
+    align-items: center;
+    display: grid;
+    gap: .75rem;
+    justify-items: center;
+    padding-top: 1rem;
+}
+
+.mood-picker__face {
+    color: var(--mud-palette-primary);
+    height: 7rem;
+    width: 7rem;
+}
+
+.mood-picker__preview[data-selected="false"] .mood-picker__face {
+    color: var(--mud-palette-text-secondary);
+    stroke-dasharray: 1 2;
+}
+
+.mood-picker__head,
+.mood-picker__features {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.5;
+}
+
+.mood-picker__features {
+    stroke-dasharray: none;
+}
+
+.mood-picker__status {
+    align-items: baseline;
+    border: 1px solid var(--mud-palette-primary);
+    border-radius: var(--daypulse-radius-pill);
+    color: var(--mud-palette-text-primary);
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    justify-content: center;
+    margin: 0;
+    padding: .375rem .875rem;
+    text-align: center;
+}
+
+.mood-picker__status span {
+    font-variant-numeric: tabular-nums;
+}
+
+.mood-picker__status[data-selected="false"] {
+    border-color: var(--mud-palette-text-secondary);
+    border-style: dashed;
+    color: var(--mud-palette-text-secondary);
+}
+
+.mood-picker__help {
+    color: var(--mud-palette-text-secondary);
+    font-size: .875rem;
+    margin: .25rem 0 0;
+    text-align: center;
+}
+
+.mood-picker__range {
+    accent-color: var(--mud-palette-primary);
+    cursor: pointer;
+    margin: 0;
+    min-height: 2.75rem;
+    min-width: 0;
+    width: 100%;
+}
+
+.mood-picker__anchors {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mood-picker__anchor {
+    align-items: center;
+    background: var(--mud-palette-surface);
+    border: 2px solid transparent;
+    border-radius: var(--daypulse-radius-small);
+    color: var(--mud-palette-text-primary);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font: inherit;
+    font-size: .75rem;
+    font-variant-numeric: tabular-nums;
+    gap: .25rem;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    padding: .25rem;
+}
+
+.mood-picker__anchor svg {
+    height: 1.75rem;
+    width: 1.75rem;
+}
+
+.mood-picker__anchor[aria-pressed="true"] {
+    border-color: currentColor;
+    font-weight: 800;
+}
+
+.mood-picker__anchor:hover:not(:disabled) {
+    background: var(--mud-palette-action-default-hover);
+}
+
+.mood-picker__range:focus-visible,
+.mood-picker__anchor:focus-visible {
+    outline: 3px solid var(--mud-palette-primary);
+    outline-offset: 2px;
+}
+
+.mood-picker__range:disabled,
+.mood-picker__anchor:disabled {
+    cursor: not-allowed;
+}
+
+/* No animation: expression changes remain immediate, including with reduced motion. */
+@media (forced-colors: active) {
+    .mood-picker__anchor[aria-pressed="true"] {
+        border-color: Highlight;
+    }
+}

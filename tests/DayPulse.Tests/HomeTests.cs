@@ -1,6 +1,10 @@
 using Bunit;
 using DayPulse.App.Shared;
 using DayPulse.Infrastructure;
+using DayPulse.Core.Domain;
+using DayPulse.Core.Repositories;
+using DayPulse.Infrastructure.Storage;
+using DayPulse.Tests.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 
@@ -12,6 +16,8 @@ public sealed class HomeTests : BunitContext
     {
         Services.AddMudServices();
         Services.AddInfrastructure();
+        Services.AddSingleton<IAtomicClientStorage>(new InMemoryClientStorage());
+        Services.AddSingleton<TimeProvider>(new FixedJournalTimeProvider());
         Services.AddDayPulseLocalization();
         Services.AddScoped<ThemeState>();
         JSInterop.Mode = JSRuntimeMode.Loose;
@@ -41,8 +47,10 @@ public sealed class HomeTests : BunitContext
     }
 
     [Fact]
-    public void Root_route_renders_the_MudBlazor_app_shell()
+    public async Task Root_route_renders_the_MudBlazor_app_shell()
     {
+        await Services.GetRequiredService<ISettingsRepository>()
+            .SaveAsync(new AppSettings(onboardingCompleted: true), Xunit.TestContext.Current.CancellationToken);
         var storageModule = JSInterop.SetupModule("./js/daypulse-storage.js");
         storageModule
             .Setup<bool>("localStorageTrySet", _ => true)
@@ -50,22 +58,53 @@ public sealed class HomeTests : BunitContext
 
         var cut = Render<global::DayPulse.App.App>();
 
-        Assert.Contains("Make room for how you feel.", cut.Find("[data-testid='daypulse-home']").TextContent);
+        cut.WaitForAssertion(() =>
+            Assert.Contains("Make room for how you feel.", cut.Find("[data-testid='daypulse-home']").TextContent));
         Assert.Equal("Today", cut.Find("h1").TextContent);
         Assert.NotNull(cut.Find("header"));
     }
 
     [Fact]
-    public void Home_links_to_available_routes_and_labels_future_check_ins_honestly()
+    public void Home_links_to_available_routes_and_offers_a_real_check_in()
     {
         var cut = Render<global::DayPulse.App.Pages.Home>();
 
-        Assert.Equal("/settings", cut.Find("a:contains('Personalize appearance')").GetAttribute("href"));
+        cut.WaitForAssertion(() =>
+            Assert.Equal("/settings", cut.Find("a:contains('Personalize appearance')").GetAttribute("href")));
         Assert.Equal("/history", cut.Find("a:contains('View history')").GetAttribute("href"));
         Assert.Equal("/insights", cut.Find("a:contains('Explore insights')").GetAttribute("href"));
-        Assert.Contains("Daily check-ins are coming", cut.Markup);
+        Assert.Equal("/check-in", cut.Find("a:contains('Check in')").GetAttribute("href"));
+        Assert.Contains("Nothing is recorded until you save.", cut.Markup);
         Assert.Empty(cut.FindAll("input"));
         Assert.Empty(cut.FindAll("[role='slider']"));
         Assert.Equal(5, cut.FindAll(".daypulse-metric-overview__item").Count);
+    }
+
+    [Fact]
+    public async Task Home_uses_the_local_calendar_date_and_shows_the_saved_entry()
+    {
+        await Services.GetRequiredService<ICheckInRepository>().CreateAsync(
+            new CheckIn("today", FixedJournalTimeProvider.Today, 4, energy: 7), Xunit.TestContext.Current.CancellationToken);
+
+        var cut = Render<global::DayPulse.App.Pages.Home>();
+
+        cut.WaitForAssertion(() =>
+            Assert.Equal("/history/today", cut.Find("a:contains('View check-in')").GetAttribute("href")));
+        Assert.Contains("Today's check-in is saved", cut.Markup);
+        Assert.Contains("7", cut.FindAll(".daypulse-metric-overview__item")[1].TextContent);
+        Assert.Empty(cut.FindAll("a[href='/check-in']"));
+    }
+
+    [Fact]
+    public async Task Home_hides_metrics_disabled_in_settings()
+    {
+        await Services.GetRequiredService<ISettingsRepository>()
+            .SaveAsync(new AppSettings(energyEnabled: false, sleepEnabled: false), Xunit.TestContext.Current.CancellationToken);
+
+        var cut = Render<global::DayPulse.App.Pages.Home>();
+
+        cut.WaitForAssertion(() =>
+            Assert.Equal(3, cut.FindAll(".daypulse-metric-overview__item").Count));
+        Assert.DoesNotContain("Energy", cut.FindComponent<global::DayPulse.App.Pages.Components.WellbeingOverview>().Markup);
     }
 }

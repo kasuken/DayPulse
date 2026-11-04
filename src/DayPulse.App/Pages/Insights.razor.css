@@ -1,0 +1,120 @@
+.insights-page ::deep .insights-summary,
+.insights-page ::deep .insights-trend,
+.insights-page ::deep .insights-state {
+    padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.insights-page ::deep .insights-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+}
+
+.insights-period-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.insights-metric {
+    height: 100%;
+    padding: 1rem;
+    border: 1px solid var(--mud-palette-divider);
+    border-radius: var(--mud-default-borderradius);
+}
+
+.insights-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .75rem;
+}
+
+.insights-metrics ::deep .mud-grid-item {
+    max-width: none;
+    min-width: 0;
+    flex-basis: auto;
+}
+
+@media (min-width: 960px) {
+    .insights-metrics {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 359px) {
+    .insights-metrics {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.insights-chart {
+    width: 100%;
+    overflow: hidden;
+}
+
+.insights-chart svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.insights-chart__grid {
+    stroke: var(--mud-palette-divider);
+    stroke-dasharray: 4 5;
+    stroke-width: 1;
+}
+
+.insights-chart__axis-label {
+    fill: var(--mud-palette-text-secondary);
+    font-size: 12px;
+}
+
+.insights-chart__segment {
+    stroke: var(--mud-palette-primary);
+    stroke-width: 2;
+}
+
+.insights-chart__point {
+    fill: var(--mud-palette-primary);
+    stroke: var(--mud-palette-surface);
+    stroke-width: 2;
+}
+
+.insights-chart__range {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--mud-palette-text-secondary);
+}
+
+.insights-table-wrap {
+    max-height: 22rem;
+    overflow: auto;
+}
+
+.insights-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.insights-table caption {
+    padding: 0.75rem 0;
+    text-align: left;
+    color: var(--mud-palette-text-secondary);
+}
+
+.insights-table th,
+.insights-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--mud-palette-divider);
+    text-align: left;
+}
+
+.insights-table th {
+    position: sticky;
+    top: 0;
+    background: var(--mud-palette-surface);
+}

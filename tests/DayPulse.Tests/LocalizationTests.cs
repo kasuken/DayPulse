@@ -94,6 +94,62 @@ public sealed class LocalizationTests
         "ThemeModeDarkDescription",
     ];
 
+    private static readonly string[] ProductResourceKeys =
+    [
+        "OnboardingPageTitle", "OnboardingLoading", "OnboardingWelcome", "OnboardingIntroduction",
+        "OnboardingStep", "OnboardingSmallHabit", "OnboardingCheckInDescription", "OnboardingNoMedicalClaims",
+        "OnboardingPrivacyTitle", "OnboardingPrivacyDescription", "OnboardingStorageWarning",
+        "OnboardingExportDescription", "OnboardingMetricsTitle", "OnboardingMetricsDescription",
+        "OnboardingEnergy", "OnboardingAnxiety", "OnboardingFocus", "OnboardingSleep",
+        "OnboardingBack", "OnboardingContinue", "OnboardingFinish", "OnboardingSaving", "OnboardingSaveError",
+        "ReminderTitle", "ReminderLimitations", "ReminderEnabled", "ReminderTime", "ReminderLoading",
+        "ReminderSave", "ReminderPermission", "ReminderPermissionGranted", "ReminderPermissionUnavailable",
+        "ReminderSaved", "ReminderSettingsError", "ReminderDeliveryError", "ReminderMessage", "ReminderCheckIn",
+        "JournalLoading", "JournalLoadError", "JournalRetry", "JournalTodayEmpty", "JournalTodayComplete",
+        "JournalTodayPrompt", "JournalTodaySaved", "JournalViewEntry", "JournalNoValues", "JournalTodayValues",
+        "JournalNotRecorded", "JournalHistoryDescription", "JournalHistoryEmpty", "JournalHistoryEmptyHelp",
+        "JournalMissing", "JournalCreated", "JournalUpdated",
+        "EntryStart", "EntryEdit", "EntryHelp", "EntryDate", "EntryMoodRequired", "EntryMoodScale", "EntryMoodValue",
+        "EntryOptionalScore", "EntrySleepHours", "EntrySleepHelp", "EntryActivities", "EntryCustomActivity",
+        "EntryMoodMinus5", "EntryMoodMinus4", "EntryMoodMinus3", "EntryMoodMinus2", "EntryMoodMinus1", "EntryMood0",
+        "EntryMoodPlus1", "EntryMoodPlus2", "EntryMoodPlus3", "EntryMoodPlus4", "EntryMoodPlus5", "EntryMoodNotChosen",
+        "EntryScoreOutOf", "EntryClearMetric", "EntryClearValue", "EntryEnergyLow", "EntryEnergyHigh",
+        "EntryAnxietyLow", "EntryAnxietyHigh", "EntryFocusLow", "EntryFocusHigh", "EntrySleepValue",
+        "EntrySleepDecrease", "EntrySleepIncrease", "EntrySleepPresets",
+        "EntryAddActivity", "EntryNotes", "EntryNotesHelp", "EntrySave", "EntrySaving", "EntryCancel",
+        "EntryInputInvalid", "EntrySaveError", "EntryActivitySaveError", "EntryDuplicateEntryDate",
+        "EntryEntryDateInvalid", "EntryDateInvalid", "EntryEntryDateInFuture", "EntryMoodOutOfRange",
+        "EntryEnergyOutOfRange", "EntryAnxietyOutOfRange", "EntryFocusOutOfRange", "EntrySleepHoursOutOfRange",
+        "EntrySleepHoursNotInHalfHourIncrements", "EntryNotesTooLong", "EntryUnavailableActivity",
+        "EntryDelete", "EntryDeleteConfirm", "EntryDeleteWarning", "EntryDeleting", "EntryDeleteError",
+        "EntryActivitydefault-work", "EntryActivitydefault-exercise", "EntryActivitydefault-walking",
+        "EntryActivitydefault-reading", "EntryActivitydefault-gaming", "EntryActivitydefault-family",
+        "EntryActivitydefault-friends", "EntryActivitydefault-travel", "EntryActivitydefault-relaxing",
+        "EntryActivitydefault-housework", "EntryActivitydefault-cooking", "EntryActivitydefault-shopping",
+        "EntryActivitydefault-movies", "EntryActivitydefault-music", "EntryActivitydefault-study",
+        "EntryActivitydefault-meditation",
+        "PreferencesMetricsTitle", "PreferencesMetricsDescription", "PreferencesEnergy", "PreferencesAnxiety",
+        "PreferencesFocus", "PreferencesSleep", "PreferencesSaveError", "PreferencesLoadMetrics",
+        "PreferencesAboutTitle", "PreferencesVersion", "PreferencesPrivacy", "PreferencesStorageLoss",
+        "PreferencesNonMedical", "ActivitiesTitle", "ActivitiesDescription", "ActivitiesNewName", "ActivitiesName",
+        "ActivitiesAdd", "ActivitiesRename", "ActivitiesActive", "ActivitiesUp", "ActivitiesDown",
+        "ActivitiesMoveUp", "ActivitiesMoveDown", "ActivitiesLoad", "ActivitiesError", "DataControlsTitle",
+        "DataControlsExportDescription", "DataControlsCsvDescription", "DataControlsDownloadPrivacy",
+        "DataControlsExportJson", "DataControlsExportCsv", "DataControlsExportError", "DataControlsDownloadStarted",
+        "DataControlsWorking", "DataControlsDeleteTitle", "DataControlsDeleteDescription", "DataControlsDeleteAll",
+        "DataControlsConfirmDescription", "DataControlsConfirmLabel", "DataControlsConfirmDelete",
+        "DataControlsCancel", "DataControlsDeleteError",
+        "InsightsStatsLoading", "InsightsStatsLoadError", "InsightsStatsRetry", "InsightsStatsEmptyTitle",
+        "InsightsStatsEmptyDescription", "InsightsStatsSummaryHeading", "InsightsStatsPeriodLabel",
+        "InsightsStatsSevenDays", "InsightsStatsThirtyDays", "InsightsStatsNinetyDays", "InsightsStatsCheckInTotal",
+        "InsightsStatsAverageMood", "InsightsStatsAverageEnergy", "InsightsStatsAverageAnxiety",
+        "InsightsStatsAverageFocus", "InsightsStatsAverageSleep", "InsightsStatsTotalSleep",
+        "InsightsStatsActivitySelections", "InsightsStatsCurrentStreak", "InsightsStatsLongestStreak",
+        "InsightsStatsBestMood", "InsightsStatsLowestMood", "InsightsStatsNoData", "InsightsStatsOneDay",
+        "InsightsStatsManyDays", "InsightsStatsChartTitle", "InsightsStatsChartDescription",
+        "InsightsStatsNoPeriodData", "InsightsStatsTableCaption", "InsightsStatsDateColumn", "InsightsStatsMoodColumn"
+    ];
+
     [Fact]
     public void AddDayPulseLocalization_registers_localizer_culture_and_formatter_services()
     {
@@ -336,7 +392,8 @@ public sealed class LocalizationTests
             Assert.Equal(neutralKeys, cultureKeys);
         }
 
-        Assert.Equal(ResourceKeys, neutralKeys);
+        Assert.Equal(ResourceKeys.Concat(ProductResourceKeys).Order(StringComparer.Ordinal),
+            neutralKeys.Order(StringComparer.Ordinal));
     }
 
     [Fact]
@@ -425,9 +482,30 @@ public sealed class LocalizationTests
                 StringComparison.Ordinal);
         }
 
-        foreach (var resourceKey in ResourceKeys)
+        // These shell placeholders have been replaced by the real journal workflows.
+        string[] retiredPlaceholderKeys =
+        [
+            "HomeReadyMessage", "HistoryDescription", "CheckInsComingSoon", "ComingNext", "WellbeingDescription",
+            "MetricSleep", "HistoryEmptyHeading", "HistoryEmptyDescription",
+            "InsightsEmptyHeading", "InsightsEmptyDescription"
+        ];
+        foreach (var resourceKey in ResourceKeys.Except(retiredPlaceholderKeys))
         {
             Assert.Contains($"\"{resourceKey}\"", razorSource, StringComparison.Ordinal);
+        }
+
+        var productSource = string.Join(Environment.NewLine,
+            Directory.EnumerateFiles(appDirectory, "*", SearchOption.AllDirectories)
+                .Where(path => (path.EndsWith(".razor", StringComparison.Ordinal)
+                    || path.EndsWith(".cs", StringComparison.Ordinal))
+                    && !path.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}",
+                        StringComparison.Ordinal))
+                .Select(File.ReadAllText));
+        var declaredKeys = ResourceKeys.Concat(ProductResourceKeys).ToHashSet(StringComparer.Ordinal);
+        foreach (System.Text.RegularExpressions.Match match in
+            System.Text.RegularExpressions.Regex.Matches(productSource, "Localizer\\[\"([^\"]+)\""))
+        {
+            Assert.Contains(match.Groups[1].Value, declaredKeys);
         }
     }
 

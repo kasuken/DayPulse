@@ -1,0 +1,99 @@
+/* Optional metrics */
+.entry-metrics {
+    display: grid;
+    gap: var(--daypulse-control-gutter);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+.entry-metrics ::deep .entry-metrics__help,
+.sleep-control {
+    grid-column: 1 / -1;
+}
+
+.sleep-control {
+    border: 1px solid var(--mud-palette-lines-default);
+    border-radius: var(--daypulse-radius-large);
+    display: grid;
+    gap: .5rem;
+    padding: .75rem var(--daypulse-control-gutter) var(--daypulse-control-gutter);
+}
+
+.sleep-control__header {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem .75rem;
+    justify-content: space-between;
+    min-height: 2.75rem;
+}
+
+.sleep-control__label {
+    color: var(--mud-palette-text-primary);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.sleep-control__status {
+    align-items: center;
+    display: flex;
+    gap: .25rem;
+    margin-inline-start: auto;
+}
+
+.sleep-control__value {
+    border: 1px solid var(--mud-palette-primary);
+    border-radius: var(--daypulse-radius-pill);
+    color: var(--mud-palette-text-primary);
+    font-size: 1.125rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
+    min-height: 2rem;
+    padding: .25rem .75rem;
+    white-space: nowrap;
+}
+
+.sleep-control[data-recorded="false"] .sleep-control__value {
+    border-color: var(--mud-palette-lines-inputs);
+    border-style: dashed;
+    color: var(--mud-palette-text-secondary);
+    font-size: .875rem;
+    font-weight: 600;
+}
+
+.sleep-control__track {
+    align-items: center;
+    display: grid;
+    gap: .75rem;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.sleep-control__range {
+    accent-color: var(--mud-palette-primary);
+    cursor: pointer;
+    margin: 0;
+    min-height: 2.75rem;
+    width: 100%;
+}
+
+.sleep-control[data-recorded="false"] .sleep-control__range {
+    accent-color: var(--mud-palette-text-disabled);
+}
+
+.sleep-control__range:disabled {
+    cursor: not-allowed;
+}
+
+.sleep-control__presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.sleep-control__presets ::deep .sleep-control__preset {
+    border-radius: var(--daypulse-radius-pill);
+    min-width: 4rem;
+}
+
+.sleep-control ::deep .sleep-control__help {
+    color: var(--mud-palette-text-secondary);
+}

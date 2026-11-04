@@ -1,0 +1,129 @@
+@using DayPulse.Core.Repositories
+@inject ISettingsRepository SettingsRepository
+@inject IJSRuntime JS
+@inject IStringLocalizer<SharedResource> Localizer
+@inject ILogger<DailyReminderSettings> Logger
+@implements IAsyncDisposable
+
+<MudPaper Class="daypulse-panel pa-6" Elevation="0">
+    <MudStack Spacing="3">
+        <MudText Typo="Typo.h2">@Localizer["ReminderTitle"]</MudText>
+        <MudText>@Localizer["ReminderLimitations"]</MudText>
+        @if (!_loaded && !_failed)
+        {
+            <MudText role="status">@Localizer["ReminderLoading"]</MudText>
+        }
+        else
+        {
+            <MudSwitch T="bool" @bind-Value="_enabled" Label="@Localizer["ReminderEnabled"]"
+                       Color="Color.Primary" Disabled="@(!_loaded || _busy)" />
+            <MudTimePicker @bind-Time="_time" Label="@Localizer["ReminderTime"]"
+                           Disabled="@(!_loaded || _busy)" />
+            <MudButton OnClick="SaveAsync" Variant="Variant.Filled" Color="Color.Primary"
+                       Disabled="@(!_loaded || _busy || _time is null)">@Localizer["ReminderSave"]</MudButton>
+            <MudButton OnClick="RequestPermissionAsync" Disabled="@(!_loaded || _busy)">@Localizer["ReminderPermission"]</MudButton>
+        }
+        @if (_statusKey is not null)
+        {
+            <MudText role="status">@Localizer[_statusKey]</MudText>
+        }
+        @if (_failed)
+        {
+            <MudAlert Severity="Severity.Error" role="alert">
+                @Localizer["ReminderSettingsError"]
+                <MudButton OnClick="LoadAsync" Disabled="@_busy">@Localizer["TryAgain"]</MudButton>
+            </MudAlert>
+        }
+    </MudStack>
+</MudPaper>
+
+@code {
+    private bool _loaded;
+    private bool _enabled;
+    private bool _busy;
+    private bool _failed;
+    private TimeSpan? _time;
+    private string? _statusKey;
+    private ReminderInterop? _interop;
+
+    protected override async Task OnInitializedAsync() => await LoadAsync();
+
+    private async Task LoadAsync()
+    {
+        _busy = true;
+        _failed = false;
+        try
+        {
+            var settings = await SettingsRepository.LoadAsync();
+            _enabled = settings.ReminderEnabled;
+            _time = settings.ReminderTime.ToTimeSpan();
+            _loaded = true;
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError(exception, "Reminder preferences could not be loaded.");
+            _failed = true;
+        }
+        finally
+        {
+            _busy = false;
+        }
+    }
+
+    private async Task SaveAsync()
+    {
+        if (_busy || _time is null)
+        {
+            return;
+        }
+        _busy = true;
+        _failed = false;
+        _statusKey = null;
+        try
+        {
+            await SettingsRepository.UpdateAsync(current => new AppSettings(
+                current.OnboardingCompleted, current.ThemeMode, _enabled,
+                TimeOnly.FromTimeSpan(_time.Value),
+                current.EnergyEnabled, current.AnxietyEnabled, current.FocusEnabled, current.SleepEnabled));
+            _statusKey = "ReminderSaved";
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError(exception, "Reminder preferences could not be saved.");
+            _failed = true;
+        }
+        finally
+        {
+            _busy = false;
+        }
+    }
+
+    private async Task RequestPermissionAsync()
+    {
+        _busy = true;
+        _statusKey = null;
+        try
+        {
+            _interop ??= new ReminderInterop(JS);
+            var permission = await _interop.RequestPermissionAsync();
+            _statusKey = permission == "granted" ? "ReminderPermissionGranted" : "ReminderPermissionUnavailable";
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError(exception, "Browser notification permission could not be requested.");
+            _statusKey = "ReminderPermissionUnavailable";
+        }
+        finally
+        {
+            _busy = false;
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_interop is not null)
+        {
+            await _interop.DisposeAsync();
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "DayPulse (Blazor WebAssembly)",
+            "type": "blazorwasm",
+            "request": "launch",
+            "url": "http://localhost:5084",
+            "webRoot": "${workspaceFolder}/src/DayPulse.App"
+        }
+    ]
+}

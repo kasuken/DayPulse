@@ -15,6 +15,43 @@
   <data name="ApplicationName" xml:space="preserve">
     <value>DayPulse</value>
   </data>
+  <data name="OnboardingPageTitle" xml:space="preserve"><value>Welcome | DayPulse</value></data>
+  <data name="OnboardingLoading" xml:space="preserve"><value>Loading your private space...</value></data>
+  <data name="ReminderTitle" xml:space="preserve"><value>Daily reminder</value></data>
+  <data name="ReminderLimitations" xml:space="preserve"><value>Best-effort reminders work only while DayPulse is open. Closing the app stops them; background tabs may delay them. Your device's alarm or calendar is more reliable for a scheduled daily alert.</value></data>
+  <data name="ReminderEnabled" xml:space="preserve"><value>Remind me while the app is open</value></data>
+  <data name="ReminderTime" xml:space="preserve"><value>Local reminder time</value></data>
+  <data name="ReminderLoading" xml:space="preserve"><value>Loading reminder preferences...</value></data>
+  <data name="ReminderSave" xml:space="preserve"><value>Save reminder</value></data>
+  <data name="ReminderPermission" xml:space="preserve"><value>Allow optional browser notifications</value></data>
+  <data name="ReminderPermissionGranted" xml:space="preserve"><value>Browser notifications are allowed. The app must still remain open.</value></data>
+  <data name="ReminderPermissionUnavailable" xml:space="preserve"><value>Browser notifications are unavailable or not allowed. The in-app reminder still works when DayPulse is open.</value></data>
+  <data name="ReminderSaved" xml:space="preserve"><value>Reminder preferences saved on this device.</value></data>
+  <data name="ReminderSettingsError" xml:space="preserve"><value>Reminder preferences could not be loaded or saved. Your changes have not been confirmed.</value></data>
+  <data name="ReminderDeliveryError" xml:space="preserve"><value>The daily reminder could not be checked. Your journal is still available.</value></data>
+  <data name="ReminderMessage" xml:space="preserve"><value>A moment for yourself? Your daily check-in is ready.</value></data>
+  <data name="ReminderCheckIn" xml:space="preserve"><value>Check in</value></data>
+  <data name="OnboardingWelcome" xml:space="preserve"><value>Welcome to DayPulse</value></data>
+  <data name="OnboardingIntroduction" xml:space="preserve"><value>A small daily check-in, just for you.</value></data>
+  <data name="OnboardingStep" xml:space="preserve"><value>Step {0} of {1}</value></data>
+  <data name="OnboardingSmallHabit" xml:space="preserve"><value>Make room for how you feel.</value></data>
+  <data name="OnboardingCheckInDescription" xml:space="preserve"><value>Record your mood and optional wellbeing metrics once per day. Add activities and a short note, then explore your history and patterns.</value></data>
+  <data name="OnboardingNoMedicalClaims" xml:space="preserve"><value>DayPulse supports reflection, not diagnosis. It is not medical advice or a substitute for professional support.</value></data>
+  <data name="OnboardingPrivacyTitle" xml:space="preserve"><value>Your data stays in this browser</value></data>
+  <data name="OnboardingPrivacyDescription" xml:space="preserve"><value>No accounts, analytics, trackers or cloud synchronization. Your check-ins are stored locally on this device.</value></data>
+  <data name="OnboardingStorageWarning" xml:space="preserve"><value>Clearing site data, private browsing or changing browser or domain can remove or hide your entries. Browser storage is not an encrypted vault.</value></data>
+  <data name="OnboardingExportDescription" xml:space="preserve"><value>Use Settings to export a copy of your entries or delete your data. Keep exports somewhere private.</value></data>
+  <data name="OnboardingMetricsTitle" xml:space="preserve"><value>Choose what to track</value></data>
+  <data name="OnboardingMetricsDescription" xml:space="preserve"><value>Mood is always included. These extra metrics are optional; you can change them later in Settings.</value></data>
+  <data name="OnboardingEnergy" xml:space="preserve"><value>Energy</value></data>
+  <data name="OnboardingAnxiety" xml:space="preserve"><value>Anxiety</value></data>
+  <data name="OnboardingFocus" xml:space="preserve"><value>Focus</value></data>
+  <data name="OnboardingSleep" xml:space="preserve"><value>Sleep</value></data>
+  <data name="OnboardingBack" xml:space="preserve"><value>Back</value></data>
+  <data name="OnboardingContinue" xml:space="preserve"><value>Continue</value></data>
+  <data name="OnboardingFinish" xml:space="preserve"><value>Start my journal</value></data>
+  <data name="OnboardingSaving" xml:space="preserve"><value>Saving...</value></data>
+  <data name="OnboardingSaveError" xml:space="preserve"><value>Your preferences could not be saved. Your choices are still here; try again.</value></data>
   <data name="LocalStorageUnavailableTitle" xml:space="preserve">
     <value>Local storage is unavailable</value>
   </data>
@@ -85,7 +122,7 @@
     <value>Settings | DayPulse</value>
   </data>
   <data name="SettingsDescription" xml:space="preserve">
-    <value>Make DayPulse feel like you. Changes save automatically on this device.</value>
+    <value>Choose what you track and manage your data on this device.</value>
   </data>
   <data name="Appearance" xml:space="preserve">
     <value>Appearance</value>
@@ -249,4 +286,174 @@
   <data name="ThemeModeDarkDescription" xml:space="preserve">
     <value>A softer view after dark</value>
   </data>
+  <data name="JournalLoading" xml:space="preserve"><value>Dein Tagebuch wird geladen…</value></data>
+  <data name="JournalLoadError" xml:space="preserve"><value>Dein Tagebuch konnte nicht geladen werden. Bitte versuche es erneut.</value></data>
+  <data name="JournalRetry" xml:space="preserve"><value>Erneut versuchen</value></data>
+  <data name="JournalTodayEmpty" xml:space="preserve"><value>Ein Moment für dich</value></data>
+  <data name="JournalTodayComplete" xml:space="preserve"><value>Dein heutiger Check-in ist gespeichert</value></data>
+  <data name="JournalTodayPrompt" xml:space="preserve"><value>Wie fühlst du dich heute? Ein paar kleine Details können dir helfen, Muster zu erkennen.</value></data>
+  <data name="JournalTodaySaved" xml:space="preserve"><value>Du hast dir heute Zeit für dich genommen. Du kannst deinen Check-in jederzeit ansehen oder bearbeiten.</value></data>
+  <data name="JournalViewEntry" xml:space="preserve"><value>Check-in ansehen</value></data>
+  <data name="JournalNoValues" xml:space="preserve"><value>Dein Check-in erscheint hier. Erst beim Speichern wird etwas aufgezeichnet.</value></data>
+  <data name="JournalTodayValues" xml:space="preserve"><value>Deine aufgezeichneten Werte</value></data>
+  <data name="JournalNotRecorded" xml:space="preserve"><value>Nicht erfasst</value></data>
+  <data name="JournalHistoryDescription" xml:space="preserve"><value>Deine bisherigen Check-ins, die neuesten zuerst.</value></data>
+  <data name="JournalHistoryEmpty" xml:space="preserve"><value>Deine Geschichte beginnt hier</value></data>
+  <data name="JournalHistoryEmptyHelp" xml:space="preserve"><value>Speichere deinen ersten Check-in, um dein privates Tagebuch zu beginnen.</value></data>
+  <data name="JournalMissing" xml:space="preserve"><value>Dieser Check-in existiert nicht mehr. Deine Einträge findest du im Verlauf.</value></data>
+  <data name="JournalCreated" xml:space="preserve"><value>Erstellt</value></data>
+  <data name="JournalUpdated" xml:space="preserve"><value>Zuletzt aktualisiert</value></data>
+  <data name="EntryStart" xml:space="preserve"><value>Check-in starten</value></data>
+  <data name="EntryEdit" xml:space="preserve"><value>Check-in bearbeiten</value></data>
+  <data name="EntryHelp" xml:space="preserve"><value>Wähle deine Stimmung. Alles andere ist optional. Ein Check-in pro Tag, nur auf diesem Gerät gespeichert.</value></data>
+  <data name="EntryDate" xml:space="preserve"><value>Datum des Check-ins</value></data>
+  <data name="EntryMoodRequired" xml:space="preserve"><value>Wähle deine Stimmung</value></data>
+  <data name="EntryMoodScale" xml:space="preserve"><value>Von −5 bis +5 schieben oder ein Gesicht wählen. Für neutral die Mitte antippen oder die Eingabe- oder Leertaste drücken.</value></data>
+  <data name="EntryMoodValue" xml:space="preserve"><value>{0}, {1}</value></data>
+  <data name="EntryOptionalScore" xml:space="preserve"><value>Optional · eine Skala bewegen, um sie zu erfassen, oder unberührt lassen, um sie zu überspringen.</value></data>
+  <data name="EntrySleepHours" xml:space="preserve"><value>Schlaf (Stunden)</value></data>
+  <data name="EntrySleepHelp" xml:space="preserve"><value>Optional · 0–15 Stunden in halbstündigen Schritten.</value></data>
+  <data name="EntryMoodMinus5" xml:space="preserve"><value>Furchtbar</value></data>
+  <data name="EntryMoodMinus4" xml:space="preserve"><value>Sehr schlecht</value></data>
+  <data name="EntryMoodMinus3" xml:space="preserve"><value>Schlecht</value></data>
+  <data name="EntryMoodMinus2" xml:space="preserve"><value>Gedrückt</value></data>
+  <data name="EntryMoodMinus1" xml:space="preserve"><value>Etwas gedrückt</value></data>
+  <data name="EntryMood0" xml:space="preserve"><value>Neutral</value></data>
+  <data name="EntryMoodPlus1" xml:space="preserve"><value>Okay</value></data>
+  <data name="EntryMoodPlus2" xml:space="preserve"><value>Gut</value></data>
+  <data name="EntryMoodPlus3" xml:space="preserve"><value>Sehr gut</value></data>
+  <data name="EntryMoodPlus4" xml:space="preserve"><value>Großartig</value></data>
+  <data name="EntryMoodPlus5" xml:space="preserve"><value>Hervorragend</value></data>
+  <data name="EntryMoodNotChosen" xml:space="preserve"><value>Noch nicht gewählt</value></data>
+  <data name="EntryScoreOutOf" xml:space="preserve"><value>{0} von {1}</value></data>
+  <data name="EntryClearMetric" xml:space="preserve"><value>{0} löschen</value></data>
+  <data name="EntryClearValue" xml:space="preserve"><value>Löschen</value></data>
+  <data name="EntryEnergyLow" xml:space="preserve"><value>Erschöpft</value></data>
+  <data name="EntryEnergyHigh" xml:space="preserve"><value>Voller Energie</value></data>
+  <data name="EntryAnxietyLow" xml:space="preserve"><value>Ruhig</value></data>
+  <data name="EntryAnxietyHigh" xml:space="preserve"><value>Sehr ängstlich</value></data>
+  <data name="EntryFocusLow" xml:space="preserve"><value>Zerstreut</value></data>
+  <data name="EntryFocusHigh" xml:space="preserve"><value>Konzentriert</value></data>
+  <data name="EntrySleepValue" xml:space="preserve"><value>{0} Std.</value></data>
+  <data name="EntrySleepDecrease" xml:space="preserve"><value>Schlaf um eine halbe Stunde verringern</value></data>
+  <data name="EntrySleepIncrease" xml:space="preserve"><value>Schlaf um eine halbe Stunde erhöhen</value></data>
+  <data name="EntrySleepPresets" xml:space="preserve"><value>Übliche Schlafdauer</value></data>
+  <data name="EntryActivities" xml:space="preserve"><value>Aktivitäten</value></data>
+  <data name="EntryCustomActivity" xml:space="preserve"><value>Name der neuen Aktivität</value></data>
+  <data name="EntryAddActivity" xml:space="preserve"><value>Aktivität hinzufügen und auswählen</value></data>
+  <data name="EntryNotes" xml:space="preserve"><value>Notizen</value></data>
+  <data name="EntryNotesHelp" xml:space="preserve"><value>Optional · bis zu 500 Zeichen.</value></data>
+  <data name="EntrySave" xml:space="preserve"><value>Check-in speichern</value></data>
+  <data name="EntrySaving" xml:space="preserve"><value>Wird gespeichert…</value></data>
+  <data name="EntryCancel" xml:space="preserve"><value>Abbrechen</value></data>
+  <data name="EntryInputInvalid" xml:space="preserve"><value>Bitte überprüfe die markierten Felder.</value></data>
+  <data name="EntrySaveError" xml:space="preserve"><value>Dein Check-in konnte nicht gespeichert werden. Deine Eingaben sind noch da; bitte versuche es erneut.</value></data>
+  <data name="EntryActivitySaveError" xml:space="preserve"><value>Die Aktivität konnte nicht hinzugefügt werden. Bitte versuche es erneut.</value></data>
+  <data name="EntryDuplicateEntryDate" xml:space="preserve"><value>Für dieses Datum gibt es bereits einen Check-in. Wähle ein anderes Datum oder bearbeite den vorhandenen Eintrag im Verlauf.</value></data>
+  <data name="EntryEntryDateInvalid" xml:space="preserve"><value>Wähle ein gültiges Datum.</value></data>
+  <data name="EntryDateInvalid" xml:space="preserve"><value>Wähle ein gültiges Datum.</value></data>
+  <data name="EntryEntryDateInFuture" xml:space="preserve"><value>Wähle heute oder ein früheres Datum.</value></data>
+  <data name="EntryMoodOutOfRange" xml:space="preserve"><value>Die Stimmung muss zwischen −5 und 5 liegen.</value></data>
+  <data name="EntryEnergyOutOfRange" xml:space="preserve"><value>Die Energie muss zwischen 0 und 10 liegen.</value></data>
+  <data name="EntryAnxietyOutOfRange" xml:space="preserve"><value>Die Angst muss zwischen 0 und 10 liegen.</value></data>
+  <data name="EntryFocusOutOfRange" xml:space="preserve"><value>Die Konzentration muss zwischen 0 und 10 liegen.</value></data>
+  <data name="EntrySleepHoursOutOfRange" xml:space="preserve"><value>Der Schlaf muss zwischen 0 und 15 Stunden liegen.</value></data>
+  <data name="EntrySleepHoursNotInHalfHourIncrements" xml:space="preserve"><value>Gib den Schlaf in halbstündigen Schritten ein, etwa 7 oder 7,5.</value></data>
+  <data name="EntryNotesTooLong" xml:space="preserve"><value>Notizen dürfen höchstens 500 Zeichen lang sein.</value></data>
+  <data name="EntryUnavailableActivity" xml:space="preserve"><value>Früher ausgewählte Aktivität (nicht verfügbar)</value></data>
+  <data name="EntryDelete" xml:space="preserve"><value>Check-in löschen</value></data>
+  <data name="EntryDeleteConfirm" xml:space="preserve"><value>Diesen Check-in löschen?</value></data>
+  <data name="EntryDeleteWarning" xml:space="preserve"><value>Dieser Check-in wird dauerhaft von deinem Gerät entfernt. Dies kann nicht rückgängig gemacht werden.</value></data>
+  <data name="EntryDeleting" xml:space="preserve"><value>Wird gelöscht…</value></data>
+  <data name="EntryDeleteError" xml:space="preserve"><value>Der Check-in konnte nicht gelöscht werden. Er ist noch da; bitte versuche es erneut.</value></data>
+  <data name="EntryActivitydefault-work" xml:space="preserve"><value>Arbeit</value></data>
+  <data name="EntryActivitydefault-exercise" xml:space="preserve"><value>Sport</value></data>
+  <data name="EntryActivitydefault-walking" xml:space="preserve"><value>Spazieren</value></data>
+  <data name="EntryActivitydefault-reading" xml:space="preserve"><value>Lesen</value></data>
+  <data name="EntryActivitydefault-gaming" xml:space="preserve"><value>Spielen</value></data>
+  <data name="EntryActivitydefault-family" xml:space="preserve"><value>Familie</value></data>
+  <data name="EntryActivitydefault-friends" xml:space="preserve"><value>Freunde</value></data>
+  <data name="EntryActivitydefault-travel" xml:space="preserve"><value>Reisen</value></data>
+  <data name="EntryActivitydefault-relaxing" xml:space="preserve"><value>Entspannen</value></data>
+  <data name="EntryActivitydefault-housework" xml:space="preserve"><value>Hausarbeit</value></data>
+  <data name="EntryActivitydefault-cooking" xml:space="preserve"><value>Kochen</value></data>
+  <data name="EntryActivitydefault-shopping" xml:space="preserve"><value>Einkaufen</value></data>
+  <data name="EntryActivitydefault-movies" xml:space="preserve"><value>Filme</value></data>
+  <data name="EntryActivitydefault-music" xml:space="preserve"><value>Musik</value></data>
+  <data name="EntryActivitydefault-study" xml:space="preserve"><value>Lernen</value></data>
+  <data name="EntryActivitydefault-meditation" xml:space="preserve"><value>Meditation</value></data>
+  <data name="PreferencesMetricsTitle" xml:space="preserve"><value>Deine Check-in-Messwerte</value></data>
+  <data name="PreferencesMetricsDescription" xml:space="preserve"><value>Wähle optionale Felder für neue Check-ins. Die Stimmung bleibt immer enthalten. Ausgeblendete Messwerte werden nicht aus früheren Einträgen gelöscht.</value></data>
+  <data name="PreferencesEnergy" xml:space="preserve"><value>Energie</value></data>
+  <data name="PreferencesAnxiety" xml:space="preserve"><value>Anspannung</value></data>
+  <data name="PreferencesFocus" xml:space="preserve"><value>Konzentration</value></data>
+  <data name="PreferencesSleep" xml:space="preserve"><value>Schlaf</value></data>
+  <data name="PreferencesSaveError" xml:space="preserve"><value>Die Messwert-Einstellungen konnten nicht geladen oder gespeichert werden. Die zuletzt gespeicherte Auswahl bleibt unverändert. Bitte versuche es erneut.</value></data>
+  <data name="PreferencesLoadMetrics" xml:space="preserve"><value>Messwert-Einstellungen erneut laden</value></data>
+  <data name="PreferencesAboutTitle" xml:space="preserve"><value>Über DayPulse</value></data>
+  <data name="PreferencesVersion" xml:space="preserve"><value>Version {0}</value></data>
+  <data name="PreferencesPrivacy" xml:space="preserve"><value>Keine Konten, Cloud-Synchronisierung, Analysen oder Tracker. Deine Wohlbefindensdaten bleiben in diesem Browser auf diesem Gerät.</value></data>
+  <data name="PreferencesStorageLoss" xml:space="preserve"><value>Das Löschen von Websitedaten, privates Surfen oder die Speicherbereinigung des Browsers kann deine Daten dauerhaft löschen. Es gibt keine Sicherung auf einem Server. Exportiere regelmäßig und bewahre die Dateien sicher auf.</value></data>
+  <data name="PreferencesNonMedical" xml:space="preserve"><value>DayPulse unterstützt die persönliche Reflexion. Es ist kein Medizinprodukt und bietet keine Diagnose, Behandlung oder Notfallhilfe.</value></data>
+  <data name="ActivitiesTitle" xml:space="preserve"><value>Deine Aktivitäten</value></data>
+  <data name="ActivitiesDescription" xml:space="preserve"><value>Eigene Aktivitäten hinzufügen, umbenennen und sortieren oder beliebige Aktivitäten ausblenden. Namen und Reihenfolge der Standardaktivitäten sind festgelegt. Inaktive Aktivitäten bleiben mit früheren Einträgen verknüpft. Eine Umbenennung ändert den angezeigten Namen auch in früheren Einträgen.</value></data>
+  <data name="ActivitiesNewName" xml:space="preserve"><value>Name der neuen Aktivität</value></data>
+  <data name="ActivitiesName" xml:space="preserve"><value>Name der Aktivität</value></data>
+  <data name="ActivitiesAdd" xml:space="preserve"><value>Aktivität hinzufügen</value></data>
+  <data name="ActivitiesRename" xml:space="preserve"><value>Namen speichern</value></data>
+  <data name="ActivitiesActive" xml:space="preserve"><value>Aktiv</value></data>
+  <data name="ActivitiesUp" xml:space="preserve"><value>Nach oben</value></data>
+  <data name="ActivitiesDown" xml:space="preserve"><value>Nach unten</value></data>
+  <data name="ActivitiesMoveUp" xml:space="preserve"><value>{0} nach oben verschieben</value></data>
+  <data name="ActivitiesMoveDown" xml:space="preserve"><value>{0} nach unten verschieben</value></data>
+  <data name="ActivitiesLoad" xml:space="preserve"><value>Aktivitäten erneut laden</value></data>
+  <data name="ActivitiesError" xml:space="preserve"><value>Die Änderung oder Aktualisierung der Aktivitäten ist fehlgeschlagen. Ein Teil der Sortierung wurde möglicherweise gespeichert. Lade die Liste neu und versuche es erneut.</value></data>
+  <data name="DataControlsTitle" xml:space="preserve"><value>Deine Daten</value></data>
+  <data name="DataControlsExportDescription" xml:space="preserve"><value>Exportiere alle Check-ins, Notizen, Aktivitätskennungen, den vollständigen Aktivitätskatalog und die Einstellungen. Der Download wird lokal ohne Upload erstellt. Exporte dienen der Sicherung; ein Import wird derzeit nicht unterstützt.</value></data>
+  <data name="DataControlsCsvDescription" xml:space="preserve"><value>CSV enthält CheckIn-, Activity- und Settings-Zeilen. ActivityIds ist eine JSON-Liste. Text, der als Tabellenformel interpretiert werden könnte, erhält ein vorangestelltes Apostroph. JSON bewahrt den Originaltext unverändert.</value></data>
+  <data name="DataControlsDownloadPrivacy" xml:space="preserve"><value>Exporte enthalten sensible Wohlbefindensdaten und Notizen im Klartext ohne Verschlüsselung. Wer Zugriff auf die Datei hat, kann sie lesen.</value></data>
+  <data name="DataControlsExportJson" xml:space="preserve"><value>JSON herunterladen</value></data>
+  <data name="DataControlsExportCsv" xml:space="preserve"><value>CSV herunterladen</value></data>
+  <data name="DataControlsExportError" xml:space="preserve"><value>Der Export konnte nicht erstellt oder heruntergeladen werden. Es wurden keine Daten entfernt. Bitte versuche es erneut.</value></data>
+  <data name="DataControlsDownloadStarted" xml:space="preserve"><value>Download angefordert. Prüfe in den Browser-Downloads, ob die Datei gespeichert wurde.</value></data>
+  <data name="DataControlsWorking" xml:space="preserve"><value>Lokale Daten werden verarbeitet…</value></data>
+  <data name="DataControlsDeleteTitle" xml:space="preserve"><value>Lokale persönliche Daten löschen</value></data>
+  <data name="DataControlsDeleteDescription" xml:space="preserve"><value>Löscht alle Check-ins einschließlich Notizen und alle eigenen Aktivitäten in diesem Browser dauerhaft. App-Einstellungen und das Ausblenden der Installationsaufforderung werden zurückgesetzt. Standardaktivitäten bleiben erhalten. Bereits heruntergeladene Dateien sowie Daten in anderen Browsern oder auf anderen Geräten werden nicht gelöscht.</value></data>
+  <data name="DataControlsDeleteAll" xml:space="preserve"><value>Alle persönlichen Daten löschen…</value></data>
+  <data name="DataControlsConfirmDescription" xml:space="preserve"><value>Dies kann nicht rückgängig gemacht werden. Exportiere zuerst, falls du eine Kopie brauchst. Nach dem Löschen lädt DayPulse neu und zeigt die Einführung wieder an.</value></data>
+  <data name="DataControlsConfirmLabel" xml:space="preserve"><value>Ich verstehe, dass alle meine lokalen Check-ins, Notizen und eigenen Aktivitäten dauerhaft gelöscht werden.</value></data>
+  <data name="DataControlsConfirmDelete" xml:space="preserve"><value>Meine Daten dauerhaft löschen</value></data>
+  <data name="DataControlsCancel" xml:space="preserve"><value>Abbrechen</value></data>
+  <data name="DataControlsDeleteError" xml:space="preserve"><value>Das Löschen wurde nicht vollständig abgeschlossen. Einige Daten wurden möglicherweise bereits entfernt; andere Daten oder Einstellungen können noch vorhanden sein. Eine vollständige Löschung ist nicht bestätigt. Prüfe deine Daten und versuche es erneut.</value></data>
+  <data name="InsightsStatsLoading" xml:space="preserve"><value>Deine Check-ins werden geladen…</value></data>
+  <data name="InsightsStatsLoadError" xml:space="preserve"><value>Deine Check-ins konnten nicht geladen werden.</value></data>
+  <data name="InsightsStatsRetry" xml:space="preserve"><value>Erneut versuchen</value></data>
+  <data name="InsightsStatsEmptyTitle" xml:space="preserve"><value>Mit der Zeit werden Muster sichtbar</value></data>
+  <data name="InsightsStatsEmptyDescription" xml:space="preserve"><value>Speichere einen Check-in, um hier deine persönlichen Zusammenfassungen zu sehen. Deine Einträge bleiben auf diesem Gerät.</value></data>
+  <data name="InsightsStatsSummaryHeading" xml:space="preserve"><value>Deine Check-in-Zusammenfassungen</value></data>
+  <data name="InsightsStatsPeriodLabel" xml:space="preserve"><value>Zeitraum der Zusammenfassung</value></data>
+  <data name="InsightsStatsSevenDays" xml:space="preserve"><value>7 Tage</value></data>
+  <data name="InsightsStatsThirtyDays" xml:space="preserve"><value>30 Tage</value></data>
+  <data name="InsightsStatsNinetyDays" xml:space="preserve"><value>90 Tage</value></data>
+  <data name="InsightsStatsCheckInTotal" xml:space="preserve"><value>Check-ins in diesem Zeitraum</value></data>
+  <data name="InsightsStatsAverageMood" xml:space="preserve"><value>Durchschnittliche Stimmung</value></data>
+  <data name="InsightsStatsAverageEnergy" xml:space="preserve"><value>Durchschnittliche Energie</value></data>
+  <data name="InsightsStatsAverageAnxiety" xml:space="preserve"><value>Durchschnittliche Angst</value></data>
+  <data name="InsightsStatsAverageFocus" xml:space="preserve"><value>Durchschnittliche Konzentration</value></data>
+  <data name="InsightsStatsAverageSleep" xml:space="preserve"><value>Durchschnittlicher Schlaf (Stunden)</value></data>
+  <data name="InsightsStatsTotalSleep" xml:space="preserve"><value>Schlaf insgesamt (Stunden)</value></data>
+  <data name="InsightsStatsActivitySelections" xml:space="preserve"><value>Aktivitätsauswahlen</value></data>
+  <data name="InsightsStatsCurrentStreak" xml:space="preserve"><value>Aktuelle Serie</value></data>
+  <data name="InsightsStatsLongestStreak" xml:space="preserve"><value>Längste Serie</value></data>
+  <data name="InsightsStatsBestMood" xml:space="preserve"><value>Höchste Stimmung und Datum</value></data>
+  <data name="InsightsStatsLowestMood" xml:space="preserve"><value>Niedrigste Stimmung und Datum</value></data>
+  <data name="InsightsStatsNoData" xml:space="preserve"><value>Keine Daten</value></data>
+  <data name="InsightsStatsOneDay" xml:space="preserve"><value>{0} Tag</value></data>
+  <data name="InsightsStatsManyDays" xml:space="preserve"><value>{0} Tage</value></data>
+  <data name="InsightsStatsChartTitle" xml:space="preserve"><value>Stimmung im Zeitverlauf</value></data>
+  <data name="InsightsStatsChartDescription" xml:space="preserve"><value>Erfasste Stimmungswerte vom {0} bis {1}. Tage ohne Check-in bleiben leer.</value></data>
+  <data name="InsightsStatsNoPeriodData" xml:space="preserve"><value>In diesem Zeitraum gibt es noch keine Check-ins.</value></data>
+  <data name="InsightsStatsTableCaption" xml:space="preserve"><value>Erfasste Stimmungswerte im ausgewählten Zeitraum</value></data>
+  <data name="InsightsStatsDateColumn" xml:space="preserve"><value>Datum</value></data>
+  <data name="InsightsStatsMoodColumn" xml:space="preserve"><value>Stimmung</value></data>
 </root>

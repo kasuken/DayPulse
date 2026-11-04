@@ -17,6 +17,7 @@ public sealed class MainLayoutTests : BunitContext
         Services.AddInfrastructure();
         Services.AddDayPulseLocalization();
         Services.AddScoped<ThemeState>();
+        Services.AddSingleton(TimeProvider.System);
         JSInterop.Mode = JSRuntimeMode.Loose;
 
         var themeModule = JSInterop.SetupModule("./Shared/ThemeProvider.razor.js");

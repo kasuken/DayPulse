@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "dotnet: build",
+            "type": "process",
+            "command": "dotnet",
+            "args": ["build", "DayPulse.sln", "--configuration", "Release"],
+            "problemMatcher": "$msCompile",
+            "group": { "kind": "build", "isDefault": true }
+        },
+        {
+            "label": "dotnet: run",
+            "type": "process",
+            "command": "dotnet",
+            "args": ["run", "--project", "src/DayPulse.App", "--launch-profile", "http"],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "dotnet: test",
+            "type": "process",
+            "command": "dotnet",
+            "args": ["test", "DayPulse.sln", "--configuration", "Release"],
+            "problemMatcher": "$msCompile",
+            "group": { "kind": "test", "isDefault": true }
+        }
+    ]
+}

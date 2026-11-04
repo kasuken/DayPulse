@@ -1,0 +1,74 @@
+@page "/history/{Id}"
+@using DayPulse.App.Pages.Components
+@using DayPulse.Core.Repositories
+@implements IAsyncDisposable
+@inject IStringLocalizer<SharedResource> Localizer
+@inject LocalizedFormatService Format
+@inject ICheckInRepository Entries
+@inject IActivityRepository Activities
+@inject NavigationManager Navigation
+@inject ILogger<EntryDetail> Logger
+
+<PageTitle>@Localizer["JournalViewEntry"]</PageTitle>
+<MudStack Spacing="5">
+    <PageHeader Title="@Localizer["JournalViewEntry"]" Description="@(_entry is null ? "" : Format.FormatDate(_entry.EntryDate, "D"))" />
+    @if (_loading)
+    {
+        <MudText role="status">@Localizer["JournalLoading"]</MudText>
+    }
+    else if (_loadFailed)
+    {
+        <MudAlert Severity="Severity.Error">@Localizer["JournalLoadError"]</MudAlert>
+        <MudButton OnClick="LoadAsync">@Localizer["JournalRetry"]</MudButton>
+    }
+    else if (_entry is null)
+    {
+        <MudAlert Severity="Severity.Info">@Localizer["JournalMissing"]</MudAlert>
+    }
+    else
+    {
+        <MudPaper Elevation="0" Class="daypulse-panel pa-5">
+            <MudStack Spacing="4">
+                <WellbeingOverview Entry="_entry" />
+                <MudText Typo="Typo.h2">@Localizer["EntryActivities"]</MudText>
+                @if (_entry.ActivityIds.Count == 0)
+                {
+                    <MudText>@Localizer["JournalNotRecorded"]</MudText>
+                }
+                @foreach (var id in _entry.ActivityIds)
+                {
+                    var activity = _activities.FirstOrDefault(activity => activity.Id == id);
+                    <MudText @key="id">@(activity is null ? Localizer["EntryUnavailableActivity"].Value : activity.IsDefault ? Localizer[$"EntryActivity{activity.Id}"].Value : activity.Name)</MudText>
+                }
+                <MudText Typo="Typo.h2">@Localizer["EntryNotes"]</MudText>
+                <MudText Class="journal-notes">@(!string.IsNullOrWhiteSpace(_entry.Notes) ? _entry.Notes : Localizer["JournalNotRecorded"].Value)</MudText>
+                <MudText Typo="Typo.body2">@Localizer["JournalCreated"]: @Format.FormatDateTime(_entry.CreatedAt.ToLocalTime())</MudText>
+                <MudText Typo="Typo.body2">@Localizer["JournalUpdated"]: @Format.FormatDateTime(_entry.UpdatedAt.ToLocalTime())</MudText>
+                <MudStack Row="true" Wrap="Wrap.Wrap">
+                    <MudButton Href="@($"/check-in/{Uri.EscapeDataString(_entry.Id)}")" Color="Color.Primary" Variant="Variant.Filled" Disabled="_deleting">@Localizer["EntryEdit"]</MudButton>
+                    <MudButton OnClick="@(() => _confirmDelete = true)" Color="Color.Error" Disabled="_deleting" data-testid="entry-delete">@Localizer["EntryDelete"]</MudButton>
+                </MudStack>
+            </MudStack>
+        </MudPaper>
+        @if (_deleteFailed)
+        {
+            <MudAlert Severity="Severity.Error" role="alert">@Localizer["EntryDeleteError"]</MudAlert>
+        }
+        @if (_confirmDelete)
+        {
+            <MudPaper Class="daypulse-panel pa-5" Elevation="0" role="alertdialog" aria-labelledby="delete-title" aria-describedby="delete-description">
+                <MudStack Spacing="3">
+                    <MudText Typo="Typo.h2" id="delete-title">@Localizer["EntryDeleteConfirm"]</MudText>
+                    <MudText id="delete-description">@Localizer["EntryDeleteWarning"]</MudText>
+                    <MudStack Row="true" Wrap="Wrap.Wrap">
+                        <MudButton OnClick="@(() => _confirmDelete = false)" Disabled="_deleting">@Localizer["EntryCancel"]</MudButton>
+                        <MudButton OnClick="DeleteAsync" Color="Color.Error" Variant="Variant.Filled" Disabled="_deleting" data-testid="entry-confirm-delete">
+                            @Localizer[_deleting ? "EntryDeleting" : "EntryDeleteConfirm"]
+                        </MudButton>
+                    </MudStack>
+                </MudStack>
+            </MudPaper>
+        }
+    }
+    <MudButton Href="/history" Class="align-self-start">@Localizer["ViewHistory"]</MudButton>
+</MudStack>

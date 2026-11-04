@@ -1,0 +1,24 @@
+@inject IStringLocalizer<SharedResource> Localizer
+@implements IAsyncDisposable
+
+<MudPaper Class="daypulse-panel" Elevation="0">
+    <MudStack Spacing="3">
+        <MudText Typo="Typo.h2">@Localizer["PreferencesMetricsTitle"]</MudText>
+        <MudText>@Localizer["PreferencesMetricsDescription"]</MudText>
+        @if (_error)
+        {
+            <MudAlert Severity="Severity.Error" role="alert">@Localizer["PreferencesSaveError"]</MudAlert>
+        }
+        @if (_settings is { } settings)
+        {
+            <MudSwitch @key="(Metric.Energy, _revision)" T="bool" Value="@settings.EnergyEnabled" ValueChanged="@(value => SaveAsync(Metric.Energy, value))" Disabled="@_busy" Label="@Localizer["PreferencesEnergy"]" Color="Color.Primary" data-testid="preferences-energy" />
+            <MudSwitch @key="(Metric.Anxiety, _revision)" T="bool" Value="@settings.AnxietyEnabled" ValueChanged="@(value => SaveAsync(Metric.Anxiety, value))" Disabled="@_busy" Label="@Localizer["PreferencesAnxiety"]" Color="Color.Primary" data-testid="preferences-anxiety" />
+            <MudSwitch @key="(Metric.Focus, _revision)" T="bool" Value="@settings.FocusEnabled" ValueChanged="@(value => SaveAsync(Metric.Focus, value))" Disabled="@_busy" Label="@Localizer["PreferencesFocus"]" Color="Color.Primary" data-testid="preferences-focus" />
+            <MudSwitch @key="(Metric.Sleep, _revision)" T="bool" Value="@settings.SleepEnabled" ValueChanged="@(value => SaveAsync(Metric.Sleep, value))" Disabled="@_busy" Label="@Localizer["PreferencesSleep"]" Color="Color.Primary" data-testid="preferences-sleep" />
+        }
+        else
+        {
+            <MudButton OnClick="LoadAsync" Disabled="@_busy">@Localizer["PreferencesLoadMetrics"]</MudButton>
+        }
+    </MudStack>
+</MudPaper>

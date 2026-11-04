@@ -48,13 +48,15 @@ tests/DayPulse.Tests         Single xUnit v3 + bUnit project covering all layers
 
 ## Accessibility and UX (tested)
 
-One primary navigation landmark (side rail ≥960px, bottom nav below), skip link, visible focus, 44px touch targets, safe-area padding, `prefers-reduced-motion` support. `AccessibilityTests`, `MainLayoutTests` guard these; preserve them. Not-yet-built features (check-in, history, insights) must show an explicit "upcoming" state — never fake data or invented statistics.
+One primary navigation landmark (side rail ≥960px, bottom nav below), skip link, visible focus, 44px touch targets, safe-area padding, `prefers-reduced-motion` support. `AccessibilityTests`, `MainLayoutTests` guard these; preserve them. Check-in, history and insights use real repository data with explicit loading, empty and error states — never fake data or invented statistics.
 
 ## Product constraints
 
 - Privacy: no accounts, servers, analytics, trackers, or external network calls for user data.
 - Insights must be deterministic and non-clinical (trends, moving averages, streaks); no AI diagnosis or medical claims.
 - Target: a daily check-in in under ~20 seconds on a single scrolling page.
+- Optional daily reminders are best-effort while the app remains open, not guaranteed closed-app notifications. Preserve that distinction in UI and docs.
+- Browser data is origin-specific and not encrypted. Export is local JSON/CSV (no import yet); confirmed data deletion must reset reminder/install markers and onboarding preferences without claiming success after partial failure.
 
 ## PWA
 

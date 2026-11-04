@@ -89,6 +89,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           app_location: publish/wwwroot
           output_location: ""
+          skip_app_build: true
 
   close-preview:
     name: Close preview environment

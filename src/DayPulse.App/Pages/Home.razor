@@ -1,13 +1,31 @@
 ﻿@page "/"
 @inject IStringLocalizer<SharedResource> Localizer
 @using DayPulse.App.Pages.Components
+@using DayPulse.Core.Repositories
+@implements IAsyncDisposable
+@inject ICheckInRepository Entries
+@inject ISettingsRepository Settings
+@inject TimeProvider Clock
+@inject ILogger<Home> Logger
 
 <PageTitle>@Localizer["HomePageTitle"]</PageTitle>
 
 <MudStack Spacing="6" data-testid="daypulse-home">
     <PageHeader Title="@Localizer["Today"]" Description="@Localizer["HomeDescription"]" />
-    <TodayWelcome />
-    <WellbeingOverview />
+    @if (_loading)
+    {
+        <MudText role="status">@Localizer["JournalLoading"]</MudText>
+    }
+    else if (_failed)
+    {
+        <MudAlert Severity="Severity.Error">@Localizer["JournalLoadError"]</MudAlert>
+        <MudButton OnClick="LoadAsync">@Localizer["JournalRetry"]</MudButton>
+    }
+    else
+    {
+        <TodayWelcome Entry="_entry" />
+        <WellbeingOverview Entry="_entry" Settings="_settings" />
+    }
 
     <MudGrid Spacing="3">
         <MudItem xs="12" sm="6">
@@ -20,6 +38,40 @@
                         @Localizer["ViewHistory"]
                     </MudButton>
                 </MudStack>
+
+                @code {
+                    private readonly CancellationTokenSource _lifetime = new();
+                    private CheckIn? _entry;
+                    private AppSettings _settings = new();
+                    private bool _loading = true;
+                    private bool _failed;
+
+                    protected override Task OnInitializedAsync() => LoadAsync();
+
+                    private async Task LoadAsync()
+                    {
+                        _loading = true;
+                        _failed = false;
+                        try
+                        {
+                            _settings = await Settings.LoadAsync(_lifetime.Token);
+                            _entry = await Entries.GetByDateAsync(DateOnly.FromDateTime(Clock.GetLocalNow().DateTime), _lifetime.Token);
+                        }
+                        catch (OperationCanceledException) when (_lifetime.IsCancellationRequested) { }
+                        catch (Exception ex)
+                        {
+                            Logger.LogWarning(ex, "Unable to load today's journal.");
+                            _failed = true;
+                        }
+                        finally { _loading = false; }
+                    }
+
+                    public async ValueTask DisposeAsync()
+                    {
+                        await _lifetime.CancelAsync();
+                        _lifetime.Dispose();
+                    }
+                }
             </MudPaper>
         </MudItem>
         <MudItem xs="12" sm="6">

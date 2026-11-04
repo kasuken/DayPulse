@@ -2,6 +2,9 @@ using Bunit;
 using DayPulse.App.Pages;
 using DayPulse.App.Shared;
 using DayPulse.Core.Domain;
+using DayPulse.Infrastructure;
+using DayPulse.Infrastructure.Storage;
+using DayPulse.Tests.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 
@@ -13,6 +16,8 @@ public sealed class DesignSystemComponentTests : BunitContext
     {
         Services.AddMudServices();
         Services.AddDayPulseLocalization();
+        Services.AddInfrastructure();
+        Services.AddSingleton<IAtomicClientStorage>(new InMemoryClientStorage());
         JSInterop.Mode = JSRuntimeMode.Loose;
     }
 
@@ -49,24 +54,28 @@ public sealed class DesignSystemComponentTests : BunitContext
     }
 
     [Fact]
-    public void History_clearly_labels_its_upcoming_workflow_and_has_a_return_link()
+    public void History_clearly_labels_its_empty_journal_and_has_a_check_in_link()
     {
         var cut = Render<History>();
 
         Assert.Equal("History", cut.Find("h1").TextContent);
-        Assert.Contains("History is coming with daily check-ins.", cut.Markup);
-        Assert.Contains("Coming next", cut.Markup);
-        Assert.Equal("/", cut.Find("a").GetAttribute("href"));
+        Assert.Contains("Your story starts here", cut.Markup);
+        Assert.Contains("Save your first check-in", cut.Markup);
+        Assert.Equal("/check-in", cut.Find("a").GetAttribute("href"));
     }
 
     [Fact]
     public void Insights_does_not_present_fabricated_statistics_as_real_data()
     {
+        Services.AddSingleton<TimeProvider>(TimeProvider.System);
         var cut = Render<Insights>();
 
         Assert.Equal("Insights", cut.Find("h1").TextContent);
-        Assert.Contains("Trends and summaries are coming after daily check-ins.", cut.Markup);
-        Assert.Contains("Coming next", cut.Markup);
+        Assert.Single(cut.FindAll("[data-testid='insights-empty']"));
+        Assert.Contains("Save a check-in to see your personal summaries here.", cut.Markup);
+        Assert.DoesNotContain("Coming next", cut.Markup);
+        Assert.Empty(cut.FindAll("[data-testid='insights-period-picker']"));
+        Assert.Empty(cut.FindAll("[data-testid='insights-mood-table']"));
         Assert.Equal("/", cut.Find("a").GetAttribute("href"));
         Assert.All(cut.FindAll("[role='img']"), icon =>
             Assert.NotNull(icon.Closest("[aria-hidden='true']")));

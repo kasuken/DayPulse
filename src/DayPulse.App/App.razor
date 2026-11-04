@@ -1,5 +1,6 @@
 ﻿@using DayPulse.Core.Repositories
 @inject IActivityRepository ActivityRepository
+@inject ISettingsRepository SettingsRepository
 @inject CultureState CultureState
 @inject ILogger<App> Logger
 @inject IStringLocalizer<SharedResource> Localizer
@@ -11,17 +12,33 @@
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
-<InstallPrompt />
 
-@if (_initializationError is not null)
+@if (!_initialized && _initializationError is null)
+{
+    <main class="pa-6" role="status">
+        <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+        <p>@Localizer["OnboardingLoading"]</p>
+    </main>
+}
+else if (_initializationError is not null)
 {
     <main class="pa-4" role="alert">
         <h1>@Localizer["LocalStorageUnavailableTitle"]</h1>
         <p>@Localizer["LocalStorageUnavailableMessage"]</p>
+        <MudButton OnClick="RetryInitializationAsync" Variant="Variant.Filled" Color="Color.Primary">
+            @Localizer["TryAgain"]
+        </MudButton>
     </main>
+}
+else if (!_settings.OnboardingCompleted)
+{
+    <LayoutView Layout="@typeof(MainLayout)">
+        <Onboarding InitialSettings="@_settings" OnCompleted="CompleteOnboarding" />
+    </LayoutView>
 }
 else
 {
+    <InstallPrompt />
     <Router
         @key="CultureState.CurrentCulture.Name"
         AppAssembly="@typeof(App).Assembly"
@@ -37,6 +54,8 @@ else
     private CancellationTokenSource? _initializationCancellation;
     private Task? _initializationTask;
     private Exception? _initializationError;
+    private bool _initialized;
+    private AppSettings _settings = new();
 
     protected override void OnInitialized()
     {
@@ -80,9 +99,28 @@ else
         initializationCancellation.Dispose();
     }
 
-    private void OnCultureChanged(object? sender, EventArgs args)
+    private async void OnCultureChanged(object? sender, EventArgs args)
     {
-        _ = InvokeAsync(StateHasChanged);
+        try
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception exception)
+        {
+            await DispatchExceptionAsync(exception);
+        }
+    }
+
+    private Task RetryInitializationAsync()
+    {
+        _initializationError = null;
+        _initializationTask = InitializeAsync(_initializationCancellation!.Token);
+        return _initializationTask;
+    }
+
+    private void CompleteOnboarding(AppSettings settings)
+    {
+        _settings = settings;
     }
 
     private async Task InitializeAsync(CancellationToken cancellationToken)
@@ -90,6 +128,9 @@ else
         try
         {
             await ActivityRepository.SeedDefaultsAsync(cancellationToken);
+            _settings = await SettingsRepository.LoadAsync(cancellationToken);
+            _initialized = true;
+            await InvokeAsync(StateHasChanged);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {

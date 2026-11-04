@@ -85,6 +85,22 @@
             }
         </MudStack>
     </MudPaper>
+    @if (ThemeState.IsInitialized && !ThemeState.IsInitializationFailed)
+    {
+        <MetricPreferences />
+        <DailyReminderSettings />
+    }
+    <ActivityPreferences />
+    <DataControls />
+    <MudPaper Class="daypulse-panel" Elevation="0">
+        <MudStack Spacing="3">
+            <MudText Typo="Typo.h2">@Localizer["PreferencesAboutTitle"]</MudText>
+            <MudText>@Localizer["PreferencesVersion", typeof(Settings).Assembly.GetName().Version?.ToString() ?? "—"]</MudText>
+            <MudText>@Localizer["PreferencesPrivacy"]</MudText>
+            <MudText>@Localizer["PreferencesStorageLoss"]</MudText>
+            <MudText>@Localizer["PreferencesNonMedical"]</MudText>
+        </MudStack>
+    </MudPaper>
     <PrivacyNote />
 </MudStack>
 
