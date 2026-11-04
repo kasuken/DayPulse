@@ -58,10 +58,13 @@ public sealed class DesignSystemComponentTests : BunitContext
     {
         var cut = Render<History>();
 
-        Assert.Equal("History", cut.Find("h1").TextContent);
-        Assert.Contains("Your story starts here", cut.Markup);
-        Assert.Contains("Save your first check-in", cut.Markup);
-        Assert.Equal("/check-in", cut.Find("a").GetAttribute("href"));
+        cut.WaitForAssertion(() =>
+        {
+            Assert.Equal("History", cut.Find("h1").TextContent);
+            Assert.Contains("Your story starts here", cut.Markup);
+            Assert.Contains("Save your first check-in", cut.Markup);
+            Assert.Equal("/check-in", cut.Find("a").GetAttribute("href"));
+        });
     }
 
     [Fact]
@@ -70,15 +73,18 @@ public sealed class DesignSystemComponentTests : BunitContext
         Services.AddSingleton<TimeProvider>(TimeProvider.System);
         var cut = Render<Insights>();
 
-        Assert.Equal("Insights", cut.Find("h1").TextContent);
-        Assert.Single(cut.FindAll("[data-testid='insights-empty']"));
-        Assert.Contains("Save a check-in to see your personal summaries here.", cut.Markup);
-        Assert.DoesNotContain("Coming next", cut.Markup);
-        Assert.Empty(cut.FindAll("[data-testid='insights-period-picker']"));
-        Assert.Empty(cut.FindAll("[data-testid='insights-mood-table']"));
-        Assert.Equal("/", cut.Find("a").GetAttribute("href"));
-        Assert.All(cut.FindAll("[role='img']"), icon =>
-            Assert.NotNull(icon.Closest("[aria-hidden='true']")));
+        cut.WaitForAssertion(() =>
+        {
+            Assert.Equal("Insights", cut.Find("h1").TextContent);
+            Assert.Single(cut.FindAll("[data-testid='insights-empty']"));
+            Assert.Contains("Save a check-in to see your personal summaries here.", cut.Markup);
+            Assert.DoesNotContain("Coming next", cut.Markup);
+            Assert.Empty(cut.FindAll("[data-testid='insights-period-picker']"));
+            Assert.Empty(cut.FindAll("[data-testid='insights-mood-table']"));
+            Assert.Equal("/", cut.Find("a").GetAttribute("href"));
+            Assert.All(cut.FindAll("[role='img']"), icon =>
+                Assert.NotNull(icon.Closest("[aria-hidden='true']")));
+        });
     }
 
     [Fact]
