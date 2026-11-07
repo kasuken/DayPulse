@@ -53,7 +53,7 @@ public sealed class HomeTests : BunitContext
             .SaveAsync(new AppSettings(onboardingCompleted: true), Xunit.TestContext.Current.CancellationToken);
         var storageModule = JSInterop.SetupModule("./js/daypulse-storage.js");
         storageModule
-            .Setup<bool>("localStorageTrySet", _ => true)
+            .Setup<bool>("storageTrySet", _ => true)
             .SetResult(true);
 
         var cut = Render<global::DayPulse.App.App>();

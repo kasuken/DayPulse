@@ -8,7 +8,7 @@ public interface IAtomicClientStorage : IClientStorage
     /// <summary>
     /// Stores a value only when the current value still equals the expected value.
     /// </summary>
-    /// <param name="key">The local storage key.</param>
+    /// <param name="key">The storage key.</param>
     /// <param name="expectedValue">
     /// The value that must currently be stored, or <see langword="null"/> when the key must be absent.
     /// </param>
@@ -27,7 +27,7 @@ public interface IAtomicClientStorage : IClientStorage
     /// <summary>
     /// Removes a value only when the current value still equals the expected value.
     /// </summary>
-    /// <param name="key">The local storage key.</param>
+    /// <param name="key">The storage key.</param>
     /// <param name="expectedValue">
     /// The value that must currently be stored, or <see langword="null"/> when the key must be absent.
     /// </param>

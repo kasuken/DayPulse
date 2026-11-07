@@ -1,6 +1,6 @@
 # AGENTS.md
 
-DayPulse is a privacy-first, offline-capable wellbeing tracker: a **.NET 10 Blazor WebAssembly PWA** using **MudBlazor**, deployed to Azure Static Web Apps. There is no backend; all user data lives in the browser (IndexedDB/localStorage).
+DayPulse is a privacy-first, offline-capable wellbeing tracker: a **.NET 10 Blazor WebAssembly PWA** using **MudBlazor**, deployed to Azure Static Web Apps. There is no backend; all user data lives in the browser (IndexedDB; legacy localStorage data is migrated on first run).
 
 ## Commands
 
@@ -20,7 +20,7 @@ CI (`.github/workflows/azure-static-web-apps.yml`) runs restore → Release buil
 
 ```text
 src/DayPulse.Core            Domain entities, validation, repository interfaces, DateUtils. No Blazor/JS/storage deps.
-src/DayPulse.Infrastructure  Browser repositories + storage (IClientStorage, IndexedDB) + DependencyInjection.AddInfrastructure.
+src/DayPulse.Infrastructure  Browser repositories + IndexedDB-backed storage (IAtomicClientStorage via wwwroot/js/daypulse-storage.js, with one-time localStorage migration) + DependencyInjection.AddInfrastructure.
 src/DayPulse.App             Blazor WASM host: Pages/, Layout/, Shared/ (theme, localization, install prompt), Resources/, wwwroot/.
 tests/DayPulse.Tests         Single xUnit v3 + bUnit project covering all layers (Domain/, Repositories/, component tests).
 ```

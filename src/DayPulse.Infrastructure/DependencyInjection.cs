@@ -19,10 +19,9 @@ public static class DependencyInjection
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        services.AddScoped<IClientStorage, BrowserStorage>();
-        services.AddScoped<IAtomicClientStorage>(serviceProvider =>
-            (IAtomicClientStorage)serviceProvider.GetRequiredService<IClientStorage>());
-        services.AddScoped<IIndexedDbStorage, IndexedDbStorage>();
+        services.AddScoped<IAtomicClientStorage, IndexedDbClientStorage>();
+        services.AddScoped<IClientStorage>(serviceProvider =>
+            serviceProvider.GetRequiredService<IAtomicClientStorage>());
         services.AddScoped<ICheckInRepository, BrowserCheckInRepository>();
         services.AddScoped<IActivityRepository, BrowserActivityRepository>();
         services.AddScoped<ISettingsRepository, BrowserSettingsRepository>();

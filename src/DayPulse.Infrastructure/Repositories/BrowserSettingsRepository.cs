@@ -5,7 +5,7 @@ using DayPulse.Infrastructure.Storage;
 namespace DayPulse.Infrastructure.Repositories;
 
 /// <summary>
-/// Persists application settings in browser local storage.
+/// Persists application settings in browser IndexedDB storage.
 /// </summary>
 public sealed class BrowserSettingsRepository : ISettingsRepository
 {

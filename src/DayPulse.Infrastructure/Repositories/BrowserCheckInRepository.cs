@@ -5,7 +5,7 @@ using DayPulse.Infrastructure.Storage;
 namespace DayPulse.Infrastructure.Repositories;
 
 /// <summary>
-/// Persists check-ins in browser local storage.
+/// Persists check-ins in browser IndexedDB storage.
 /// </summary>
 public sealed class BrowserCheckInRepository : ICheckInRepository
 {

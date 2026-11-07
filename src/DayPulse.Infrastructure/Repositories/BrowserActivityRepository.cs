@@ -5,7 +5,7 @@ using DayPulse.Infrastructure.Storage;
 namespace DayPulse.Infrastructure.Repositories;
 
 /// <summary>
-/// Persists activities in browser local storage and owns the built-in catalog seed.
+/// Persists activities in browser IndexedDB storage and owns the built-in catalog seed.
 /// </summary>
 public sealed class BrowserActivityRepository : IActivityRepository
 {

@@ -72,7 +72,7 @@ Open <http://localhost:5084>. For HTTPS, trust the development certificate with 
 
 Local development needs no API keys, connection strings, cloud account or backend database. The launch profiles set `ASPNETCORE_ENVIRONMENT=Development`; Azure serves the published app as static files.
 
-Settings and repository data use browser localStorage; IndexedDB storage services are also registered. Browser storage is specific to an origin, browser and profile. There is no cloud synchronization or application-managed backup, and clearing site data can remove it.
+Settings, activities and check-ins are stored in the browser's IndexedDB (database `daypulse`). Data saved by v1.0.0 in localStorage is copied across automatically the first time the new version runs. Small interface markers (install-prompt dismissal, last reminder date) stay in localStorage. Browser storage is specific to an origin, browser and profile. There is no cloud synchronization or application-managed backup, and clearing site data can remove it. When a new version is deployed, the app offers a "Reload" prompt instead of switching versions underneath you.
 
 > [!IMPORTANT]
 > Choose the final HTTPS domain before inviting users to store data. Moving from an Azure hostname to a custom domain does **not** move browser-local data. Export is available, but importing an export is not yet supported.
@@ -128,7 +128,7 @@ SPA fallback, MIME types, security headers and caching rules are in [`staticweba
 
 The intended production address is **https://www.daypulse.me**. Its Azure domain binding and HTTPS deployment have not yet been verified; publishing a GitHub release does not make the website live.
 
-The `v1.0.0` release includes a ZIP of the published static site. Extract its contents directly into your static host's web root, preserving `staticwebapp.config.json` when using Azure Static Web Apps. The repository workflow needs `AZURE_STATIC_WEB_APPS_API_TOKEN`; the latest checked deployment failed because that secret was missing.
+Each release (for example `v1.1.0`) includes a ZIP of the published static site. Extract its contents directly into your static host's web root, preserving `staticwebapp.config.json` when using Azure Static Web Apps. The repository workflow needs `AZURE_STATIC_WEB_APPS_API_TOKEN`; the latest checked deployment failed because that secret was missing.
 
 ## Limitations
 
