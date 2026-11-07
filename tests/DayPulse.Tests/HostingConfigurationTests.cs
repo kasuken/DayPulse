@@ -22,4 +22,30 @@ public sealed class HostingConfigurationTests
             item => item.GetProperty("route").GetString() == route);
         Assert.Equal("no-cache", definition.GetProperty("headers").GetProperty("cache-control").GetString());
     }
+
+    [Theory]
+    [InlineData("camera")]
+    [InlineData("microphone")]
+    [InlineData("geolocation")]
+    [InlineData("payment")]
+    [InlineData("usb")]
+    public void Permissions_policy_disables_browser_features_the_app_never_uses(string feature)
+    {
+        var directory = new DirectoryInfo(AppContext.BaseDirectory);
+        while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "DayPulse.sln")))
+        {
+            directory = directory.Parent;
+        }
+        Assert.NotNull(directory);
+        using var config = JsonDocument.Parse(File.ReadAllText(Path.Combine(
+            directory.FullName, "src", "DayPulse.App", "wwwroot", "staticwebapp.config.json")));
+
+        var policy = config.RootElement
+            .GetProperty("globalHeaders")
+            .GetProperty("Permissions-Policy")
+            .GetString();
+
+        Assert.NotNull(policy);
+        Assert.Contains($"{feature}=()", policy.Split(", "));
+    }
 }
