@@ -456,4 +456,10 @@
   <data name="InsightsStatsTableCaption" xml:space="preserve"><value>Recorded mood values for the selected period</value></data>
   <data name="InsightsStatsDateColumn" xml:space="preserve"><value>Date</value></data>
   <data name="InsightsStatsMoodColumn" xml:space="preserve"><value>Mood</value></data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>A new version of DayPulse is available.</value>
+  </data>
+  <data name="UpdateReload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
 </root>

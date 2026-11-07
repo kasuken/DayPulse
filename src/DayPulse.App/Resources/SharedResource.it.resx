@@ -456,4 +456,10 @@
   <data name="InsightsStatsTableCaption" xml:space="preserve"><value>Valori dell'umore registrati nel periodo selezionato</value></data>
   <data name="InsightsStatsDateColumn" xml:space="preserve"><value>Data</value></data>
   <data name="InsightsStatsMoodColumn" xml:space="preserve"><value>Umore</value></data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>È disponibile una nuova versione di DayPulse.</value>
+  </data>
+  <data name="UpdateReload" xml:space="preserve">
+    <value>Ricarica</value>
+  </data>
 </root>

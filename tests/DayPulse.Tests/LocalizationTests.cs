@@ -96,6 +96,7 @@ public sealed class LocalizationTests
 
     private static readonly string[] ProductResourceKeys =
     [
+        "UpdateAvailable", "UpdateReload",
         "OnboardingPageTitle", "OnboardingLoading", "OnboardingWelcome", "OnboardingIntroduction",
         "OnboardingStep", "OnboardingSmallHabit", "OnboardingCheckInDescription", "OnboardingNoMedicalClaims",
         "OnboardingPrivacyTitle", "OnboardingPrivacyDescription", "OnboardingStorageWarning",

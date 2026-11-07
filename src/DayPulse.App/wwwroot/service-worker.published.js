@@ -4,6 +4,7 @@
 self.importScripts('./service-worker-assets.js');
 self.addEventListener('install', event => event.waitUntil(onInstall()));
 self.addEventListener('activate', event => event.waitUntil(onActivate()));
+self.addEventListener('message', onMessage);
 self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
 
 const cacheNamePrefix = 'daypulse-offline-';
@@ -32,7 +33,14 @@ async function onInstall() {
 
     const cache = await caches.open(cacheName);
     await cache.addAll(precacheRequests);
-    await self.skipWaiting();
+    // A new version waits until the person chooses to reload (see daypulse-update-bootstrap.js);
+    // it then receives SKIP_WAITING. The very first install has nothing to wait for and activates.
+}
+
+function onMessage(event) {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 }
 
 async function onActivate() {

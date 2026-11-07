@@ -456,4 +456,10 @@
   <data name="InsightsStatsTableCaption" xml:space="preserve"><value>Erfasste Stimmungswerte im ausgewählten Zeitraum</value></data>
   <data name="InsightsStatsDateColumn" xml:space="preserve"><value>Datum</value></data>
   <data name="InsightsStatsMoodColumn" xml:space="preserve"><value>Stimmung</value></data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Eine neue Version von DayPulse ist verfügbar.</value>
+  </data>
+  <data name="UpdateReload" xml:space="preserve">
+    <value>Neu laden</value>
+  </data>
 </root>

@@ -97,6 +97,31 @@ public sealed class PwaAssetTests
     }
 
     [Fact]
+    public void Published_service_worker_waits_for_the_person_to_choose_the_update()
+    {
+        var serviceWorker = ReadRepositoryFile(
+            "src/DayPulse.App/wwwroot/service-worker.published.js");
+        var install = serviceWorker[serviceWorker.IndexOf("async function onInstall()", StringComparison.Ordinal)..serviceWorker.IndexOf("function onMessage", StringComparison.Ordinal)];
+
+        Assert.DoesNotContain("skipWaiting", install);
+        Assert.Contains("addEventListener('message', onMessage)", serviceWorker);
+        Assert.Contains("event.data.type === 'SKIP_WAITING'", serviceWorker);
+    }
+
+    [Fact]
+    public void Index_document_registers_the_service_worker_through_the_update_bootstrap()
+    {
+        var index = ReadRepositoryFile("src/DayPulse.App/wwwroot/index.html");
+        var bootstrap = ReadRepositoryFile("src/DayPulse.App/wwwroot/js/daypulse-update-bootstrap.js");
+
+        Assert.Contains("js/daypulse-update-bootstrap.js", index);
+        Assert.DoesNotContain("serviceWorker.register", index);
+        Assert.Contains(".register(\"service-worker.js\", { updateViaCache: \"none\" })", bootstrap);
+        Assert.Contains("controllerchange", bootstrap);
+        Assert.Contains("navigator.serviceWorker.controller", bootstrap);
+    }
+
+    [Fact]
     public void Development_service_worker_prefers_the_network_and_falls_back_offline()
     {
         var serviceWorker = ReadRepositoryFile("src/DayPulse.App/wwwroot/service-worker.js");
@@ -136,6 +161,8 @@ public sealed class PwaAssetTests
         Assert.Contains("fonts/manrope-variable.ttf", assetUrls);
         Assert.Contains("fonts/OFL-Manrope.txt", assetUrls);
         Assert.Contains("js/daypulse-storage.js", assetUrls);
+        Assert.Contains("js/daypulse-update-bootstrap.js", assetUrls);
+        Assert.Contains("Shared/UpdatePrompt.razor.js", assetUrls);
         Assert.Contains("Shared/BrowserLocaleInitializer.razor.js", assetUrls);
         Assert.Contains("Shared/ThemeProvider.razor.js", assetUrls);
         Assert.Contains(assetUrls, url => url.StartsWith("_framework/", StringComparison.Ordinal));
