@@ -9,7 +9,7 @@
 <PageTitle>@Localizer["HistoryPageTitle"]</PageTitle>
 <MudStack Spacing="6">
     <PageHeader Title="@Localizer["History"]" Description="@Localizer["JournalHistoryDescription"]" />
-    <MudButton Href="/check-in" Variant="Variant.Filled" Color="Color.Primary" Class="align-self-start">@Localizer["EntryStart"]</MudButton>
+    <MudButton Href="/check-in" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Add" Class="align-self-start">@Localizer["EntryStart"]</MudButton>
     @if (_loading)
     {
         <MudText role="status">@Localizer["JournalLoading"]</MudText>
@@ -26,17 +26,30 @@
     }
     else
     {
-        @foreach (var entry in _entries)
+        @foreach (var month in Months)
         {
-            <MudPaper @key="entry.Id" Elevation="0" Class="daypulse-panel pa-5" data-testid="journal-history-entry">
-                <MudStack Spacing="2">
-                    <MudText Typo="Typo.h2">@Format.FormatDate(entry.EntryDate, "D")</MudText>
-                    <MudText>@Localizer["MetricMood"]: @Format.FormatNumber(entry.Mood, "0")</MudText>
-                    <MudButton Href="@($"/history/{Uri.EscapeDataString(entry.Id)}")" Class="align-self-start" Color="Color.Primary">
-                        @Localizer["JournalViewEntry"]
-                    </MudButton>
-                </MudStack>
-            </MudPaper>
+            <section @key="month.Key" class="history-month" aria-labelledby="@($"history-month-{month.Key}")">
+                <MudText Typo="Typo.h2" id="@($"history-month-{month.Key}")" Class="history-month__title">@Format.FormatDate(month.First, "Y")</MudText>
+                <ul class="history-list">
+                    @foreach (var entry in month.Entries)
+                    {
+                        <li @key="entry.Id" data-testid="journal-history-entry">
+                            <a class="history-card daypulse-panel" href="@($"/history/{Uri.EscapeDataString(entry.Id)}")">
+                                <span class="history-card__face"><MoodFace Score="entry.Mood" /></span>
+                                <span class="history-card__body">
+                                    <span class="history-card__date">@Format.FormatDate(entry.EntryDate, "D")</span>
+                                    <span class="history-card__mood">@Localizer[MoodFace.LabelKey(entry.Mood)]</span>
+                                    @if (!string.IsNullOrWhiteSpace(entry.Notes))
+                                    {
+                                        <span class="history-card__notes">@entry.Notes</span>
+                                    }
+                                </span>
+                                <span class="history-card__score" aria-label="@($"{Localizer["MetricMood"]}: {Score(entry.Mood)}")">@Score(entry.Mood)</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </section>
         }
     }
     <PrivacyNote />
@@ -47,6 +60,14 @@
     private IReadOnlyList<CheckIn> _entries = [];
     private bool _loading = true;
     private bool _failed;
+    private IEnumerable<MonthGroup> Months => _entries
+        .GroupBy(entry => (entry.EntryDate.Year, entry.EntryDate.Month))
+        .Select(group => new MonthGroup($"{group.Key.Year}-{group.Key.Month:00}", new DateOnly(group.Key.Year, group.Key.Month, 1), group.ToArray()));
+
+    private string Score(int mood) => Format.FormatNumber(mood, "+0;−0;0");
+
+    private sealed record MonthGroup(string Key, DateOnly First, IReadOnlyList<CheckIn> Entries);
+
     protected override Task OnInitializedAsync() => LoadAsync();
 
     private async Task LoadAsync()

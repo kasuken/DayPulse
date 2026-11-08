@@ -58,19 +58,7 @@ public partial class MoodPicker
     private Task SetAsync(int score) =>
         Disabled || Value == score ? Task.CompletedTask : ValueChanged.InvokeAsync(score);
 
-    private static string MouthPath(int score)
-    {
-        var corners = 15.5 - score * .2;
-        var control = 15.5 + score * .85;
-        return string.Create(CultureInfo.InvariantCulture, $"M7.5 {corners:0.##} Q12 {control:0.##} 16.5 {corners:0.##}");
-    }
+    private static string MouthPath(int score) => MoodFace.MouthPath(score);
 
-    // Eyes soften into upward arcs for happier scores and slope inward for lower ones.
-    private static string EyePath(int score)
-    {
-        var corner = 10 + Math.Abs(score) * .08;
-        var control = 9.5 - score * .3;
-        return string.Create(CultureInfo.InvariantCulture,
-            $"M7.5 {corner:0.##} Q9 {control:0.##} 10.5 10 M13.5 10 Q15 {control:0.##} 16.5 {corner:0.##}");
-    }
+    private static string EyePath(int score) => MoodFace.EyePath(score);
 }

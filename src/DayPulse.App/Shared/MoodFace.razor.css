@@ -1,0 +1,13 @@
+.mood-face {
+    color: var(--mud-palette-primary);
+    height: 100%;
+    width: 100%;
+}
+
+.mood-face__head,
+.mood-face__features {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.5;
+}
