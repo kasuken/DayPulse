@@ -2,3 +2,43 @@
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
+
+.entry-section {
+    display: grid;
+    gap: .75rem;
+}
+
+.entry-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.entry-chip {
+    border: 1px solid var(--mud-palette-lines-default);
+    border-radius: var(--mud-default-borderradius);
+    min-height: 2.75rem;
+    padding: .5rem 1rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.entry-notes {
+    border-left: 3px solid var(--mud-palette-primary);
+    padding: .5rem 0 .5rem 1rem;
+}
+
+.entry-muted,
+.entry-meta {
+    color: var(--mud-palette-text-secondary);
+}
+
+.entry-meta {
+    border-top: 1px solid var(--mud-palette-lines-default);
+    display: grid;
+    gap: .25rem;
+    padding-top: 1rem;
+}

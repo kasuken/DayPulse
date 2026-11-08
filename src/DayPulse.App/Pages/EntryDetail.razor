@@ -30,20 +30,31 @@
         <MudPaper Elevation="0" Class="daypulse-panel pa-5">
             <MudStack Spacing="4">
                 <WellbeingOverview Entry="_entry" />
-                <MudText Typo="Typo.h2">@Localizer["EntryActivities"]</MudText>
-                @if (_entry.ActivityIds.Count == 0)
-                {
-                    <MudText>@Localizer["JournalNotRecorded"]</MudText>
-                }
-                @foreach (var id in _entry.ActivityIds)
-                {
-                    var activity = _activities.FirstOrDefault(activity => activity.Id == id);
-                    <MudText @key="id">@(activity is null ? Localizer["EntryUnavailableActivity"].Value : activity.IsDefault ? Localizer[$"EntryActivity{activity.Id}"].Value : activity.Name)</MudText>
-                }
-                <MudText Typo="Typo.h2">@Localizer["EntryNotes"]</MudText>
-                <MudText Class="journal-notes">@(!string.IsNullOrWhiteSpace(_entry.Notes) ? _entry.Notes : Localizer["JournalNotRecorded"].Value)</MudText>
-                <MudText Typo="Typo.body2">@Localizer["JournalCreated"]: @Format.FormatDateTime(_entry.CreatedAt.ToLocalTime())</MudText>
-                <MudText Typo="Typo.body2">@Localizer["JournalUpdated"]: @Format.FormatDateTime(_entry.UpdatedAt.ToLocalTime())</MudText>
+                <section class="entry-section" aria-labelledby="entry-activities-title">
+                    <MudText Typo="Typo.h2" id="entry-activities-title">@Localizer["EntryActivities"]</MudText>
+                    @if (_entry.ActivityIds.Count == 0)
+                    {
+                        <MudText Class="entry-muted">@Localizer["JournalNotRecorded"]</MudText>
+                    }
+                    else
+                    {
+                        <ul class="entry-chips">
+                            @foreach (var id in _entry.ActivityIds)
+                            {
+                                var activity = _activities.FirstOrDefault(activity => activity.Id == id);
+                                <li @key="id" class="entry-chip">@(activity is null ? Localizer["EntryUnavailableActivity"].Value : activity.IsDefault ? Localizer[$"EntryActivity{activity.Id}"].Value : activity.Name)</li>
+                            }
+                        </ul>
+                    }
+                </section>
+                <section class="entry-section" aria-labelledby="entry-notes-title">
+                    <MudText Typo="Typo.h2" id="entry-notes-title">@Localizer["EntryNotes"]</MudText>
+                    <MudText Class="@(string.IsNullOrWhiteSpace(_entry.Notes) ? "journal-notes entry-muted" : "journal-notes entry-notes")">@(!string.IsNullOrWhiteSpace(_entry.Notes) ? _entry.Notes : Localizer["JournalNotRecorded"].Value)</MudText>
+                </section>
+                <div class="entry-meta">
+                    <MudText Typo="Typo.body2">@Localizer["JournalCreated"]: @Format.FormatDateTime(_entry.CreatedAt.ToLocalTime())</MudText>
+                    <MudText Typo="Typo.body2">@Localizer["JournalUpdated"]: @Format.FormatDateTime(_entry.UpdatedAt.ToLocalTime())</MudText>
+                </div>
                 <MudStack Row="true" Wrap="Wrap.Wrap">
                     <MudButton Href="@($"/check-in/{Uri.EscapeDataString(_entry.Id)}")" Color="Color.Primary" Variant="Variant.Filled" Disabled="_deleting">@Localizer["EntryEdit"]</MudButton>
                     <MudButton OnClick="@(() => _confirmDelete = true)" Color="Color.Error" Disabled="_deleting" data-testid="entry-delete">@Localizer["EntryDelete"]</MudButton>
