@@ -72,102 +72,14 @@
                 </div>
 
                 <div class="insights-metrics">
-                    <MudItem xs="12" sm="6" md="4">
-                        <div class="insights-metric">
-                            <MudText Typo="Typo.body2" Class="daypulse-muted">
-                                @Localizer["InsightsStatsCheckInTotal"]
-                            </MudText>
-                            <MudText Typo="Typo.h3">@FormatService.FormatNumber(CurrentPeriod.CheckInCount, "N0")</MudText>
+                    @foreach (var metric in Metrics)
+                    {
+                        <div @key="metric.Label" class="insights-metric" data-featured="@(metric.Featured ? "true" : "false")">
+                            <MudIcon Icon="@metric.Icon" Class="insights-metric__icon" aria-hidden="true" />
+                            <MudText Typo="Typo.body2" Class="insights-metric__label">@metric.Label</MudText>
+                            <MudText Typo="@(metric.Compact ? Typo.body1 : Typo.h3)" Class="insights-metric__value">@metric.Value</MudText>
                         </div>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <div class="insights-metric">
-                            <MudText Typo="Typo.body2" Class="daypulse-muted">
-                                @Localizer["InsightsStatsAverageMood"]
-                            </MudText>
-                            <MudText Typo="Typo.h3">@FormatAverage(CurrentPeriod.AverageMood)</MudText>
-                        </div>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <div class="insights-metric">
-                            <MudText Typo="Typo.body2" Class="daypulse-muted">
-                                @Localizer["InsightsStatsAverageEnergy"]
-                            </MudText>
-                            <MudText Typo="Typo.h3">@FormatAverage(CurrentPeriod.AverageEnergy)</MudText>
-                        </div>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <div class="insights-metric">
-                            <MudText Typo="Typo.body2" Class="daypulse-muted">
-                                @Localizer["InsightsStatsAverageAnxiety"]
-                            </MudText>
-                            <MudText Typo="Typo.h3">@FormatAverage(CurrentPeriod.AverageAnxiety)</MudText>
-                        </div>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <div class="insights-metric">
-                            <MudText Typo="Typo.body2" Class="daypulse-muted">
-                                @Localizer["InsightsStatsAverageFocus"]
-                            </MudText>
-                            <MudText Typo="Typo.h3">@FormatAverage(CurrentPeriod.AverageFocus)</MudText>
-                        </div>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <div class="insights-metric">
-                            <MudText Typo="Typo.body2" Class="daypulse-muted">
-                                @Localizer["InsightsStatsAverageSleep"]
-                            </MudText>
-                            <MudText Typo="Typo.h3">@FormatAverage(CurrentPeriod.AverageSleepHours)</MudText>
-                        </div>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <div class="insights-metric">
-                            <MudText Typo="Typo.body2" Class="daypulse-muted">
-                                @Localizer["InsightsStatsTotalSleep"]
-                            </MudText>
-                            <MudText Typo="Typo.h3">@FormatAverage(CurrentPeriod.TotalSleepHours)</MudText>
-                        </div>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <div class="insights-metric">
-                            <MudText Typo="Typo.body2" Class="daypulse-muted">
-                                @Localizer["InsightsStatsActivitySelections"]
-                            </MudText>
-                            <MudText Typo="Typo.h3">@FormatService.FormatNumber(CurrentPeriod.ActivitySelections, "N0")</MudText>
-                        </div>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <div class="insights-metric">
-                            <MudText Typo="Typo.body2" Class="daypulse-muted">
-                                @Localizer["InsightsStatsCurrentStreak"]
-                            </MudText>
-                            <MudText Typo="Typo.h3">@FormatDayCount(_statistics.CurrentStreak)</MudText>
-                        </div>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <div class="insights-metric">
-                            <MudText Typo="Typo.body2" Class="daypulse-muted">
-                                @Localizer["InsightsStatsLongestStreak"]
-                            </MudText>
-                            <MudText Typo="Typo.h3">@FormatDayCount(_statistics.LongestStreak)</MudText>
-                        </div>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <div class="insights-metric">
-                            <MudText Typo="Typo.body2" Class="daypulse-muted">
-                                @Localizer["InsightsStatsBestMood"]
-                            </MudText>
-                            <MudText Typo="Typo.body1">@FormatExtremum(CurrentPeriod.BestMood)</MudText>
-                        </div>
-                    </MudItem>
-                    <MudItem xs="12" sm="6" md="4">
-                        <div class="insights-metric">
-                            <MudText Typo="Typo.body2" Class="daypulse-muted">
-                                @Localizer["InsightsStatsLowestMood"]
-                            </MudText>
-                            <MudText Typo="Typo.body1">@FormatExtremum(CurrentPeriod.LowestMood)</MudText>
-                        </div>
-                    </MudItem>
+                    }
                 </div>
             </MudStack>
         </MudPaper>
@@ -205,6 +117,10 @@
                             <text x="0" y="182" class="insights-chart__axis-label">
                                 @FormatService.FormatNumber(-5, "N0")
                             </text>
+                            @if (ChartPoints.Count > 1)
+                            {
+                                <polyline points="@ChartLine" class="insights-chart__line" />
+                            }
                             @foreach (var segment in ChartSegments)
                             {
                                 <line @key="segment.Key"
@@ -228,6 +144,8 @@
                         <span>@FormatService.FormatDate(CurrentPeriod.StartDate)</span>
                         <span>@FormatService.FormatDate(CurrentPeriod.EndDate)</span>
                     </div>
+                    <details class="insights-details">
+                    <summary>@Localizer["InsightsStatsTableCaption"]</summary>
                     <div class="insights-table-wrap">
                         <table class="insights-table" data-testid="insights-mood-table">
                             <caption>@Localizer["InsightsStatsTableCaption"]</caption>
@@ -252,6 +170,7 @@
                             </tbody>
                         </table>
                     </div>
+                    </details>
                 }
             </MudStack>
         </MudPaper>

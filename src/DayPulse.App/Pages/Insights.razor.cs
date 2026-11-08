@@ -1,3 +1,4 @@
+using MudBlazor;
 using DayPulse.Core.Domain;
 using DayPulse.Core.Repositories;
 using Microsoft.AspNetCore.Components;
@@ -62,6 +63,33 @@ public partial class Insights : IAsyncDisposable
             }
 
             return segments;
+        }
+    }
+
+    private string ChartLine => string.Join(' ', ChartPoints.Select(point =>
+        string.Create(System.Globalization.CultureInfo.InvariantCulture, $"{point.X:0.##},{point.Y}")));
+
+    private IReadOnlyList<InsightMetric> Metrics
+    {
+        get
+        {
+            var period = CurrentPeriod;
+            var statistics = _statistics!;
+            return
+            [
+                new(Localizer["InsightsStatsAverageMood"], FormatAverage(period.AverageMood), Icons.Material.Outlined.SentimentSatisfied, true),
+                new(Localizer["InsightsStatsCheckInTotal"], FormatService.FormatNumber(period.CheckInCount, "N0"), Icons.Material.Outlined.EventAvailable, true),
+                new(Localizer["InsightsStatsCurrentStreak"], FormatDayCount(statistics.CurrentStreak), Icons.Material.Outlined.LocalFireDepartment, true),
+                new(Localizer["InsightsStatsAverageEnergy"], FormatAverage(period.AverageEnergy), Icons.Material.Outlined.Bolt),
+                new(Localizer["InsightsStatsAverageAnxiety"], FormatAverage(period.AverageAnxiety), Icons.Material.Outlined.Waves),
+                new(Localizer["InsightsStatsAverageFocus"], FormatAverage(period.AverageFocus), Icons.Material.Outlined.CenterFocusStrong),
+                new(Localizer["InsightsStatsAverageSleep"], FormatAverage(period.AverageSleepHours), Icons.Material.Outlined.Bedtime),
+                new(Localizer["InsightsStatsTotalSleep"], FormatAverage(period.TotalSleepHours), Icons.Material.Outlined.NightsStay),
+                new(Localizer["InsightsStatsActivitySelections"], FormatService.FormatNumber(period.ActivitySelections, "N0"), Icons.Material.Outlined.DirectionsRun),
+                new(Localizer["InsightsStatsLongestStreak"], FormatDayCount(statistics.LongestStreak), Icons.Material.Outlined.EmojiEvents),
+                new(Localizer["InsightsStatsBestMood"], FormatExtremum(period.BestMood), Icons.Material.Outlined.TrendingUp, Compact: true),
+                new(Localizer["InsightsStatsLowestMood"], FormatExtremum(period.LowestMood), Icons.Material.Outlined.TrendingDown, Compact: true),
+            ];
         }
     }
 
@@ -149,6 +177,8 @@ public partial class Insights : IAsyncDisposable
         _disposeCts.Dispose();
         return ValueTask.CompletedTask;
     }
+
+    private sealed record InsightMetric(string Label, string Value, string Icon, bool Featured = false, bool Compact = false);
 
     private sealed record MoodChartPoint(DateOnly Date, double X, int Y)
     {
