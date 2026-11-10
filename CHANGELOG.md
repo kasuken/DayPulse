@@ -2,6 +2,29 @@
 
 Notable changes to DayPulse, following [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and semantic versioning.
 
+## [1.2.0] - 2026-11-11
+
+### Added
+
+- **Quick check-in** - Save directly after choosing your mood, without scrolling past optional metrics, activities and notes. The full form remains available on the same page.
+- **History search** - Find check-ins by a displayed date or a word in your notes, entirely on your device. Matching counts and a clear-search action make it easy to return to the full journal.
+- **Settings shortcuts** - Jump directly to appearance, metrics, reminders, activities, data controls or app information.
+
+### Changed
+
+- **Journal presentation** - History groups entries by month with mood faces and note previews. Insights has a clearer period picker, statistic cards and trend chart, with the detailed table available on demand.
+- **Entry detail** - Activity chips, a separate notes section and quieter timestamps make saved check-ins easier to scan.
+- **Settings layout** - Consistent panel spacing and compact built-in activity switches reduce scrolling while retaining custom activity editing and reordering.
+
+### Fixed
+
+- **Save feedback** - Failed check-in saves move keyboard focus to the error summary, keeping the draft intact.
+- **Custom activity entry** - The add button becomes available as you type, without requiring you to leave the name field first.
+
+### Release limitations
+
+No data migration is needed from v1.1.0. English only; no accounts, cloud synchronization, encrypted storage, import/restore or reliable closed-app reminders. Browser data remains tied to its origin and may be lost when cleared or evicted. A GitHub release does not by itself confirm deployment.
+
 ## [1.1.0] - 2026-11-07
 
 ### Added
@@ -46,5 +69,6 @@ Users still on v1.0.0 move to this version only after closing all open DayPulse 
 
 English only. No accounts, cloud synchronization, encrypted storage, import/restore or reliable closed-app reminders. Browser storage belongs to its origin and can be lost when cleared or evicted. A GitHub release does not confirm deployment or custom-domain readiness.
 
+[1.2.0]: https://github.com/kasuken/DayPulse/releases/tag/v1.2.0
 [1.1.0]: https://github.com/kasuken/DayPulse/releases/tag/v1.1.0
 [1.0.0]: https://github.com/kasuken/DayPulse/releases/tag/v1.0.0

@@ -1,7 +1,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @implements IAsyncDisposable
 
-<MudPaper Class="daypulse-panel" Elevation="0">
+<MudPaper Class="daypulse-panel pa-6" Elevation="0">
     <MudStack Spacing="3">
         <MudText Typo="Typo.h2">@Localizer["ActivitiesTitle"]</MudText>
         <MudText>@Localizer["ActivitiesDescription"]</MudText>
@@ -10,7 +10,7 @@
             <MudAlert Severity="Severity.Error" role="alert">@Localizer["ActivitiesError"]</MudAlert>
         }
         <MudTextField T="string" @bind-Value="_newName" Immediate="true" MaxLength="120" Label="@Localizer["ActivitiesNewName"]" Disabled="@_busy" />
-        <MudButton OnClick="AddAsync" Disabled="@(_busy || !ValidName(_newName))" Variant="Variant.Outlined" data-testid="activities-add">@Localizer["ActivitiesAdd"]</MudButton>
+        <MudButton OnClick="AddAsync" Disabled="@(_busy || !ValidName(_newName))" Variant="Variant.Outlined" Class="align-self-start" data-testid="activities-add">@Localizer["ActivitiesAdd"]</MudButton>
         @if (_activities is null)
         {
             <MudButton OnClick="LoadAsync" Disabled="@_busy">@Localizer["ActivitiesLoad"]</MudButton>
@@ -19,6 +19,19 @@
         {
             @foreach (var activity in _activities)
             {
+                @if (activity.IsDefault)
+                {
+                    <MudStack @key="activity.Id" Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center"
+                              Class="px-3" data-activity-id="@activity.Id" role="group" aria-label="@Localizer[$"EntryActivity{activity.Id}"]">
+                        <MudText>@Localizer[$"EntryActivity{activity.Id}"]</MudText>
+                        <MudSwitch @key="(activity.Id, _revision)" T="bool" Value="@activity.IsActive"
+                                   ValueChanged="@(value => SetActiveAsync(activity.Id, value))"
+                                   aria-label="@($"{Localizer["ActivitiesActive"]}: {Localizer[$"EntryActivity{activity.Id}"]}")"
+                                   Disabled="@_busy" Color="Color.Primary" />
+                    </MudStack>
+                }
+                else
+                {
                 <MudPaper @key="activity.Id" Outlined="true" Class="pa-3" Elevation="0" data-activity-id="@activity.Id"
                           role="group" aria-label="@activity.Name">
                     <MudStack Spacing="2">
@@ -39,6 +52,7 @@
                         </MudStack>
                     </MudStack>
                 </MudPaper>
+                }
             }
         }
     </MudStack>

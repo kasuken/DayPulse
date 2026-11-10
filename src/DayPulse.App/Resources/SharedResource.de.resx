@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <data name="EntryQuickSaveHelp" xml:space="preserve"><value>Deine Stimmung reicht aus. Speichere jetzt oder ergänze unten freiwillige Angaben.</value></data>
+  <data name="HistorySearch" xml:space="preserve"><value>Datum oder Notizen suchen</value></data>
+  <data name="HistorySearchCount" xml:space="preserve"><value>Passende Einträge: {0}</value></data>
+  <data name="HistorySearchEmpty" xml:space="preserve"><value>Keine passenden Einträge</value></data>
+  <data name="HistorySearchHelp" xml:space="preserve"><value>Versuche ein anderes Datum oder ein Wort aus deinen Notizen. Dein Tagebuch wurde nicht verändert.</value></data>
+  <data name="HistorySearchClear" xml:space="preserve"><value>Suche zurücksetzen</value></data>
+  <data name="SettingsSections" xml:space="preserve"><value>Einstellungsbereiche</value></data>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>

@@ -1,6 +1,7 @@
 @page "/check-in"
 @page "/check-in/{Id}"
 @using DayPulse.Core.Repositories
+@using DayPulse.App.Pages.Components
 @implements IAsyncDisposable
 @inject IStringLocalizer<SharedResource> Localizer
 @inject LocalizedFormatService Format
@@ -32,12 +33,14 @@
     {
         @if (_errors.Count > 0)
         {
+            <div @ref="_errorSummary" tabindex="-1" data-testid="entry-error-summary">
             <MudAlert Severity="Severity.Error" role="alert" data-testid="entry-errors">
                 @foreach (var error in _errors)
                 {
                     <MudText @key="error">@Localizer[error]</MudText>
                 }
             </MudAlert>
+            </div>
         }
         <MudPaper Class="daypulse-panel pa-5" Elevation="0">
             <MudForm @ref="_form" Disabled="_saving">
@@ -46,6 +49,11 @@
                                    MaxDate="@Clock.GetLocalNow().Date" Required="true"
                                    RequiredError="@Localizer["EntryDateInvalid"]" />
                     <MoodPicker Value="_mood" ValueChanged="@((int? value) => _mood = value)" Disabled="_saving" />
+                    <MudStack Spacing="2" Class="entry-quick-save">
+                        <MudText Typo="Typo.body2" Class="daypulse-muted">@Localizer["EntryQuickSaveHelp"]</MudText>
+                        <CheckInActions Saving="_saving" CancelHref="@CancelHref" OnSave="SaveAsync" TestId="entry-quick-save" />
+                    </MudStack>
+                    <MudDivider />
                     @if (_settings.EnergyEnabled || _settings.AnxietyEnabled || _settings.FocusEnabled || _settings.SleepEnabled)
                     {
                         <div class="entry-metrics">
@@ -125,17 +133,12 @@
                                              Label="@(activity.IsDefault ? Localizer[$"EntryActivity{activity.Id}"].Value : activity.Name)" />
                             }
                         </MudStack>
-                        <MudTextField T="string" @bind-Value="_customActivity" Label="@Localizer["EntryCustomActivity"]" MaxLength="80" />
+                        <MudTextField T="string" @bind-Value="_customActivity" Immediate="true" Label="@Localizer["EntryCustomActivity"]" MaxLength="80" />
                         <MudButton OnClick="AddActivityAsync" Disabled="@(_saving || string.IsNullOrWhiteSpace(_customActivity))" Class="align-self-start">@Localizer["EntryAddActivity"]</MudButton>
                     </MudStack>
                     <MudTextField T="string" @bind-Value="_notes" Label="@Localizer["EntryNotes"]" Lines="4" MaxLength="500"
                                   HelperText="@Localizer["EntryNotesHelp"]" />
-                    <MudStack Row="true" Wrap="Wrap.Wrap">
-                        <MudButton OnClick="SaveAsync" Variant="Variant.Filled" Color="Color.Primary" Disabled="_saving" data-testid="entry-save">
-                            @Localizer[_saving ? "EntrySaving" : "EntrySave"]
-                        </MudButton>
-                        <MudButton Href="@(Id is null ? "/" : $"/history/{Uri.EscapeDataString(Id)}")" Disabled="_saving">@Localizer["EntryCancel"]</MudButton>
-                    </MudStack>
+                    <CheckInActions Saving="_saving" CancelHref="@CancelHref" OnSave="SaveAsync" />
                 </MudStack>
             </MudForm>
         </MudPaper>

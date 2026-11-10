@@ -25,6 +25,8 @@ public partial class CheckInEditor
     private readonly CancellationTokenSource _lifetime = new();
     private MudForm? _form;
     private ElementReference _sleepInput;
+    private ElementReference _errorSummary;
+    private bool _focusErrors;
     private CheckIn? _original;
     private AppSettings _settings = new();
     private IReadOnlyList<Activity> _activities = [];
@@ -44,7 +46,18 @@ public partial class CheckInEditor
     private bool _saving;
     private int _loadVersion;
 
+    private string CancelHref => Id is null ? "/" : $"/history/{Uri.EscapeDataString(Id)}";
+
     protected override Task OnParametersSetAsync() => LoadAsync();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_focusErrors)
+        {
+            _focusErrors = false;
+            await _errorSummary.FocusAsync();
+        }
+    }
 
     private async Task LoadAsync()
     {
@@ -152,7 +165,11 @@ public partial class CheckInEditor
             Logger.LogWarning(ex, "Unable to add a custom activity.");
             _errors = ["EntryActivitySaveError"];
         }
-        finally { _saving = false; }
+        finally
+        {
+            _saving = false;
+            _focusErrors = _errors.Count > 0;
+        }
     }
 
     private async Task SaveAsync()
@@ -194,7 +211,11 @@ public partial class CheckInEditor
             Logger.LogWarning(ex, "Unable to save a check-in.");
             _errors = ["EntrySaveError"];
         }
-        finally { _saving = false; }
+        finally
+        {
+            _saving = false;
+            _focusErrors = _errors.Count > 0;
+        }
     }
 
     /// <inheritdoc />

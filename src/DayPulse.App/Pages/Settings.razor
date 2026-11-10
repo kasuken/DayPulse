@@ -10,6 +10,19 @@
 <MudStack Spacing="6">
     <PageHeader Title="@Localizer["Settings"]" Description="@Localizer["SettingsDescription"]" />
 
+    <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="2" role="group" aria-label="@Localizer["SettingsSections"]" data-testid="settings-shortcuts">
+        <MudButton Href="/settings#settings-appearance" OnClick="@(() => _appearanceSection.FocusAsync().AsTask())" Variant="Variant.Outlined">@Localizer["Appearance"]</MudButton>
+        @if (ThemeState.IsInitialized && !ThemeState.IsInitializationFailed)
+        {
+            <MudButton Href="/settings#settings-metrics" OnClick="@(() => _metricsSection.FocusAsync().AsTask())" Variant="Variant.Outlined">@Localizer["PreferencesMetricsTitle"]</MudButton>
+            <MudButton Href="/settings#settings-reminder" OnClick="@(() => _reminderSection.FocusAsync().AsTask())" Variant="Variant.Outlined">@Localizer["ReminderTitle"]</MudButton>
+        }
+        <MudButton Href="/settings#settings-activities" OnClick="@(() => _activitiesSection.FocusAsync().AsTask())" Variant="Variant.Outlined">@Localizer["ActivitiesTitle"]</MudButton>
+        <MudButton Href="/settings#settings-data" OnClick="@(() => _dataSection.FocusAsync().AsTask())" Variant="Variant.Outlined">@Localizer["DataControlsTitle"]</MudButton>
+        <MudButton Href="/settings#settings-about" OnClick="@(() => _aboutSection.FocusAsync().AsTask())" Variant="Variant.Outlined">@Localizer["PreferencesAboutTitle"]</MudButton>
+    </MudStack>
+
+    <section @ref="_appearanceSection" id="settings-appearance" tabindex="-1" aria-label="@Localizer["Appearance"]">
     <MudPaper Class="daypulse-panel daypulse-appearance" Elevation="0">
         <MudStack Spacing="4">
             <MudIcon Icon="@Icons.Material.Outlined.Palette" Color="Color.Primary" aria-hidden="true" />
@@ -85,14 +98,24 @@
             }
         </MudStack>
     </MudPaper>
+    </section>
     @if (ThemeState.IsInitialized && !ThemeState.IsInitializationFailed)
     {
-        <MetricPreferences />
-        <DailyReminderSettings />
+        <section @ref="_metricsSection" id="settings-metrics" tabindex="-1" aria-label="@Localizer["PreferencesMetricsTitle"]">
+            <MetricPreferences />
+        </section>
+        <section @ref="_reminderSection" id="settings-reminder" tabindex="-1" aria-label="@Localizer["ReminderTitle"]">
+            <DailyReminderSettings />
+        </section>
     }
-    <ActivityPreferences />
-    <DataControls />
-    <MudPaper Class="daypulse-panel" Elevation="0">
+    <section @ref="_activitiesSection" id="settings-activities" tabindex="-1" aria-label="@Localizer["ActivitiesTitle"]">
+        <ActivityPreferences />
+    </section>
+    <section @ref="_dataSection" id="settings-data" tabindex="-1" aria-label="@Localizer["DataControlsTitle"]">
+        <DataControls />
+    </section>
+    <section @ref="_aboutSection" id="settings-about" tabindex="-1" aria-label="@Localizer["PreferencesAboutTitle"]">
+    <MudPaper Class="daypulse-panel pa-6" Elevation="0">
         <MudStack Spacing="3">
             <MudText Typo="Typo.h2">@Localizer["PreferencesAboutTitle"]</MudText>
             <MudText>@Localizer["PreferencesVersion", typeof(Settings).Assembly.GetName().Version?.ToString() ?? "—"]</MudText>
@@ -101,10 +124,17 @@
             <MudText>@Localizer["PreferencesNonMedical"]</MudText>
         </MudStack>
     </MudPaper>
+    </section>
     <PrivacyNote />
 </MudStack>
 
 @code {
+    private ElementReference _appearanceSection;
+    private ElementReference _metricsSection;
+    private ElementReference _reminderSection;
+    private ElementReference _activitiesSection;
+    private ElementReference _dataSection;
+    private ElementReference _aboutSection;
     private readonly CancellationTokenSource _componentCancellation = new();
     private readonly object _lifecycleGate = new();
     private readonly HashSet<Task> _pendingTasks = [];

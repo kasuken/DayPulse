@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <data name="EntryQuickSaveHelp" xml:space="preserve"><value>Basta il tuo umore. Salva ora o aggiungi dettagli facoltativi qui sotto.</value></data>
+  <data name="HistorySearch" xml:space="preserve"><value>Cerca date o note</value></data>
+  <data name="HistorySearchCount" xml:space="preserve"><value>Registrazioni corrispondenti: {0}</value></data>
+  <data name="HistorySearchEmpty" xml:space="preserve"><value>Nessuna registrazione corrispondente</value></data>
+  <data name="HistorySearchHelp" xml:space="preserve"><value>Prova un'altra data o una parola delle tue note. Il tuo diario non è stato modificato.</value></data>
+  <data name="HistorySearchClear" xml:space="preserve"><value>Cancella ricerca</value></data>
+  <data name="SettingsSections" xml:space="preserve"><value>Sezioni delle impostazioni</value></data>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>

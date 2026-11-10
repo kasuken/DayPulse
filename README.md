@@ -20,7 +20,7 @@ Record mood, energy, anxiety, focus, sleep, activities and notes, then explore n
   <img src="docs/images/check-in.png" alt="DayPulse check-in screen with an expressive mood selector and optional wellbeing scales" width="760">
 </p>
 
-[Download v1.0.0](https://github.com/kasuken/DayPulse/releases/tag/v1.0.0) · [Changelog](CHANGELOG.md)
+[Download v1.2.0](https://github.com/kasuken/DayPulse/releases/tag/v1.2.0) · [Changelog](CHANGELOG.md)
 
 > [!IMPORTANT]
 > Data stays in this browser on this device. There is no cloud backup or synchronization.
@@ -29,7 +29,7 @@ Record mood, energy, anxiety, focus, sleep, activities and notes, then explore n
 ## Features
 
 - **Daily check-ins:** explicitly select mood, optionally add metrics, activities and notes, and save one entry per local calendar day.
-- **History:** revisit actual entries, edit past values, or delete an entry after explicit confirmation.
+- **History:** search dates and notes locally, revisit entries grouped by month, edit past values, or delete an entry after explicit confirmation.
 - **Insights:** view 7/30/90-day averages, mood trends, streaks and mood extremes calculated from your own data.
 - **Personalization:** choose optional metrics, system/light/dark appearance, and custom activities.
 - **Data control:** export JSON or spreadsheet-safe CSV; confirm deletion of check-ins and custom activities and reset preferences.
@@ -40,9 +40,9 @@ First-run onboarding explains privacy and lets you choose metrics. The responsiv
 ## Using DayPulse
 
 1. Complete onboarding, then choose **Check in** on Today. One large expressive face reflects your mood: move the native -5 to +5 slider (all 11 scores), or use one of five face shortcuts. Mood stays unchosen until you interact; tap the resting centre thumb or press Enter/Space on the slider to explicitly choose neutral. Arrow keys and Home/End work natively. Optional energy, anxiety and focus sliders range from 0 to 10; sleep has a half-hour slider, step buttons and quick hour presets from 0 to 15 hours. Untouched optional scales stay unrecorded; **Clear** removes a recorded value. Notes allow up to 500 characters.
-2. Save to open the entry detail. Use **History** to revisit, edit or delete entries. A date cannot contain two entries; a failed save keeps the draft visible.
+2. Use **Save check-in** immediately below the mood picker for a quick mood-only entry, or continue down the page to add optional details before saving. Use **History** to search dates or notes, revisit, edit or delete entries. A date cannot contain two entries; a failed save keeps the draft visible and focuses the error summary.
 3. Use **Insights** to select a period. Missing optional metrics are excluded from averages, not treated as zero. Streaks use local calendar days; the current streak may end yesterday when today's entry is not yet recorded.
-4. Open **Settings** to choose metrics, manage activities, export data or delete it. Hiding a metric does not erase historical values; inactive activities remain associated with past entries.
+4. Open **Settings** and use its section shortcuts to choose metrics, manage activities, export data or delete it. Built-in activities have compact visibility switches; custom activities remain editable. Hiding a metric does not erase historical values; inactive activities remain associated with past entries.
 
 Daily reminders are **best-effort while the app remains open**, with optional browser notifications. Closing the app stops reminders and background tabs may delay them. Use a device alarm or calendar for reliable scheduled alerts.
 
@@ -128,7 +128,7 @@ SPA fallback, MIME types, security headers and caching rules are in [`staticweba
 
 The intended production address is **https://www.daypulse.me**. Its Azure domain binding and HTTPS deployment have not yet been verified; publishing a GitHub release does not make the website live.
 
-Each release (for example `v1.1.0`) includes a ZIP of the published static site. Extract its contents directly into your static host's web root, preserving `staticwebapp.config.json` when using Azure Static Web Apps. The repository workflow needs `AZURE_STATIC_WEB_APPS_API_TOKEN`; the latest checked deployment failed because that secret was missing.
+Each release (for example `v1.2.0`) includes a ZIP of the published static site. Extract its contents directly into your static host's web root, preserving `staticwebapp.config.json` when using Azure Static Web Apps. The repository workflow needs `AZURE_STATIC_WEB_APPS_API_TOKEN`; consult the release commit's workflow run for its deployment outcome.
 
 ## Limitations
 

@@ -28,6 +28,68 @@ public sealed class JournalFlowTests : BunitContext
     }
 
     [Fact]
+    public async Task Quick_save_precedes_optional_fields_and_saves_only_an_explicit_mood()
+    {
+        Render<MudPopoverProvider>();
+        var cut = Render<CheckInEditor>();
+        await ChooseMoodAsync(cut, 2);
+
+        Assert.True(cut.Markup.IndexOf("data-testid=\"entry-quick-save\"", StringComparison.Ordinal)
+            < cut.Markup.IndexOf("data-testid=\"entry-energy\"", StringComparison.Ordinal));
+        await cut.Find("[data-testid='entry-quick-save']").ClickAsync(new());
+
+        cut.WaitForAssertion(() => Assert.Contains("/history/", Services.GetRequiredService<NavigationManager>().Uri));
+        var entry = Assert.Single(await Entries.GetAllAsync(Xunit.TestContext.Current.CancellationToken));
+        Assert.Equal(2, entry.Mood);
+        Assert.Null(entry.Energy);
+        Assert.Null(entry.SleepHours);
+        Assert.Null(entry.Notes);
+        Assert.Empty(entry.ActivityIds);
+    }
+
+    [Fact]
+    public async Task Quick_save_without_mood_focuses_the_error_summary()
+    {
+        Render<MudPopoverProvider>();
+        var cut = Render<CheckInEditor>();
+        var save = await cut.WaitForElementAsync("[data-testid='entry-quick-save']");
+
+        await save.ClickAsync(new());
+
+        cut.WaitForAssertion(() => Assert.Contains("Choose your mood", cut.Find("[data-testid='entry-errors']").TextContent));
+        Assert.Equal("-1", cut.Find("[data-testid='entry-error-summary']").GetAttribute("tabindex"));
+        Assert.Contains(JSInterop.Invocations, invocation => invocation.Identifier == "Blazor._internal.domWrapper.focus");
+        Assert.Empty(await Entries.GetAllAsync(Xunit.TestContext.Current.CancellationToken));
+    }
+
+    [Fact]
+    public async Task History_search_filters_notes_and_dates_and_clears_without_changing_entries()
+    {
+        var today = FixedJournalTimeProvider.Today;
+        await Entries.CreateAsync(new CheckIn("walk", today, 2, notes: "A quiet walk"), Xunit.TestContext.Current.CancellationToken);
+        await Entries.CreateAsync(new CheckIn("older", today.AddDays(-1), 0), Xunit.TestContext.Current.CancellationToken);
+        var cut = Render<History>();
+        var search = await cut.WaitForElementAsync("input[data-testid='history-search']");
+
+        await search.InputAsync(new ChangeEventArgs { Value = "  QUIET  " });
+        Assert.Single(cut.FindAll("[data-testid='journal-history-entry']"));
+        Assert.Equal("/history/walk", cut.Find("[data-testid='journal-history-entry'] a").GetAttribute("href"));
+        Assert.Equal("Matching check-ins: 1", cut.Find("[data-testid='history-search-count']").TextContent);
+
+        await search.InputAsync(new ChangeEventArgs { Value = Services.GetRequiredService<LocalizedFormatService>().FormatDate(today.AddDays(-1), "D") });
+        Assert.Single(cut.FindAll("[data-testid='journal-history-entry']"));
+        Assert.Equal("/history/older", cut.Find("[data-testid='journal-history-entry'] a").GetAttribute("href"));
+
+        await search.InputAsync(new ChangeEventArgs { Value = "not in this journal" });
+        Assert.Empty(cut.FindAll("[data-testid='journal-history-entry']"));
+        Assert.Contains("No matching check-ins", cut.Markup);
+        await cut.FindAll("button").Single(button => button.TextContent.Contains("Clear search", StringComparison.Ordinal)).ClickAsync(new());
+        Assert.Equal(2, cut.FindAll("[data-testid='journal-history-entry']").Count);
+        Assert.Empty(cut.FindAll("[data-testid='history-search-count']"));
+        Assert.Equal(2, (await Entries.GetAllAsync(Xunit.TestContext.Current.CancellationToken)).Count);
+    }
+
+    [Fact]
     public async Task New_check_in_requires_an_explicit_mood_selection()
     {
         Render<MudPopoverProvider>();

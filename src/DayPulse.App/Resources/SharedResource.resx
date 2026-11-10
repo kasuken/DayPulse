@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <data name="EntryQuickSaveHelp" xml:space="preserve"><value>Just your mood is enough. Save now, or add optional details below.</value></data>
+  <data name="HistorySearch" xml:space="preserve"><value>Search dates or notes</value></data>
+  <data name="HistorySearchCount" xml:space="preserve"><value>Matching check-ins: {0}</value></data>
+  <data name="HistorySearchEmpty" xml:space="preserve"><value>No matching check-ins</value></data>
+  <data name="HistorySearchHelp" xml:space="preserve"><value>Try a different date or a word from your notes. Your journal has not changed.</value></data>
+  <data name="HistorySearchClear" xml:space="preserve"><value>Clear search</value></data>
+  <data name="SettingsSections" xml:space="preserve"><value>Settings sections</value></data>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>

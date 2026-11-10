@@ -1,0 +1,23 @@
+@inject IStringLocalizer<SharedResource> Localizer
+
+<MudStack Row="true" Wrap="Wrap.Wrap" Spacing="2">
+    <MudButton OnClick="OnSave" Variant="Variant.Filled" Color="Color.Primary"
+               StartIcon="@Icons.Material.Outlined.Check" Disabled="Saving" data-testid="@TestId">
+        @Localizer[Saving ? "EntrySaving" : "EntrySave"]
+    </MudButton>
+    <MudButton Href="@CancelHref" Disabled="Saving">@Localizer["EntryCancel"]</MudButton>
+</MudStack>
+
+@code {
+    /// <summary>Whether a journal write is in progress.</summary>
+    [Parameter] public bool Saving { get; set; }
+
+    /// <summary>Destination when leaving the editor without saving.</summary>
+    [Parameter, EditorRequired] public string CancelHref { get; set; } = "/";
+
+    /// <summary>Identifies this action row's save button.</summary>
+    [Parameter] public string TestId { get; set; } = "entry-save";
+
+    /// <summary>Requests validation and saving by the owning editor.</summary>
+    [Parameter] public EventCallback OnSave { get; set; }
+}

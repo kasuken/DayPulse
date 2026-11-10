@@ -19,9 +19,9 @@
                        Color="Color.Primary" Disabled="@(!_loaded || _busy)" />
             <MudTimePicker @bind-Time="_time" Label="@Localizer["ReminderTime"]"
                            Disabled="@(!_loaded || _busy)" />
-            <MudButton OnClick="SaveAsync" Variant="Variant.Filled" Color="Color.Primary"
+            <MudButton OnClick="SaveAsync" Variant="Variant.Filled" Color="Color.Primary" Class="align-self-start"
                        Disabled="@(!_loaded || _busy || _time is null)">@Localizer["ReminderSave"]</MudButton>
-            <MudButton OnClick="RequestPermissionAsync" Disabled="@(!_loaded || _busy)">@Localizer["ReminderPermission"]</MudButton>
+            <MudButton OnClick="RequestPermissionAsync" Disabled="@(!_loaded || _busy)" Class="align-self-start">@Localizer["ReminderPermission"]</MudButton>
         }
         @if (_statusKey is not null)
         {

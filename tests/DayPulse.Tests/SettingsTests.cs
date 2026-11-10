@@ -23,6 +23,26 @@ public sealed class SettingsTests : BunitContext
     }
 
     [Fact]
+    public async Task Section_shortcuts_target_focusable_settings_panels()
+    {
+        Services.AddSingleton<ISettingsRepository>(new InMemorySettingsRepository(new AppSettings()));
+        Services.AddScoped<ThemeState>();
+        var cut = Render<Settings>();
+        await cut.WaitForElementAsync("#settings-metrics");
+
+        var shortcuts = cut.FindAll("[data-testid='settings-shortcuts'] a");
+        Assert.Equal(6, shortcuts.Count);
+        foreach (var target in shortcuts.Select(shortcut => shortcut.GetAttribute("href")).ToArray())
+        {
+            Assert.NotNull(target);
+            Assert.StartsWith("/settings#", target);
+            Assert.Equal("-1", cut.Find(target["/settings".Length..]).GetAttribute("tabindex"));
+            await cut.InvokeAsync(() => cut.Find($"a[href='{target}']").Click());
+        }
+        Assert.Equal(6, JSInterop.Invocations.Count(invocation => invocation.Identifier == "Blazor._internal.domWrapper.focus"));
+    }
+
+    [Fact]
     public async Task Settings_exposes_an_accessible_theme_selector_with_the_current_choice()
     {
         var repository = new InMemorySettingsRepository(
